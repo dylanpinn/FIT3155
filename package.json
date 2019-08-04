@@ -1,9 +1,9 @@
 {
-  "name": "uni-notes",
+  "name": "fit3155",
   "version": "1.0.0",
-  "description": "Uni notes template repo",
+  "description": "FIT3155: Advanced data structures and algorithms",
   "main": "index.js",
-  "repository": "git@github.com:dylanpinn/uni-notes.git",
+  "repository": "git@github.com:dylanpinn/FIT3155.git",
   "author": "Dylan Pinn <dylan@dylanpinn.com>",
   "license": "MIT",
   "private": true,

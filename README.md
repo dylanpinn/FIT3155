@@ -1,6 +1,4 @@
-# Uni Notes Template repo
-
-This can be used to easily create a starter repo for my uni notes.
+# FIT3155: Advanced Data Structures and Algorithms
 
 ## Lectures
 
