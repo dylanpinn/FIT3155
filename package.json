@@ -1,0 +1,26 @@
+{
+  "name": "uni-notes",
+  "version": "1.0.0",
+  "description": "Uni notes template repo",
+  "main": "index.js",
+  "repository": "git@github.com:dylanpinn/uni-notes.git",
+  "author": "Dylan Pinn <dylan@dylanpinn.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "husky": "^3.0.2",
+    "lint-staged": "^9.2.1",
+    "prettier": "^1.18.2"
+  },
+  "lint-staged": {
+    "*.{md,json}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
