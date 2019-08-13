@@ -80,8 +80,8 @@ def gusfield(pattern, string):
             # l, r remain unchanged
             l = l_array[k-1]
             r = r_array[k-1]
-            if z_array[k - l + 1] < r - k + 1:
-                z_array[k] = z_array[k - l + 1]
+            if z_array[k - l] < r - k + 1:
+                z_array[k] = z_array[k - l]
                 l_array[k] = l_array[k-1]
                 r_array[k] = r_array[k-1]
             else:
@@ -101,7 +101,6 @@ def gusfield(pattern, string):
                     else:
                         match = False
 
-                # TODO: Fix bug around here setting l,r values correctly.
                 q = r + i
 
                 z_array[k] = q - k
