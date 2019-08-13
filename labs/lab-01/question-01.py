@@ -5,6 +5,7 @@ def gusfield(pattern, string):
     # TODO: Meet PEP8
     # TODO: Meet PEP256
     # TODO: Remove duplicated code.
+    # TODO: Work with pattern and string arguments.
 
     # pattern = "aab"
     string = "aabaabcaxaabaabcy"
