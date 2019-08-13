@@ -101,6 +101,7 @@ def gusfield(pattern, string):
                     else:
                         match = False
 
+                # TODO: Fix bug around here setting l,r values correctly.
                 q = r + i
 
                 z_array[k] = q - k
