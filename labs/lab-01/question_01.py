@@ -1,5 +1,6 @@
 # Gusfield Z-Algorithm
 
+
 def gusfield(pattern, string):
     # TODO: Add tests.
     # TODO: Meet PEP8
@@ -47,7 +48,8 @@ def gusfield(pattern, string):
             continue
 
         # Case 1, if k > r:
-        # Compute Zk by comparing str[k...q-1] with str[1...q-k] until mismatch is found
+        # Compute Zk by comparing str[k...q-1] with str[1...q-k] until
+        # mismatch is found
         # at some q >= k.
         # if Zk > 0
         #   set rk to q-1
