@@ -1,10 +1,10 @@
 # Gusfield Z-Algorithm
 
 def gusfield(pattern, string):
-    # 3 cases
-    # 1. k > r
-    # 2. k = r
-    # 3. k < r
+    # TODO: Add tests.
+    # TODO: Meet PEP8
+    # TODO: Meet PEP256
+    # TODO: Remove duplicated code.
 
     # pattern = "aab"
     string = "aabaabcaxaabaabcy"
