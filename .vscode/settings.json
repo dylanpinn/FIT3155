@@ -1,6 +1,8 @@
 {
+  "python.linting.banditEnabled": true,
   "python.linting.enabled": true,
-  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": false,
+  "python.linting.pylintEnabled": false,
   "python.linting.pylintUseMinimalCheckers": false,
   "python.pythonPath": "~/.pyenv/shims/python"
 }
