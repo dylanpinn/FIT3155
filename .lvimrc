@@ -1,0 +1,1 @@
+let b:ale_linters = {'python': ['pylint', 'flake8', 'bandit']}
