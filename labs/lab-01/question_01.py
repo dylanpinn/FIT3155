@@ -1,15 +1,12 @@
-# Gusfield Z-Algorithm
+"""Gusfield Z-Algorithm
+
+"""
 
 
 def gusfield(pattern, string):
-    # TODO: Add tests.
-    # TODO: Meet PEP8
-    # TODO: Meet PEP256
     # TODO: Remove duplicated code.
     # TODO: Work with pattern and string arguments.
 
-    # pattern = "aab"
-    string = "aabaabcaxaabaabcy"
     # concat_string = pattern + "$" + string
     z_array = [None] * len(string)
     r_array = [None] * len(string)
@@ -114,5 +111,8 @@ def gusfield(pattern, string):
     print('Z: ', z_array)
     print('l: ', l_array)
     print('r: ', r_array)
+
+    return z_array
+
 
 gusfield('aab', 'aabaabcaxaabaabcy')
