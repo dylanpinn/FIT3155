@@ -2,48 +2,52 @@
 
 """
 
-
-def gusfield(pattern, string):
-    # TODO: Remove duplicated code.
+def find_match(pattern, txt):
+    """Find match using Gusfield's algorithm."""
     # TODO: Work with pattern and string arguments.
+    string = pattern + "$" + txt
+    z_values = gusfield(string)
+    print(z_values)
+    for i in z_values:
+        if i == len(pattern):
+            return True
+        else:
+            return False
 
-    # concat_string = pattern + "$" + string
+
+def base_case(string):
     z_array = [None] * len(string)
     r_array = [None] * len(string)
     l_array = [None] * len(string)
-
-    # Base Case
-
-    # match string[1...] with string[0...] until mismatch is found
-
-    match = False
-    i = 1
-    z_array[1] = 0
+    # compare l-r string[1] == string[0] until mismatch is found
+    match = True
     z_index = 1
-    if string[i] == string[i-z_index]:
-        match = True
-        z_array[z_index] += 1
-    else:
-        match = False
-        z_array[z_index] = -1
-    while match:
-        i += 1
-        if string[i] == string[i-z_index]:
+    z_array[z_index] = 0
+    i = 1
+    print(len(string))
+    while match and i < len(string):
+        print(i, i-z_index)
+        if string[i] == string[i - z_index]:
+            match = True
             z_array[z_index] += 1
         else:
             match = False
+        i += 1
+    if z_array[z_index] > 0:
+        r_array[z_index] = z_array[z_index]
+        l_array[z_index] = 1
+    else:
+        r_array[z_index], l_array[z_index] = 0, 0
+    print(z_array)
 
-        if z_array[z_index] > 0:
-            r_array[z_index] = z_array[1]
-            l_array[z_index] = 1
-        elif z_array[z_index] == 0:
-            r_array[z_index] = 0
-            l_array[z_index] = 0
+    return z_array, r_array, l_array
 
-    for k in range(len(string)):
-        if k < 2:
-            continue
 
+def gusfield(string):
+    # TODO: Remove duplicated code.
+    z_array, r_array, l_array = base_case(string)
+
+    for k in range(2, len(string)):
         # Case 1, if k > r:
         # Compute Zk by comparing str[k...q-1] with str[1...q-k] until
         # mismatch is found
@@ -115,4 +119,5 @@ def gusfield(pattern, string):
     return z_array
 
 
-gusfield('aab', 'aabaabcaxaabaabcy')
+if __name__ == '__main__':
+    find_match('aab', 'aabaabcaxaabaabcy')
