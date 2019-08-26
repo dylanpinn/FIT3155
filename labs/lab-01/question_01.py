@@ -2,11 +2,12 @@
 
 """
 
+
 def find_match(pattern, txt):
     """Find match using Gusfield's algorithm."""
     # TODO: Work with pattern and string arguments.
     string = pattern + "$" + txt
-    z_values = gusfield(string)
+    z_values, _, _ = gusfield(string)
     print(z_values)
     for i in z_values:
         if i == len(pattern):
@@ -37,7 +38,7 @@ def base_case(string):
         r_array[z_index] = z_array[z_index]
         l_array[z_index] = 1
     else:
-        r_array[z_index], l_array[z_index] = 0, 0
+        r_array[z_index], l_array[z_index] = 1, 0
     print(z_array)
 
     return z_array, r_array, l_array
@@ -116,7 +117,7 @@ def gusfield(string):
     print('l: ', l_array)
     print('r: ', r_array)
 
-    return z_array
+    return z_array, r_array, l_array
 
 
 if __name__ == '__main__':
