@@ -29,3 +29,6 @@ class TestBoyerMoore:
         pat = 'ABC'
         assert boyermoore.calculate_bad_char_shift(pat) == expected
 
+    # TODO: Test good suffix
+    # TODO: Test matched prefix
+
