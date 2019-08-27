@@ -1,25 +1,6 @@
-"""Gusfield Z-Algorithm"""
+"""Calculate Z-Algorithm using Gusfield's algorithm
 
-
-def matches(pattern, txt):
-    """Does pattern exist in text."""
-    result = find_matches(pattern, txt)
-    if result:
-        return True
-    return False
-
-
-def find_matches(pattern, txt):
-    """Find matches using Gusfield's algorithm."""
-    string = pattern + "$" + txt
-    result = []
-    z_values = z_array(string)
-    print(z_values)
-    for i in z_values:
-        if i == len(pattern):
-            result.append(i - len(pattern) - 1)
-
-    return result
+"""
 
 
 def finding_match(string, right, left):
@@ -27,8 +8,8 @@ def finding_match(string, right, left):
     return right < len(string) and string[right] == string[right - left]
 
 
-def z_array(string):
-    """Implement Gusfield's Z-algorithm to generate Z-array."""
+def find_z_array(string):
+    """Calcualte Z-Array using Gusfield's Algorithm."""
     z_array = [None] * len(string)
     left, right = 0, 0
 
@@ -52,6 +33,3 @@ def z_array(string):
 
     return z_array
 
-
-if __name__ == '__main__':
-    print(find_matches('aab', 'aabaabcaxaabaabcy'))
