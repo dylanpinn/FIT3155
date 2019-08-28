@@ -81,20 +81,13 @@ def naive_algorithm(pat, txt):
     if len(pat) > len(txt):
         return False
     for iter in range(len(txt) - 1):
-        print(iter)
         m = -1
         match = True
         while match is True and -m <= len(pat):
-            print(m)
             if pat[m] == txt[m - iter]:
-                print("match")
                 m -= 1
-                # decrease 'm'
             else:
-                print("no match")
                 match = False
-                # move onto next iteration
-        print(match)
         if match:
             return match
     return False
