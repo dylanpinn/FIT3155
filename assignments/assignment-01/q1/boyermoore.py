@@ -110,7 +110,7 @@ def matches(pat, txt):
     print(matchedprefix)
 
     # Starting with pat[1..m] vs. txt[1..m], in each iteration, scan
-    # ‘right-to-left’
+    # right-to-left
 
     # m-1 -> 0
 
