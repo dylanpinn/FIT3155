@@ -54,3 +54,8 @@ class TestBoyerMoore:
         txt = 'abcdabcd'
         assert boyermoore.naive_algorithm(pat, txt) is True  # nosec
 
+    def test_naive_no_match(self):
+        """Test no matches."""
+        pat = 'abc'
+        txt = 'abdabdabe'
+        assert boyermoore.naive_algorithm(pat, txt) is False  # nosec
