@@ -20,6 +20,8 @@ Output file name: output_boyermoore.txt
 
 from z_algorithm import find_z_array
 
+ALPHABET_SIZE = 256
+
 # Boyer-Moore Algorithm
 
 # Preprocess step
@@ -37,7 +39,7 @@ def calculate_bad_char_shift(pattern):
     """Calculate bad character shift rule."""
 
     # Characters can be {|A-Z|,|a-z|,|0-9|}
-    bad_chararacter_shift = [-1 for a in range(256)]
+    bad_chararacter_shift = [-1 for a in range(ALPHABET_SIZE)]
 
     for i, _ in enumerate(pattern):
         bad_chararacter_shift[ord(pattern[i])] = i
@@ -55,7 +57,7 @@ def calculate_goodsuffix(pattern):
     z_suffix = find_z_array(reverse_string(pattern))
     z_suffix.reverse()
 
-    for p in range(0, m-1):
+    for p in range(0, m - 1):
         j = m - z_suffix[p]
         goodsuffix[j] = p
     return goodsuffix
@@ -74,6 +76,29 @@ def calculate_matchedprefix(pattern):
     return matched_prefix
 
 
+def naive_algorithm(pat, txt):
+    """Naive implementation of algorithm."""
+    # right to left scan over each iteration of pat[1..m] vs txt[1..m]
+    m = -1
+    for iter in range(len(txt) - 1):
+        print(iter)
+        match = True
+        while match is True and -m <= len(pat):
+            print(m)
+            if pat[m] == txt[m - iter]:
+                print("match")
+                m -= 1
+                # decrease 'm'
+            else:
+                print("no match")
+                match = False
+                # move onto next iteration
+        print(match)
+        if match:
+            return match
+    return False
+
+
 def matches(pat, txt):
     """Simple check if the pat matches against txt."""
     badcharshift = calculate_bad_char_shift(pat)
@@ -82,10 +107,22 @@ def matches(pat, txt):
     print(badcharshift)
     print(goodsuffix)
     print(matchedprefix)
+
+    # Starting with pat[1..m] vs. txt[1..m], in each iteration, scan
+    # ‘right-to-left’
+
+    # m-1 -> 0
+
+    # Use (extended) bad-character rule to find how many places to the right
+    # pat should be shifted under txt. Call this amount nbadcharacter.
+    # Use good suffix rule to find how many places to the right pat should be
+    # shifted under txt. Call this amount ngoodsuffix.
+    # Shift pat to the right under txt by max(nbadcharacter,ngoodsuffix)
+    # places.
     return True
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # executed directly
     # TODO: Read filenames from arguments.
-    print(matches('abc', 'abcd'))
+    print(matches("abc", "abcd"))
