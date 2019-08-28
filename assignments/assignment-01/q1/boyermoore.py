@@ -78,10 +78,11 @@ def calculate_matchedprefix(pattern):
 
 def naive_algorithm(pat, txt):
     """Naive implementation of algorithm."""
-    # right to left scan over each iteration of pat[1..m] vs txt[1..m]
-    m = -1
+    if len(pat) > len(txt):
+        return False
     for iter in range(len(txt) - 1):
         print(iter)
+        m = -1
         match = True
         while match is True and -m <= len(pat):
             print(m)
