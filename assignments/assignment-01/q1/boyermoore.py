@@ -86,7 +86,7 @@ def naive_algorithm(pat, txt):
     return False
 
 
-def boyer_moore(pat, txt):
+def boyer_moore(pat, txt, index=1):
     """Check for pattern matches using Boyer-Moore's algorithm."""
      # No match if pat is longer than txt.
     if len(pat) > len(txt):
@@ -104,7 +104,7 @@ def boyer_moore(pat, txt):
     n = len(txt) - 1
     matches = []
 
-    while j + len(pat) <= len(txt):
+    while j + m <= len(txt):
         k = m  # where we are matching in pat
 
         while pat[k] == txt[j + k - 1] and k >= 0:
@@ -112,7 +112,7 @@ def boyer_moore(pat, txt):
 
         # Match is found
         if k == -1:
-            matches.append(j + k + 1)  # adjust index by 1 for result.
+            matches.append(j + k + index)  # adjust index by 1 for result.
             # case 2: when match is found shift pat by m - matchedprefix[2]
             j += max(1, m - matchedprefix[2] if m > 1 else 1)
         else:
