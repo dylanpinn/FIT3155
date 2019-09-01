@@ -8,7 +8,7 @@ import boyermoore
 def random_string(string_length=10):
     """Generates a random string of a fixed length."""
     chars = string.ascii_letters + string.digits
-    return ''.join(random.choice(chars) for i in range(string_length))
+    return ''.join(random.choice(chars) for i in range(string_length))  # nosec
 
 class TestBoyerMoore:
     """Test Class."""
@@ -66,7 +66,7 @@ class TestBoyerMoore:
 
     def test_all_naive(self):
         for i in range(2, 1000):
-            pat = random_string(random.randint(1, i))
+            pat = random_string(random.randint(1, i))  # nosec
             txt = random_string(i)
             expected = bool(pat in txt)
             assert boyermoore.matches(pat, txt) == expected  # nosec
@@ -145,7 +145,7 @@ class TestBoyerMoore:
 
     def test_all_naive(self):
         for i in range(2, 1000):
-            pat = random_string(random.randint(1, i))
+            pat = random_string(random.randint(1, i))  # nosec
             txt = random_string(i)
             expected = bool(pat in txt)
             assert boyermoore.naive_algorithm(pat, txt) == expected  # nosec
