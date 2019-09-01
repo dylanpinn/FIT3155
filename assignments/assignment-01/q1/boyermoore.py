@@ -103,7 +103,7 @@ def matches(pat, txt):
 
     # Pre-process
     badcharshift = calculate_bad_char_shift(pat)
-    goodsuffix = calculate_goodsuffix(pat)
+    goodsuffix_table = calculate_goodsuffix(pat)
     matchedprefix = calculate_matchedprefix(pat)
 
     j = 0
@@ -118,14 +118,26 @@ def matches(pat, txt):
 
         # Match is found
         if k == -1:
+            # TODO: Don't return and track matches.
             return True
         else:
-            print('no match')
             x = txt[j + k - 1]
             y = pat[k]
+            # Calculate badcharacter shift jump
             badcharshift_jump = max(1, k - badcharshift[ord(x)])
 
-            j += badcharshift_jump
+            # Calculate good suffix jump
+            goodsuffix = goodsuffix_table[k]
+            goodsuffix_shift = 0
+            # case 1a goodsuffix > 0
+            if goodsuffix > 0:
+                goodsuffix_shift = m - goodsuffix
+            # case 1b: goodsuffix = 0
+            elif goodsuffix == 0:
+                goodsuffix_shift = m - matchedprefix[k]
+            # case 2: when match is found shift pat by m - matchedprefix[2]
+
+            j += max(badcharshift_jump, goodsuffix_shift)
     return False
 
     # Starting with pat[1..m] vs. txt[1..m], in each iteration, scan
