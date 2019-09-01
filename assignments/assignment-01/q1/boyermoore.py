@@ -110,9 +110,9 @@ def boyer_moore(pat, txt):
 
         # Match is found
         if k == -1:
-            matches.append(j + k + 1)
+            matches.append(j + k + 1)  # adjust index by 1 for result.
             # case 2: when match is found shift pat by m - matchedprefix[2]
-            j += m - matchedprefix[2] if m > 1 else 1
+            j += max(1, m - matchedprefix[2] if m > 1 else 1)
         else:
             x = txt[j + k - 1]
             y = pat[k]
