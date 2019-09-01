@@ -80,12 +80,14 @@ def naive_algorithm(pat, txt):
     """Naive implementation of algorithm."""
     if len(pat) > len(txt):
         return False
-    for iter in range(len(txt) - 1):
-        m = -1
+    for iter in range(0, len(txt) - 1):
+        m = len(pat) - 1
+        n = len(txt) - 1 - iter
         match = True
-        while match is True and -m <= len(pat):
-            if pat[m] == txt[m - iter]:
+        while match is True and m >= 0:
+            if pat[m] == txt[n]:
                 m -= 1
+                n -= 1
             else:
                 match = False
         if match:
