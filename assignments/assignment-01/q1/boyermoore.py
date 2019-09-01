@@ -22,13 +22,6 @@ from z_algorithm import find_z_array
 
 ALPHABET_SIZE = 256
 
-# Boyer-Moore Algorithm
-
-# Preprocess step
-#   bad-chacater shift jump tables
-#   goodsuffix & matchedprefix values for good suffix shifts
-
-
 def reverse_string(string):
     """Reverse string using a slice."""
     return string[::-1]
