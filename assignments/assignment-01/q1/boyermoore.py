@@ -27,7 +27,6 @@ def reverse_string(string):
     return string[::-1]
 
 
-# Bad characater shift rule
 def calculate_bad_char_shift(pattern):
     """Calculate bad character shift rule."""
 
@@ -40,7 +39,6 @@ def calculate_bad_char_shift(pattern):
     return bad_chararacter_shift
 
 
-# Good suffix
 def calculate_goodsuffix(pattern):
     """Calculate good suffix values of pattern."""
     # Instantiate goodsuffix array with 0 values.
