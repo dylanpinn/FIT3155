@@ -92,6 +92,8 @@ def boyer_moore(pat, txt):
     if len(pat) > len(txt):
         return []
 
+    # TODO: Add Galil's improvements.
+
     # Pre-process
     badcharshift = calculate_bad_char_shift(pat)
     goodsuffix_table = calculate_goodsuffix(pat)
