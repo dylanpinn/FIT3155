@@ -103,9 +103,11 @@ def matches(pat, txt):
 
     if len(pat) > len(txt):
         return False
-    for iter in range(0, len(txt)):
+    j = 0
+    while j <= len(txt):
+        j += 1
         m = len(pat) - 1
-        n = len(txt) - 1 - iter
+        n = len(txt) - 1 - j
         match = True
         while match is True and m >= 0:
             if pat[m] == txt[n]:
