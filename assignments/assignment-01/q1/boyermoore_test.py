@@ -86,6 +86,12 @@ class TestBoyerMoore:
         txt = '02mTAg8avVRF01uKrsuuLJzKU36WzL6VUJiHvBDQxfA7PoN4vy9JR7oEg3x76yeRsEOOoDRNmwfXgEXIlmtjJrEwSp7ptRwFquP8u0'
         assert boyermoore.naive_algorithm(pat, txt) == bool(pat in txt)  # nosec
 
+    def test_naive_no_match_4(self):
+        """Test no match when pattern > text."""
+        pat = 'l'
+        txt = 'lFx0OyuczjmH'
+        assert boyermoore.naive_algorithm(pat, txt) == bool(pat in txt)  # nosec
+
     def test_all_naive(self):
         for i in range(2, 1000):
             pat = random_string(random.randint(1, i))
