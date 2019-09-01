@@ -149,3 +149,9 @@ class TestBoyerMoore:
             txt = random_string(i)
             expected = bool(pat in txt)
             assert boyermoore.naive_algorithm(pat, txt) == expected  # nosec
+
+    def test_boyer_algorithm(self):
+        pat = 'abc'
+        txt = 'abcdabcdabcd'
+        expected = [1, 5, 9]
+        assert boyermoore.boyer_moore(pat, txt) == expected  # nosec

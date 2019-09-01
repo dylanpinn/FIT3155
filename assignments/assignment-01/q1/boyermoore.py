@@ -95,11 +95,11 @@ def naive_algorithm(pat, txt):
     return False
 
 
-def matches(pat, txt):
-    """Check if the pat matches against txt using Boyer-Moore's algorithm."""
-    # No match if pat is longer than txt.
+def boyer_moore(pat, txt):
+    """Check for pattern matches using Boyer-Moore's algorithm."""
+     # No match if pat is longer than txt.
     if len(pat) > len(txt):
-        return False
+        return []
 
     # Pre-process
     badcharshift = calculate_bad_char_shift(pat)
@@ -109,8 +109,9 @@ def matches(pat, txt):
     j = 0
     m = len(pat) - 1
     n = len(txt) - 1
+    matches = []
 
-    while j + len(pat) < len(txt):
+    while j + len(pat) <= len(txt):
         k = m  # where we are matching in pat
 
         while pat[k] == txt[j + k - 1] and k >= 0:
@@ -118,8 +119,9 @@ def matches(pat, txt):
 
         # Match is found
         if k == -1:
-            # TODO: Don't return and track matches.
-            return True
+            matches.append(j + k + 1)
+            # case 2: when match is found shift pat by m - matchedprefix[2]
+            j += m - matchedprefix[2] if m > 1 else 1
         else:
             x = txt[j + k - 1]
             y = pat[k]
@@ -135,22 +137,15 @@ def matches(pat, txt):
             # case 1b: goodsuffix = 0
             elif goodsuffix == 0:
                 goodsuffix_shift = m - matchedprefix[k]
-            # case 2: when match is found shift pat by m - matchedprefix[2]
 
             j += max(badcharshift_jump, goodsuffix_shift)
-    return False
+    return matches
 
-    # Starting with pat[1..m] vs. txt[1..m], in each iteration, scan
-    # right-to-left
 
-    # m-1 -> 0
-
-    # Use (extended) bad-character rule to find how many places to the right
-    # pat should be shifted under txt. Call this amount nbadcharacter.
-    # Use good suffix rule to find how many places to the right pat should be
-    # shifted under txt. Call this amount ngoodsuffix.
-    # Shift pat to the right under txt by max(nbadcharacter,ngoodsuffix)
-    # places.
+def matches(pat, txt):
+    """Check if the pat matches against txt using Boyer-Moore's algorithm."""
+    result = boyer_moore(pat, txt)
+    return len(result) > 0
 
 
 if __name__ == "__main__":
