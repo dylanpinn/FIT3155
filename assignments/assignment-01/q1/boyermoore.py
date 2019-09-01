@@ -96,13 +96,27 @@ def naive_algorithm(pat, txt):
 
 
 def matches(pat, txt):
-    """Simple check if the pat matches against txt."""
+    """Check if the pat matches against txt using Boyer-Moore's algorithm."""
     badcharshift = calculate_bad_char_shift(pat)
     goodsuffix = calculate_goodsuffix(pat)
     matchedprefix = calculate_matchedprefix(pat)
-    print(badcharshift)
-    print(goodsuffix)
-    print(matchedprefix)
+
+    if len(pat) > len(txt):
+        return False
+    for iter in range(0, len(txt)):
+        m = len(pat) - 1
+        n = len(txt) - 1 - iter
+        match = True
+        while match is True and m >= 0:
+            if pat[m] == txt[n]:
+                m -= 1
+                n -= 1
+            else:
+                match = False
+        if match:
+            return match
+    return False
+
 
     # Starting with pat[1..m] vs. txt[1..m], in each iteration, scan
     # right-to-left
@@ -115,7 +129,6 @@ def matches(pat, txt):
     # shifted under txt. Call this amount ngoodsuffix.
     # Shift pat to the right under txt by max(nbadcharacter,ngoodsuffix)
     # places.
-    return True
 
 
 if __name__ == "__main__":
