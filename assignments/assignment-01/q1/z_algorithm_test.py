@@ -1,5 +1,6 @@
 import z_algorithm
 
+
 class TestZAlgorithm:
     def test_one(self):
         txt = 'aabaabcaxaabaabcy'
@@ -20,4 +21,3 @@ class TestZAlgorithm:
         txt = 'aabcaabxaaz'
         expected = [None, 1, 0, 0, 3, 1, 0, 0, 2, 1, 0]
         assert z_algorithm.find_z_array(txt) == expected  # nosec
-
