@@ -2,7 +2,6 @@
 import string
 import random
 import re
-import pytest
 import boyermoore
 
 
@@ -66,14 +65,14 @@ class TestBoyerMoore:
         txt = 'lFx0OyuczjmH'
         assert boyermoore.match(pat, txt) == bool(pat in txt)  # nosec
 
-    def test_all_naive(self):
+    def test_naive(self):
         for i in range(2, 1000):
             pat = random_string(random.randint(1, i))  # nosec
             txt = random_string(i)
             expected = bool(pat in txt)
             assert boyermoore.match(pat, txt) == expected  # nosec
 
-    def test_badchar(self):
+    def test_bad_char(self):
         expected = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
                     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
                     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -158,7 +157,6 @@ class TestBoyerMoore:
         expected = [1, 5, 9]
         assert boyermoore.boyer_moore(pat, txt) == expected  # nosec
 
-
     def test_boyer_match_1(self):
         pat = 'abc'
         txt = 'abcdabcdabcd'
@@ -172,28 +170,28 @@ class TestBoyerMoore:
         expected = [m.start() for m in re.finditer(pat, txt)]
         assert boyermoore.boyer_moore(pat, txt, 0) == expected  # nosec
 
-    def test_naive_match_2(self):
+    def test_boyer_match_2(self):
         """Test matches on further iteration."""
         pat = 'abc'
         txt = 'abcdabcd'
         expected = [m.start() for m in re.finditer(pat, txt)]
         assert boyermoore.boyer_moore(pat, txt, 0) == expected  # nosec
 
-    def test_naive_no_match(self):
+    def test_boyer_no_match(self):
         """Test no matches."""
         pat = 'abc'
         txt = 'abdabdabe'
         expected = [m.start() for m in re.finditer(pat, txt)]
         assert boyermoore.boyer_moore(pat, txt, 0) == expected  # nosec
 
-    def test_naive_incorrect_len(self):
+    def test_boyer_incorrect_len(self):
         """Test no match when pattern > text."""
         pat = 'abcd'
         txt = 'abc'
         expected = [m.start() for m in re.finditer(pat, txt)]
         assert boyermoore.boyer_moore(pat, txt, 0) == expected  # nosec
 
-    def test_naive_no_match_2(self):
+    def test_boyer_no_match_2(self):
         """Test no match when pattern > text."""
         pat = 'Ap'
         txt = 'poFfTzfHQAOD9Duwe9eB3gRaJIGIgyW35DWJjplV'
@@ -214,7 +212,7 @@ class TestBoyerMoore:
         expected = [m.start() for m in re.finditer(pat, txt)]
         assert boyermoore.boyer_moore(pat, txt, 0) == expected  # nosec
 
-    def test_all_naive(self):
+    def test_all_boyer(self):
         for i in range(2, 1000):
             pat = random_string(random.randint(1, i))  # nosec
             txt = random_string(i)

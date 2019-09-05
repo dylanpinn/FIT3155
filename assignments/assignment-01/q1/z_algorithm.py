@@ -7,7 +7,7 @@ def find_match(string, right, left):
 
 
 def find_z_array(string):
-    """Calcualte Z-Array using Gusfield's Algorithm."""
+    """Calculate Z-Array using Gusfield's Algorithm."""
     z_array = [None] * len(string)
     left, right = 0, 0
 
