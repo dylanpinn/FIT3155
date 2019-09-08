@@ -1,16 +1,18 @@
+#!/usr/bin/env python3
+
 """Boyer-Moore's Algorithm
 
 Given some text txt[1...n] and a pattern pat[1...m], implement Boyer-Moore's
-algorithm to find all occurences of pat in txt.
+algorithm to find all occurrences of pat in txt.
 Implementation should use the following:
 
  - extended bad-character rule
- - the good-suffix rule (using goodsuffix and matchedprefix data structures),
- - the Galil's optimisation to avoid any unnecessary chracter comparisions.
+ - the good-suffix rule (using good_suffix and matched_prefix data structures),
+ - the Galil's optimisation to avoid any unnecessary character comparision.
 
 arguments: two plain text files:
  - an input file containing txt[1...n] (without any line breaks)
- - an input file containing pat[1...m] (winthout any line breaks).
+ - an input file containing pat[1...m] (without any line breaks).
 
 CLI usage of script:
 boyermoore.py <txt file> <pat file>
@@ -18,15 +20,11 @@ Output file name: output_boyermoore.txt
   each position where pat matches txt should appear in a separate line.
 """
 
+import sys
+
 from z_algorithm import find_z_array
 
 ALPHABET_SIZE = 256
-
-# Boyer-Moore Algorithm
-
-# Preprocess step
-#   bad-chacater shift jump tables
-#   goodsuffix & matchedprefix values for good suffix shifts
 
 
 def reverse_string(string):
@@ -34,36 +32,34 @@ def reverse_string(string):
     return string[::-1]
 
 
-# Bad characater shift rule
 def calculate_bad_char_shift(pattern):
     """Calculate bad character shift rule."""
 
     # Characters can be {|A-Z|,|a-z|,|0-9|}
-    bad_chararacter_shift = [-1 for a in range(ALPHABET_SIZE)]
+    bad_character_shift = [-1 for a in range(ALPHABET_SIZE)]
 
     for i, _ in enumerate(pattern):
-        bad_chararacter_shift[ord(pattern[i])] = i
+        bad_character_shift[ord(pattern[i])] = i
 
-    return bad_chararacter_shift
+    return bad_character_shift
 
 
-# Good suffix
-def calculate_goodsuffix(pattern):
+def calculate_good_suffix(pattern):
     """Calculate good suffix values of pattern."""
-    # Instantiate goodsuffix array with 0 values.
+    # Instantiate good suffix array with 0 values.
     m = len(pattern)
-    goodsuffix = [-1] * (m + 1)
+    good_suffix = [-1] * (m + 1)
 
     z_suffix = find_z_array(reverse_string(pattern))
     z_suffix.reverse()
 
     for p in range(0, m - 1):
         j = m - z_suffix[p]
-        goodsuffix[j] = p
-    return goodsuffix
+        good_suffix[j] = p
+    return good_suffix
 
 
-def calculate_matchedprefix(pattern):
+def calculate_matched_prefix(pattern):
     """Calculate matched prefix values of pattern."""
     matched_prefix = find_z_array(pattern)
 
@@ -76,54 +72,75 @@ def calculate_matchedprefix(pattern):
     return matched_prefix
 
 
-def naive_algorithm(pat, txt):
-    """Naive implementation of algorithm."""
+def boyer_moore(pat, txt, index=1):
+    """Check for pattern matches using Boyer-Moore's algorithm."""
+    # No match if pat is longer than txt.
     if len(pat) > len(txt):
-        return False
-    for iter in range(len(txt) - 1):
-        print(iter)
-        m = -1
-        match = True
-        while match is True and -m <= len(pat):
-            print(m)
-            if pat[m] == txt[m - iter]:
-                print("match")
-                m -= 1
-                # decrease 'm'
-            else:
-                print("no match")
-                match = False
-                # move onto next iteration
-        print(match)
-        if match:
-            return match
-    return False
+        return []
+
+    # Pre-process
+    bad_char_shift = calculate_bad_char_shift(pat)
+    good_suffix_table = calculate_good_suffix(pat)
+    matched_prefix = calculate_matched_prefix(pat)
+
+    j = 0
+    m = len(pat) - 1
+    n = len(txt) - 1
+    matches = []
+    prev = -1
+
+    while j + m <= len(txt):
+        k = m  # where we are matching in pat
+
+        while pat[k] == txt[j + k - 1] and k >= 0:
+            k -= 1
+
+        # Match is found
+        if k == -1 or txt[j + k - 1] == prev:
+            matches.append(j + k + index)  # adjust index by 1 for result.
+            # case 2: when match is found shift pat by m - matched_prefix[2]
+            j += max(1, m - matched_prefix[2] if m > 1 else 1)
+        else:
+            x = txt[j + k - 1]
+            y = pat[k]
+            # Calculate bad_character shift jump
+            bad_char_shift_jump = max(1, k - bad_char_shift[ord(x)])
+
+            # Calculate good suffix jump
+            good_suffix = good_suffix_table[k]
+            good_suffix_shift = 0
+            # case 1a good_suffix > 0
+            if good_suffix > 0:
+                good_suffix_shift = m - good_suffix
+            # case 1b: good_suffix = 0
+            elif good_suffix == 0:
+                good_suffix_shift = m - matched_prefix[k]
+
+            shift = max(bad_char_shift_jump, good_suffix_shift)
+            prev = j if shift >= k + 1 else prev
+            j += shift
+    return matches
 
 
-def matches(pat, txt):
-    """Simple check if the pat matches against txt."""
-    badcharshift = calculate_bad_char_shift(pat)
-    goodsuffix = calculate_goodsuffix(pat)
-    matchedprefix = calculate_matchedprefix(pat)
-    print(badcharshift)
-    print(goodsuffix)
-    print(matchedprefix)
+def match(pat, txt):
+    """Check if the pat matches against txt using Boyer-Moore's algorithm."""
+    result = boyer_moore(pat, txt)
+    return len(result) > 0
 
-    # Starting with pat[1..m] vs. txt[1..m], in each iteration, scan
-    # right-to-left
 
-    # m-1 -> 0
-
-    # Use (extended) bad-character rule to find how many places to the right
-    # pat should be shifted under txt. Call this amount nbadcharacter.
-    # Use good suffix rule to find how many places to the right pat should be
-    # shifted under txt. Call this amount ngoodsuffix.
-    # Shift pat to the right under txt by max(nbadcharacter,ngoodsuffix)
-    # places.
-    return True
+def output_result(results):
+    output_name = 'output_boyermoore.txt'
+    with open(output_name, 'a') as file:
+        for line in results:
+            file.write("%s\n" % line)
 
 
 if __name__ == "__main__":
     # executed directly
-    # TODO: Read filenames from arguments.
-    print(matches("abc", "abcd"))
+    input_text = open(sys.argv[1], 'r')
+    pattern_text = open(sys.argv[2], 'r')
+    text = input_text.read()
+    pattern = pattern_text.read()
+    text, pattern = text.rstrip(), pattern.rstrip()
+    output = boyer_moore(pattern, text)
+    output_result(output)
