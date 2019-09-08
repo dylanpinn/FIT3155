@@ -1,7 +1,8 @@
 """Tests for Assignment 1 - Q1."""
-import string
 import random
 import re
+import string
+
 import boyermoore
 
 
@@ -66,7 +67,7 @@ class TestBoyerMoore:
         txt = 'lFx0OyuczjmH'
         assert boyermoore.match(pat, txt) == bool(pat in txt)  # nosec
 
-    def test_naive(self):
+    def test_match_all(self):
         for i in range(2, 1000):
             pat = random_string(random.randint(1, i))  # nosec
             txt = random_string(i)

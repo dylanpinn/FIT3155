@@ -78,8 +78,6 @@ def boyer_moore(pat, txt, index=1):
     if len(pat) > len(txt):
         return []
 
-    # TODO: Add Galil's improvements.
-
     # Pre-process
     bad_char_shift = calculate_bad_char_shift(pat)
     good_suffix_table = calculate_good_suffix(pat)
@@ -89,6 +87,7 @@ def boyer_moore(pat, txt, index=1):
     m = len(pat) - 1
     n = len(txt) - 1
     matches = []
+    prev = -1
 
     while j + m <= len(txt):
         k = m  # where we are matching in pat
@@ -97,7 +96,7 @@ def boyer_moore(pat, txt, index=1):
             k -= 1
 
         # Match is found
-        if k == -1:
+        if k == -1 or txt[j + k - 1] == prev:
             matches.append(j + k + index)  # adjust index by 1 for result.
             # case 2: when match is found shift pat by m - matched_prefix[2]
             j += max(1, m - matched_prefix[2] if m > 1 else 1)
@@ -117,7 +116,9 @@ def boyer_moore(pat, txt, index=1):
             elif good_suffix == 0:
                 good_suffix_shift = m - matched_prefix[k]
 
-            j += max(bad_char_shift_jump, good_suffix_shift)
+            shift = max(bad_char_shift_jump, good_suffix_shift)
+            prev = j if shift >= k + 1 else prev
+            j += shift
     return matches
 
 
