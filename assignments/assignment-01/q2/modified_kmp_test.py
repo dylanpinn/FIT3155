@@ -1,15 +1,17 @@
 """Tests for Assignment 1 - Question 2."""
-import string
 import random
 import re
+import string
+
 import pytest
+
 import modified_kmp
 
 
 def random_string(string_length=10):
     """Generates a random string of a fixed length."""
     chars = string.ascii_letters + string.digits
-    return ''.join(random.choice(chars) for i in range(string_length))
+    return ''.join(random.choice(chars) for _ in range(string_length))
 
 
 class TestModifiedKMP:
@@ -99,6 +101,12 @@ class TestModifiedKMP:
     def test_kmp_match_1(self):
         pat = 'abc'
         txt = 'abcdabcdabcd'
+        expected = [m.start() for m in re.finditer(pat, txt)]
+        assert modified_kmp.kmp(pat, txt, 0) == expected
+
+    def test_kmp_match_13(self):
+        pat = '33'
+        txt = 'abc'
         expected = [m.start() for m in re.finditer(pat, txt)]
         assert modified_kmp.kmp(pat, txt, 0) == expected
 
