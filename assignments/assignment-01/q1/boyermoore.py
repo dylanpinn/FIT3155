@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Boyer-Moore's Algorithm
 
 Given some text txt[1...n] and a pattern pat[1...m], implement Boyer-Moore's
@@ -18,7 +20,9 @@ Output file name: output_boyermoore.txt
   each position where pat matches txt should appear in a separate line.
 """
 
-from q1.z_algorithm import find_z_array
+import sys
+
+from z_algorithm import find_z_array
 
 ALPHABET_SIZE = 256
 
@@ -123,7 +127,19 @@ def match(pat, txt):
     return len(result) > 0
 
 
+def output_result(results):
+    output_name = 'output_boyermoore.txt'
+    with open(output_name, 'a') as file:
+        for line in results:
+            file.write("%s\n" % line)
+
+
 if __name__ == "__main__":
     # executed directly
-    # TODO: Read filenames from arguments.
-    print(match("abc", "abcd"))
+    input_text = open(sys.argv[1], 'r')
+    pattern_text = open(sys.argv[2], 'r')
+    text = input_text.read()
+    pattern = pattern_text.read()
+    text, pattern = text.rstrip(), pattern.rstrip()
+    output = boyer_moore(pattern, text)
+    output_result(output)

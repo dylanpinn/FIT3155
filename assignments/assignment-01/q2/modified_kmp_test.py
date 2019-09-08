@@ -3,7 +3,7 @@ import string
 import random
 import re
 import pytest
-from q2 import modified_kmp
+import modified_kmp
 
 
 def random_string(string_length=10):

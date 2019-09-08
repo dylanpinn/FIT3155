@@ -1,4 +1,4 @@
-from q3 import search_editdist
+import search_editdist
 
 
 class TestSearchEditDist:

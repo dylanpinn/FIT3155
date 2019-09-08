@@ -1,6 +1,10 @@
+#!/usr/bin/env python3
+
 """Search Edit Distance"""
 
-from q3.z_algorithm import find_z_array
+import sys
+
+from z_algorithm import find_z_array
 
 
 def reverse_string(string):
@@ -57,7 +61,23 @@ def search(pat, txt, index_offset=1):
         elif z_array[i] + rev_z_array[k - m] == m:
             if rev_z_array[k - m] != m:
                 result.append((i + index_offset - (m + 1), 1))
-        else:
-            print('here')
 
     return result
+
+
+def output_result(results):
+    output_name = 'output_editdist.txt'
+    with open(output_name, 'a') as file:
+        for line in results:
+            file.write("{: <10} {: <10}\n".format(line[0], line[1]))
+
+
+if __name__ == "__main__":
+    # executed directly
+    input_text = open(sys.argv[1], 'r')
+    pattern_text = open(sys.argv[2], 'r')
+    text = input_text.read()
+    pattern = pattern_text.read()
+    text, pattern = text.rstrip(), pattern.rstrip()
+    output = search(pattern, text)
+    output_result(output)

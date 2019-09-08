@@ -1,8 +1,10 @@
-"""Modified KMP Algorithm.
+#!/usr/bin/env python3
 
-"""
+"""Modified KMP Algorithm."""
 
-from q2.z_algorithm import find_z_array
+import sys
+
+from z_algorithm import find_z_array
 
 ALPHABET_SIZE = 256
 
@@ -83,3 +85,21 @@ def match(pat, txt):
     """
     result = kmp(pat, txt)
     return len(result) > 0
+
+
+def output_result(results):
+    output_name = 'output_kmp.txt'
+    with open(output_name, 'a') as file:
+        for line in results:
+            file.write("%s\n" % line)
+
+
+if __name__ == "__main__":
+    # executed directly
+    input_text = open(sys.argv[1], 'r')
+    pattern_text = open(sys.argv[2], 'r')
+    text = input_text.read()
+    pattern = pattern_text.read()
+    text, pattern = text.rstrip(), pattern.rstrip()
+    output = kmp(pattern, text)
+    output_result(output)

@@ -2,7 +2,7 @@
 import string
 import random
 import re
-from q1 import boyermoore
+import boyermoore
 
 
 def random_string(string_length=10):
