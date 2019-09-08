@@ -29,14 +29,30 @@ def kmp(pat, txt, index=1):
     n = len(txt) - 1
     m = len(pat) - 1
     matches = []
+    j = 0
+    i = 0
+    k = 0
 
-    for i in range(0, n - m + 1):
-        for j in range(0, m + 1):
-            if txt[i + j] != pat[j]:
-                break
-            if j == m:
-                matches.append(i + index)
-                break
+    while j < len(txt):
+
+        if txt[j] == pat[i]:
+            j += 1
+            i += 1
+        else:
+            # Mismatch
+            print('no match')
+            i = 0
+            k += 1
+            j = k
+
+        if i >= len(pat):
+            # full match
+            print('full match')
+            matches.append(j - len(pat) + index)
+            i = 0
+            k += 1
+            j = k
+
     return matches
 
 
