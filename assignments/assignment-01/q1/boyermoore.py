@@ -68,25 +68,6 @@ def calculate_matched_prefix(pattern):
     return matched_prefix
 
 
-def naive_algorithm(pat, txt):
-    """Naive implementation of algorithm."""
-    if len(pat) > len(txt):
-        return False
-    for iteration in range(0, len(txt)):
-        m = len(pat) - 1
-        n = len(txt) - 1 - iteration
-        matches = True
-        while matches is True and m >= 0:
-            if pat[m] == txt[n]:
-                m -= 1
-                n -= 1
-            else:
-                matches = False
-        if matches:
-            return matches
-    return False
-
-
 def boyer_moore(pat, txt, index=1):
     """Check for pattern matches using Boyer-Moore's algorithm."""
     # No match if pat is longer than txt.
