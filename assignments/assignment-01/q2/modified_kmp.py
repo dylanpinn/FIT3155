@@ -20,7 +20,7 @@ def modified_suffix_prefix(pat):
     for j in range(m - 1, 0, -1):
         i = j + z_suffix[j] - 1
         x = pat[z_suffix[j] + 1]
-        suffix_prefix[i][ord(x)] = z_suffix[i]
+        suffix_prefix[i][ord(x)] = z_suffix[i] if z_suffix[i] is not None else 0
 
     return suffix_prefix
 
