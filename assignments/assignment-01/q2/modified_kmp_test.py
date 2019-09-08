@@ -69,7 +69,7 @@ class TestModifiedKMP:
         txt = 'lFx0OyuczjmH'
         assert modified_kmp.match(pat, txt) == bool(pat in txt)  # nosec
 
-    def test_match_more(self):
+    def test_match_kmp(self):
         pat = 'abcaby'
         txt = 'abxabcabcaby'
         assert modified_kmp.match(pat, txt) == bool(pat in txt)
@@ -86,6 +86,12 @@ class TestModifiedKMP:
         txt = 'abcdabcdabcd'
         expected = [1, 5, 9]
         assert modified_kmp.kmp(pat, txt) == expected  # nosec
+
+    def test_kmp_algorithm_other(self):
+        pat = 'abcdabcy'
+        txt = 'abcxabcdabcdabcy'
+        expected = [m.start() for m in re.finditer(pat, txt)]
+        assert modified_kmp.kmp(pat, txt, 0) == expected  # nosec
 
     def test_kmp_match_1(self):
         pat = 'abc'
