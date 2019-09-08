@@ -2,7 +2,7 @@
 import string
 import random
 import re
-import modified_kmp
+from q2 import modified_kmp
 
 
 def random_string(string_length=10):
