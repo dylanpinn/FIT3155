@@ -1,4 +1,4 @@
-import z_algorithm
+from q1 import z_algorithm
 
 
 class TestZAlgorithm:

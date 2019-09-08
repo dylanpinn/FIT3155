@@ -18,7 +18,7 @@ Output file name: output_boyermoore.txt
   each position where pat matches txt should appear in a separate line.
 """
 
-from z_algorithm import find_z_array
+from q1.z_algorithm import find_z_array
 
 ALPHABET_SIZE = 256
 
