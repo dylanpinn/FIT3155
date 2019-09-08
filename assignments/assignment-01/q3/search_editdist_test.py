@@ -1,10 +1,7 @@
-import pytest
-
 from q3 import search_editdist
 
 
 class TestSearchEditDist:
-    @pytest.mark.skip(reason="not completed")
     def test_search_edit_dist_1(self):
         txt = 'abdyabxdcyabcdz'
         pat = 'abcd'
@@ -19,14 +16,14 @@ class TestSearchEditDist:
 
     def test_sub_start(self):
         txt = 'bcd0000000'
-        pat = 'ccd'
-        expected = [(0, 1)]
+        pat = 'acd'
+        expected = [(0, 1), (1, 1)]
         assert search_editdist.search(pat, txt, 0) == expected
 
     def test_sub_middle(self):
-        txt = '0000000abdddya4568'
+        txt = '00000000abdddya456800'
         pat = 'abcddy'
-        expected = [(7, 1)]
+        expected = [(8, 1)]
         assert search_editdist.search(pat, txt, 0) == expected
 
     def test_sub_end(self):
@@ -35,8 +32,14 @@ class TestSearchEditDist:
         expected = [(8, 1)]
         assert search_editdist.search(pat, txt, 0) == expected
 
+    def test_sub_end_2(self):
+        txt = '00abefx'
+        pat = 'efh'
+        expected = [(4, 1)]
+        assert search_editdist.search(pat, txt, 0) == expected
+
     def test_insert_start(self):
-        txt = 'bcd1100000000'
+        txt = 'bcd1100000000000'
         pat = 'abcd'
         expected = [(0, 1)]
         assert search_editdist.search(pat, txt, 0) == expected
@@ -47,8 +50,32 @@ class TestSearchEditDist:
         expected = [(6, 1)]
         assert search_editdist.search(pat, txt, 0) == expected
 
+    def test_insert_middle_2(self):
+        txt = '99abdya00'
+        pat = 'abcd'
+        expected = [(2, 1)]
+        assert search_editdist.search(pat, txt, 0) == expected
+
     def test_insert_end(self):
         txt = '0000000abcdef'
         pat = 'defg'
         expected = [(10, 1)]
+        assert search_editdist.search(pat, txt, 0) == expected
+
+    def test_insert_end_2(self):
+        txt = '0000cdef'
+        pat = 'defg'
+        expected = [(5, 1)]
+        assert search_editdist.search(pat, txt, 0) == expected
+
+    def test_del_middle(self):
+        txt = '999999abXcdef00000'
+        pat = 'abcdef'
+        expected = [(6, 1)]
+        assert search_editdist.search(pat, txt, 0) == expected
+
+    def test_del_middle_2(self):
+        txt = '9999abcdefXgh00000'
+        pat = 'abcdefgh'
+        expected = [(4, 1)]
         assert search_editdist.search(pat, txt, 0) == expected

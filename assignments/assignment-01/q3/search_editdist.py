@@ -19,49 +19,45 @@ def search(pat, txt, index_offset=1):
 
     for i in range(m + 1, len(z_array)):
         # j = i + m + 1  # current index in z_array
-        # k = m + n - i
+        k = len(z_array) - i + m
 
         iteration = i - m - 1
 
         # Matches with no edit distance
         if z_array[i] == m:
             result.append((i + index_offset - (m + 1), 0))
-            break
 
         # Substitute
         # - Substitute at start
-        if rev_z_array[i] == m - 1:
+        elif rev_z_array[k - m + 1] == m - 1:
             result.append((i + index_offset - (m + 1), 1))
-            break
 
         # - Substitute at middle
-        if z_array[i] + rev_z_array[len(z_array) - (i - m + 1) - (m - 1) + 1] == m - 1:
+        elif z_array[i] + rev_z_array[k - m + 1] == m - 1:
             result.append((i + index_offset - (m + 1), 1))
-            break
 
         # - Substitute at end
-        if rev_z_array[i] == m - 1:
+        elif z_array[i] == m - 1:
             result.append((i + index_offset - (m + 1), 1))
-            break
 
         # Insert
         # - Insert at start
-        if rev_z_array[len(z_array) - (i - m + 1) - 1] == m - 1:
+        elif rev_z_array[k - m + 2] == m - 1:
             result.append((i + index_offset - (m + 1), 1))
-            break
 
-        # # - Insert in middle
-        # if z_array[j] + rev_z_array[j + (m - 1) - 1] == m - 1:
-        #     result.append((i + index_offset, 1))
-        #     break
+        # - Insert in middle
+        elif z_array[i] + rev_z_array[k - m + 2] == m - 1:
+            result.append((i + index_offset - (m + 1), 1))
 
         # - Insert at end
-        if z_array[i] == m - 1:
+        elif z_array[i] == m - 1:
             result.append((i + index_offset - (m + 1), 1))
-            break
 
-        print('find insert')
-
-        # Delete
+        # Delete - in the middle
+        elif z_array[i] + rev_z_array[k - m] == m:
+            if rev_z_array[k - m] != m:
+                result.append((i + index_offset - (m + 1), 1))
+        else:
+            print('here')
 
     return result
