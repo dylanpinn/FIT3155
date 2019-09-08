@@ -23,35 +23,33 @@ def kmp(pat, txt, index=1):
     """Knuth-Morris-Pratt (KMP) Algorithm.
     :param pat: str
     :param txt: str
+    :param index: int Offset results index
     """
+    n = len(txt)
+    m = len(pat)
+    matches = []
+
+    if m > n:
+        return matches
     # Preprocess pattern
     suffix_prefix = compute_suffix_prefix(pat)
-    n = len(txt) - 1
-    m = len(pat) - 1
-    matches = []
+
     j = 0
-    i = 0
-    k = 0
+    while j <= n - m:
+        i = 0
 
-    while j < len(txt):
-
-        if txt[j] == pat[i]:
-            j += 1
+        while i < m and pat[i] == txt[i + j]:
             i += 1
+
+        if i == m:
+            # Full match
+            matches.append(j + index)
+            shift = m - suffix_prefix[m - 1]
         else:
             # Mismatch
-            print('no match')
-            i = 0
-            k += 1
-            j = k
+            shift = i - suffix_prefix[i - 1]
 
-        if i >= len(pat):
-            # full match
-            print('full match')
-            matches.append(j - len(pat) + index)
-            i = 0
-            k += 1
-            j = k
+        j += max(shift, 1)
 
     return matches
 
