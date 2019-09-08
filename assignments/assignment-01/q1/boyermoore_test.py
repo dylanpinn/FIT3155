@@ -13,6 +13,7 @@ def random_string(string_length=10):
 
 class TestBoyerMoore:
     """Test Class."""
+
     def test_match(self):
         pat = 'abc'
         txt = 'abcdabcdabcd'
