@@ -1,9 +1,9 @@
 """Test Fibonacci Heap implementation."""
 
-
 from fib_heap import FibonacciHeap
 
 
+# pylint: disable=R0201
 class TestFibonacciHeap:
     def test_initial_min(self):
         """Initial min should be nil."""
@@ -30,3 +30,17 @@ class TestFibonacciHeap:
         assert heap.min.key == 5
         assert heap.root_nodes.size == 2
         assert heap.size == 2
+
+    def test_extract_min(self):
+        """Test extracting min value from heap."""
+        heap = FibonacciHeap()
+        heap.insert(10)
+        heap.insert(5)
+        heap.insert(3)
+        heap.insert(100)
+        assert heap.min.key == 3
+        assert heap.size == 4
+        min_node = heap.extract_min()
+        assert min_node.key == 3
+        assert heap.size == 3
+        assert heap.min.key == 5

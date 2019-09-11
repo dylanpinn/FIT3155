@@ -1,9 +1,12 @@
 """Fibonacci Heap."""
 
-from node import Node
 from circular_double_linked_list import CircularDoubleLinkedList
+from node import Node
+
 
 class FibonacciHeap:
+    """Fibonacci Heap using double linked list."""
+
     def __init__(self):
         # This will be a double-linked list
         self.root_nodes = CircularDoubleLinkedList()
@@ -22,3 +25,27 @@ class FibonacciHeap:
             if node.key < self.min.key:
                 self.min = node
         self.size += 1
+
+    # TODO: extract-min
+    def extract_min(self):
+        """Extract min value from heap."""
+        min_node = self.min
+        if min_node is not None:
+            current = min_node.next
+            if min_node.child:
+                for child in min_node.children():
+                    self.root_nodes.insert_before(current, child)
+                    child.parent = None
+            self.root_nodes.remove(min_node)
+            if min_node == min_node.next:
+                self.min = None
+            else:
+                self.min = current
+                self.consolidate()
+            self.size -= 1
+
+        return min_node
+
+    # TODO: merge
+    # TODO: decrease-key
+    # TODO: delete
