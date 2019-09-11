@@ -26,7 +26,6 @@ class FibonacciHeap:
                 self.min = node
         self.size += 1
 
-    # TODO: extract-min
     def extract_min(self):
         """Extract min value from heap."""
         min_node = self.min
@@ -45,6 +44,11 @@ class FibonacciHeap:
             self.size -= 1
 
         return min_node
+
+    def consolidate(self):
+        """Consolidate Heap."""
+        # TODO: Complete
+        pass
 
     # TODO: merge
     # TODO: decrease-key
