@@ -20,6 +20,7 @@ class TestFibonacciHeap:
         heap = FibonacciHeap()
         heap.insert(1)
         assert heap.min.key == 1
+        assert heap.size == 1
 
     def test_insert(self):
         """Test inserting ino a non-empty Heap."""
@@ -27,3 +28,5 @@ class TestFibonacciHeap:
         heap.insert(10)
         heap.insert(5)
         assert heap.min.key == 5
+        assert heap.root_nodes.size == 2
+        assert heap.size == 2

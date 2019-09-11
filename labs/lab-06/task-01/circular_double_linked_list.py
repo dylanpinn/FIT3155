@@ -14,6 +14,7 @@ class CircularDoubleLinkedList:
             self.last = node
             node.prev = None
             node.next = None
+            self.size += 1
         else:
             self.insert_before(self.first, node)
 
@@ -27,3 +28,4 @@ class CircularDoubleLinkedList:
             new_node.prev = node.prev
             node.prev.next = new_node
         node.prev = new_node
+        self.size += 1

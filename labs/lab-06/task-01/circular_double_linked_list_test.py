@@ -26,6 +26,7 @@ class TestCircularDoubleLinkedList:
         linked_list.insert_beginning(node)
         assert linked_list.first is node
         assert linked_list.last is node
+        assert linked_list.size == 1
         assert node.prev is None
         assert node.next is None
 
@@ -38,6 +39,7 @@ class TestCircularDoubleLinkedList:
         linked_list.insert_beginning(node2)
         assert linked_list.first is node2
         assert linked_list.last is node1
+        assert linked_list.size == 2
 
     def test_insert_before(self):
         """Test inserting before an existing list."""
@@ -50,3 +52,4 @@ class TestCircularDoubleLinkedList:
         linked_list.insert_before(node1, node3)
         assert linked_list.first is node2
         assert linked_list.last is node1
+        assert linked_list.size == 3
