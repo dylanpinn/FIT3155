@@ -1,2 +1,2 @@
-let b:ale_linters = {'python': ['pylint', 'flake8', 'bandit']}
+let b:ale_linters = {'python': ['pylint', 'flake8']}
 let b:ale_fixers = {'python': ['black']}
