@@ -73,7 +73,6 @@ class TestCircularDoubleLinkedList:
         assert linked_list.first is node2
         assert linked_list.size == 2
 
-
     def test_remove_item_last(self):
         """Test removing last item in list."""
         linked_list = CircularDoubleLinkedList()
