@@ -1,25 +1,24 @@
 """Circular Double Linked List."""
 
+import typing
+
 from node import Node
 
 
 class CircularDoubleLinkedList:
     """Circular Double Linked List."""
+    size: int
+    last: typing.Optional[Node]
 
     def __init__(self):
         self.size = 0
         self.last = None
 
-    def insert_before(self, node, new_node):
-        """Insert a new node before an existing node.
-        :param node: Existing Node
-        :type node: Node
-        :param new_node: New Node to insert.
-        :type node: Node
-        """
+    def insert_before(self, node: Node, new_node: Node):
+        """Insert a new node before an existing node."""
         self.insert_after(node.prev, new_node)
 
-    def insert_after(self, node, new_node):
+    def insert_after(self, node: Node, new_node: Node):
         """Insert a new node after an existing node.
         :param node: Existing Node
         :type node: Node
@@ -31,8 +30,9 @@ class CircularDoubleLinkedList:
         node.next.prev = new_node
         node.next = new_node
         self.size += 1
+        new_node.list = self
 
-    def insert_end(self, node):
+    def insert_end(self, node: Node):
         """Insert a node at the end of the list.
         :param node: New Node to insert.
         :type node: Node
@@ -41,11 +41,12 @@ class CircularDoubleLinkedList:
             node.prev = node
             node.next = node
             self.size += 1
+            node.list = self
         else:
             self.insert_after(self.last, node)
         self.last = node
 
-    def remove(self, node):
+    def remove(self, node: Node):
         """Remove node from list.
         :param node: Node to remove from list.
         :type node: Node

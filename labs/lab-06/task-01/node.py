@@ -1,10 +1,22 @@
 """Node to be used in double linked list in Fib Heap."""
 
+from typing import Union, Optional
+
+from circular_double_linked_list import CircularDoubleLinkedList
+
 
 class Node:
     """Fibonacci Heap Linked List Node."""
+    key: Union[str, int]
+    mark: bool
+    degree: int
+    parent: Optional['Node']
+    prev: Optional['Node']
+    next: Optional['Node']
+    child: Optional['Node']
+    list: Optional[CircularDoubleLinkedList]
 
-    def __init__(self, item):
+    def __init__(self, item: Union[str, int]):
         self.key = item
         self.mark = False
         self.degree = 0
@@ -12,8 +24,9 @@ class Node:
         self.prev = None
         self.next = None
         self.child = None
+        self.list = None
 
-    def children(self):
+    def children(self) -> iter('Node'):
         """Iterate of the nodes children."""
         if self.child is None:
             return None
@@ -24,3 +37,12 @@ class Node:
         while current is not None:
             yield current
             current = current.next
+
+    def create_child(self, node: 'Node'):
+        """Make a node a child of the current node."""
+        if self.child is not None:
+            self.child.list.insert_end(node)
+        else:
+            self.child = node
+            if node.list is None:
+                node.list = CircularDoubleLinkedList()
