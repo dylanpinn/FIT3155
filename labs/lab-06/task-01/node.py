@@ -38,6 +38,9 @@ class Node:
             yield current
             current = current.next
 
+    def __str__(self):
+        return self.key
+
     def create_child(self, node: 'Node'):
         """Make a node a child of the current node."""
         if self.child is not None:

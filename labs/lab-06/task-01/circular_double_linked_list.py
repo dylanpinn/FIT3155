@@ -2,6 +2,7 @@
 
 import typing
 
+
 # import node as list_node
 
 
@@ -60,3 +61,9 @@ class CircularDoubleLinkedList:
                 self.last = node.prev
         del node
         self.size -= 1
+
+    def __iter__(self):
+        current = self.last.next
+        while current != self.last:
+            yield current
+            current = current.next
