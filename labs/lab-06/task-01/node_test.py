@@ -1,6 +1,6 @@
 """Test Node implementation."""
 
-import circular_double_linked_list as cir_list
+import circular_double_linked_list
 # pylint: disable=R0201
 
 import node as n
@@ -21,7 +21,7 @@ class TestNode:
 
     def test_construct_node(self):
         """A newly constructed node has its key set to the passed in item."""
-        node = n.Node(10)
+        node = n.Node(5)
         assert node.key == 5
 
     def test_initial_parent(self):
@@ -64,7 +64,7 @@ class TestNode:
         parent = n.Node(1)
         existing_child = n.Node(3)
         parent.child = existing_child
-        parent.child.list = cir_list.CircularDoubleLinkedList()
+        parent.child.list = circular_double_linked_list.CircularDoubleLinkedList()
         child_new = n.Node(2)
         parent.create_child(child_new)
         assert parent.child == existing_child
