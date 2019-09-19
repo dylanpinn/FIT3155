@@ -1,7 +1,7 @@
 {
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
-  "python.pythonPath": "~/.pyenv/shims/python",
+  "python.pythonPath": "/Users/dylan/.pyenv/shims/python",
   "python.testing.pytestArgs": ["."],
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,

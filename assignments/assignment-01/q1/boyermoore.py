@@ -85,7 +85,6 @@ def boyer_moore(pat, txt, index=1):
 
     j = 0
     m = len(pat) - 1
-    n = len(txt) - 1
     matches = []
     prev = -1
 
@@ -102,7 +101,6 @@ def boyer_moore(pat, txt, index=1):
             j += max(1, m - matched_prefix[2] if m > 1 else 1)
         else:
             x = txt[j + k - 1]
-            y = pat[k]
             # Calculate bad_character shift jump
             bad_char_shift_jump = max(1, k - bad_char_shift[ord(x)])
 

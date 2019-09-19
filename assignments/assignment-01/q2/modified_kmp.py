@@ -21,7 +21,7 @@ def modified_suffix_prefix(pat):
         i = j + z_suffix[j] - 1
         if z_suffix[j] + 1 < len(pat):
             x = pat[z_suffix[j] + 1]
-            suffix_prefix[i][ord(x)] = z_suffix[i] if z_suffix[i] is not None else 0
+            suffix_prefix[i][ord(x)] = z_suffix[i] if z_suffix[i] is not None else 0   # noqa: E501
 
     return suffix_prefix
 

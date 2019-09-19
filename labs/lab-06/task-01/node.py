@@ -2,7 +2,7 @@
 
 from typing import Union, Optional
 
-import circular_double_linked_list
+import circular_double_linked_list as cir
 
 
 class Node:
@@ -14,7 +14,7 @@ class Node:
     prev: Optional['Node']
     next: Optional['Node']
     child: Optional['Node']
-    list: Optional[circular_double_linked_list.CircularDoubleLinkedList]
+    list: Optional[cir.CircularDoubleLinkedList]
 
     def __init__(self, item: Union[str, int]):
         self.key = item
@@ -45,4 +45,4 @@ class Node:
         else:
             self.child = node
             if node.list is None:
-                node.list = circular_double_linked_list.CircularDoubleLinkedList()
+                node.list = cir.CircularDoubleLinkedList()

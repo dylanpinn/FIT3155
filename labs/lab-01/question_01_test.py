@@ -1,5 +1,6 @@
 import question_01
 
+
 class TestGusfield:
     def test_one(self):
         txt = 'aabaabcaxaabaabcy'

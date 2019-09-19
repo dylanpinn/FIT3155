@@ -19,13 +19,10 @@ def search(pat, txt, index_offset=1):
     rev_z_array = find_z_array(reverse_full_txt)
     result = []
     m = len(pat)
-    n = len(txt)
 
     for i in range(m + 1, len(z_array)):
         # j = i + m + 1  # current index in z_array
         k = len(z_array) - i + m
-
-        iteration = i - m - 1
 
         # Matches with no edit distance
         if z_array[i] == m:
