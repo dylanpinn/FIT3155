@@ -1,8 +1,6 @@
 {
   "python.linting.enabled": true,
-  "python.linting.flake8Enabled": false,
-  "python.linting.pylintEnabled": false,
-  "python.linting.pylintUseMinimalCheckers": false,
+  "python.linting.flake8Enabled": true,
   "python.pythonPath": "~/.pyenv/shims/python",
   "python.testing.pytestArgs": ["."],
   "python.testing.unittestEnabled": false,

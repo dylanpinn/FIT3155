@@ -1,7 +1,6 @@
 """Test Node implementation."""
 
-import circular_double_linked_list
-# pylint: disable=R0201
+import circular_double_linked_list as cir
 
 import node as n
 
@@ -64,7 +63,7 @@ class TestNode:
         parent = n.Node(1)
         existing_child = n.Node(3)
         parent.child = existing_child
-        parent.child.list = circular_double_linked_list.CircularDoubleLinkedList()
+        parent.child.list = cir.CircularDoubleLinkedList()
         child_new = n.Node(2)
         parent.create_child(child_new)
         assert parent.child == existing_child

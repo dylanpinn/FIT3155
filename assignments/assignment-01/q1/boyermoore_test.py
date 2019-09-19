@@ -16,11 +16,13 @@ class TestBoyerMoore:
     """Test Class."""
 
     def test_match(self):
+        """Simple test BM matches."""
         pat = 'abc'
         txt = 'abcdabcdabcd'
         assert boyermoore.match(pat, txt) == bool(pat in txt)
 
     def test_no_match(self):
+        """Simple test no match."""
         pat = 'abc'
         txt = 'abdaabdc'
         assert boyermoore.match(pat, txt) == bool(pat in txt)
@@ -57,8 +59,8 @@ class TestBoyerMoore:
 
     def test_no_match_3(self):
         """Test no match when pattern > text."""
-        pat = '6FjKojoBhRk8YbMH9fau0fHk9S38S5LcJ2LSzOApSw9ScEOlN4p0bKbbLlmurKYG0epr5O3RrU2avmQA1pPK02'
-        txt = '02mTAg8avVRF01uKrsuuLJzKU36WzL6VUJiHvBDQxfA7PoN4vy9JR7oEg3x76yeRsEOOoDRNmwfXgEXIlmtjJrEwSp7ptRwFquP8u0'
+        pat = '6FjKojoBhRk8YbMH9fau0fHk9S38S5LcJ2LSzOApSw9ScEOlN4p0bKbbLlmurKYG0epr5O3RrU2avmQA1pPK02'  # noqa: E501
+        txt = '02mTAg8avVRF01uKrsuuLJzKU36WzL6VUJiHvBDQxfA7PoN4vy9JR7oEg3x76yeRsEOOoDRNmwfXgEXIlmtjJrEwSp7ptRwFquP8u0'  # noqa: E501
         assert boyermoore.match(pat, txt) == bool(pat in txt)
 
     def test_no_match_4(self):
@@ -148,8 +150,8 @@ class TestBoyerMoore:
 
     def test_boyer_no_match_3(self):
         """Test no match when pattern > text."""
-        pat = '6FjKojoBhRk8YbMH9fau0fHk9S38S5LcJ2LSzOApSw9ScEOlN4p0bKbbLlmurKYG0epr5O3RrU2avmQA1pPK02'
-        txt = '02mTAg8avVRF01uKrsuuLJzKU36WzL6VUJiHvBDQxfA7PoN4vy9JR7oEg3x76yeRsEOOoDRNmwfXgEXIlmtjJrEwSp7ptRwFquP8u0'
+        pat = '6FjKojoBhRk8YbMH9fau0fHk9S38S5LcJ2LSzOApSw9ScEOlN4p0bKbbLlmurKYG0epr5O3RrU2avmQA1pPK02'  # noqa: E501
+        txt = '02mTAg8avVRF01uKrsuuLJzKU36WzL6VUJiHvBDQxfA7PoN4vy9JR7oEg3x76yeRsEOOoDRNmwfXgEXIlmtjJrEwSp7ptRwFquP8u0'  # noqa: E501
         expected = [m.start() for m in re.finditer(pat, txt)]
         assert boyermoore.boyer_moore(pat, txt, 0) == expected
 

@@ -5,7 +5,6 @@ import pytest
 import fib_heap
 
 
-# pylint: disable=R0201
 class TestFibonacciHeap:
     def test_initial_min(self):
         """Initial min should be nil."""

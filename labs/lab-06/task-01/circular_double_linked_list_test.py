@@ -4,7 +4,6 @@ import circular_double_linked_list
 import node
 
 
-# pylint: disable=R0201
 class TestCircularDoubleLinkedList:
     """Test CircularDoubleLinkedList."""
 
