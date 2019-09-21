@@ -55,13 +55,17 @@ class FibonacciHeap:
         """Consolidate Heap."""
         aux_size = self.__sizeof_aux_array()
         aux_array: List[Optional[Node]] = [None] * aux_size
-        for w in self.min:
+        nodes = list(self.root_nodes)
+        nodes = nodes[nodes.index(self.min):] + nodes[:nodes.index(self.min)]
+        for w in nodes:
             x: Node = w
             d = x.degree
             while aux_array[d] is not None:
                 y: Node = aux_array[d]  # another node with same degree as x
                 if x.key > y.key:
-                    aux_array[d] = x
+                    tmp = y
+                    y = x
+                    x = tmp
                 self.link(y, x)
                 aux_array[d] = None
                 d += 1
@@ -87,12 +91,14 @@ class FibonacciHeap:
         :type parent: Node
         """
         self.root_nodes.remove(child)
-        parent.child.create_child(child)
+        child.list = None
+        parent.degree += 1
+        parent.create_child(child)
         child.mark = False
 
     def __sizeof_aux_array(self):
         """Return size of auxiliary array used for consolidate."""
-        return math.floor(math.log2(self.size))
+        return math.ceil(math.log2(self.size))
 
     # TODO: merge
     # TODO: decrease-key

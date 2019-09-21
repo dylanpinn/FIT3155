@@ -1,6 +1,6 @@
 """Test Circular Double Linked List implementation."""
 
-import circular_double_linked_list
+import circular_double_linked_list as cir
 import node
 
 
@@ -9,17 +9,17 @@ class TestCircularDoubleLinkedList:
 
     def test_initial_size(self):
         """Lists have initial size of 0."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         assert linked_list.size == 0
 
     def test_initial_last(self):
         """Lists have no initial last node."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         assert linked_list.last is None
 
     def test_insert_new_list(self):
         """Test inserting into an empty list."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         n = node.Node(10)
         linked_list.insert_end(n)
         assert linked_list.last is n
@@ -29,7 +29,7 @@ class TestCircularDoubleLinkedList:
 
     def test_insert_end(self):
         """Test inserting into a list at end."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         node1 = node.Node(10)
         linked_list.insert_end(node1)
         node2 = node.Node(5)
@@ -40,7 +40,7 @@ class TestCircularDoubleLinkedList:
 
     def test_insert_before(self):
         """Test inserting before an existing list."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         node1 = node.Node(10)
         linked_list.insert_end(node1)
         node2 = node.Node(5)
@@ -55,7 +55,7 @@ class TestCircularDoubleLinkedList:
 
     def test_remove_item_first(self):
         """Test removing first item in list."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         node1 = node.Node(10)
         linked_list.insert_end(node1)
         node2 = node.Node(5)
@@ -72,7 +72,7 @@ class TestCircularDoubleLinkedList:
 
     def test_remove_item_last(self):
         """Test removing last item in list."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         node1 = node.Node(1)
         linked_list.insert_end(node1)
         node2 = node.Node(2)
@@ -87,7 +87,7 @@ class TestCircularDoubleLinkedList:
 
     def test_remove_item(self):
         """Test removing a item in middle of the list."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         node1 = node.Node(10)
         linked_list.insert_end(node1)
         node2 = node.Node(9)
@@ -105,7 +105,7 @@ class TestCircularDoubleLinkedList:
 
     def test_remove_list_single_item(self):
         """Test removing item from a list with one item."""
-        linked_list = circular_double_linked_list.CircularDoubleLinkedList()
+        linked_list = cir.CircularDoubleLinkedList()
         n = node.Node(100)
         linked_list.insert_end(n)
         assert linked_list.last is n
@@ -113,3 +113,13 @@ class TestCircularDoubleLinkedList:
         linked_list.remove(n)
         assert linked_list.last is None
         assert linked_list.size == 0
+
+    def test_generate_list(self):
+        linked_list = cir.CircularDoubleLinkedList()
+        items = [18, 52, 38]
+        for item in items:
+            linked_list.insert_end(node.Node(item))
+        arr = list(linked_list)
+        assert len(arr) == 3
+        for index, item in enumerate(arr):
+            assert item.key == items[index]

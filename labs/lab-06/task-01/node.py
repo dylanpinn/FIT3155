@@ -30,13 +30,7 @@ class Node:
         """Iterate of the nodes children."""
         if self.child is None:
             return None
-        return iter(self.child)
-
-    def __iter__(self):
-        current = self
-        while current is not None:
-            yield current
-            current = current.next
+        return list(self.child.list)
 
     def create_child(self, node: 'Node'):
         """Make a node a child of the current node."""
@@ -44,5 +38,7 @@ class Node:
             self.child.list.insert_end(node)
         else:
             self.child = node
+            self.degree = 1
             if node.list is None:
                 node.list = cir.CircularDoubleLinkedList()
+                node.list.insert_end(self.child)

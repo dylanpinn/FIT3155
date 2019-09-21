@@ -41,14 +41,13 @@ class TestNode:
     def test_children(self):
         """Returns iterable children."""
         parent = n.Node(10)
-        children = [n.Node(1), n.Node(2), n.Node(3)]
-        parent.child = children[0]
-        for child in parent.children():
-            assert child == children[0]
-        parent.child.next = children[1]
-        parent.child.next.next = children[2]
-        for index, child in enumerate(parent.children()):
-            assert child == children[index]
+        items = [18, 52, 38]
+        for item in items:
+            parent.create_child(n.Node(item))
+        arr = list(parent.children())
+        assert len(arr) == 3
+        for index, item in enumerate(arr):
+            assert item.key == items[index]
 
     def test_create_child_no_children(self):
         """Test creating a child if non exists."""
