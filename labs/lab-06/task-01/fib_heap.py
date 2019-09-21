@@ -56,6 +56,7 @@ class FibonacciHeap:
         aux_size = self.__sizeof_aux_array()
         aux_array: List[Optional[Node]] = [None] * aux_size
         nodes = list(self.root_nodes)
+        nodes = nodes[nodes.index(self.min):] + nodes[:nodes.index(self.min)]
         for w in nodes:
             x: Node = w
             d = x.degree
@@ -91,12 +92,13 @@ class FibonacciHeap:
         """
         self.root_nodes.remove(child)
         child.list = None
+        parent.degree += 1
         parent.create_child(child)
         child.mark = False
 
     def __sizeof_aux_array(self):
         """Return size of auxiliary array used for consolidate."""
-        return math.floor(math.log2(self.size))
+        return math.ceil(math.log2(self.size))
 
     # TODO: merge
     # TODO: decrease-key

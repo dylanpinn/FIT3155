@@ -67,3 +67,5 @@ class CircularDoubleLinkedList:
         while current != self.last:
             yield current
             current = current.next
+        if current == self.last:
+            yield current
