@@ -14,7 +14,6 @@ class FibonacciHeap:
     size: int
 
     def __init__(self):
-        # This will be a double-linked list
         self.root_nodes = CircularDoubleLinkedList()
         self.min = None
         self.size = 0
