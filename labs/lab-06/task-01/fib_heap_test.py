@@ -119,3 +119,39 @@ class TestFibonacciHeap:
                 if item == n.key:
                     found = True
             assert found
+
+    def test_merge_heaps(self):
+        """Test merging empty and non-empty heap"""
+        heap1 = fib_heap.FibonacciHeap()
+        heap1.insert(1)
+        heap1.insert(2)
+        heap1.insert(3)
+        heap2 = fib_heap.FibonacciHeap()
+        new_heap = heap2.merge(heap1)
+        assert new_heap.size == 3
+        assert len(list(new_heap.root_nodes)) == 3
+
+    def test_merge_heaps_2(self):
+        """Test merging empty and non-empty heap"""
+        heap1 = fib_heap.FibonacciHeap()
+        heap1.insert(4)
+        heap1.insert(6)
+        heap1.insert(7)
+        heap2 = fib_heap.FibonacciHeap()
+        new_heap = heap1.merge(heap2)
+        assert new_heap.size == 3
+        assert len(list(new_heap.root_nodes)) == 3
+
+    def test_merge_heaps_3(self):
+        """Test merging empty and non-empty heap"""
+        heap1 = fib_heap.FibonacciHeap()
+        heap1.insert(1)
+        heap1.insert(2)
+        heap1.insert(3)
+        heap2 = fib_heap.FibonacciHeap()
+        heap1.insert(4)
+        heap1.insert(6)
+        heap1.insert(7)
+        new_heap = heap1.merge(heap2)
+        assert new_heap.size == 6
+        assert len(list(new_heap.root_nodes)) == 6
