@@ -128,5 +128,33 @@ class FibonacciHeap:
         new_heap.size = self.size + heap2.size
         return new_heap
 
-    # TODO: decrease-key
+    def decrease_key(self, node: Node, value: Union[str, int]):
+        """Decrease a nodes value."""
+        if value > node.key:
+            raise ValueError
+        node.key = value
+        parent = node.parent
+        if parent is not None and node.key < parent.key:
+            self.cut(node, parent)
+            self.cascading_cut(parent)
+        if node.key < self.min.key:
+            self.min = node
+
+    def cut(self, node: Node, parent: Node):
+        # remove node from the child list of parent.
+        node.remove()
+        parent.degree -= 1
+        self.root_nodes.insert(node)
+        node.parent = None
+        node.mark = False
+
+    def cascading_cut(self, node: Node):
+        z = node.parent
+        if z is not None:
+            if node.mark is False:
+                node.mark = True
+            else:
+                self.cut(node, z)
+                self.cascading_cut(z)
+
     # TODO: delete

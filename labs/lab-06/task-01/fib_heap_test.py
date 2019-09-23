@@ -8,6 +8,7 @@ def heap_from_slides():
     """Create Fib Heap from lecture slides."""
     root_nodes = parent = node.Node(24)
     sub_node = node.Node(26)
+    sub_node.mark = True
     sub_node.insert(sub_node)
     sub_node.insert(node.Node(46))
     sub_node.create_child(node.Node(35))
@@ -21,13 +22,16 @@ def heap_from_slides():
     parent = node.Node(3)
     min_node = parent
     sub_node = node.Node(18)
+    sub_node.mark = True
     sub_node.insert(sub_node)
     sub_sub_node = node.Node(38)
     sub_sub_node.degree = 1
     sub_sub_node.create_child(node.Node(41))
     sub_node.insert(sub_sub_node)
     sub_node.insert(node.Node(52))
-    sub_node.create_child(node.Node(39))
+    n = node.Node(39)
+    n.mark = True
+    sub_node.create_child(n)
     parent.create_child(sub_node)
     sub_node.degree = 1
     parent.degree = 2
@@ -155,3 +159,15 @@ class TestFibonacciHeap:
         new_heap = heap1.merge(heap2)
         assert new_heap.size == 6
         assert len(list(new_heap.root_nodes)) == 6
+
+    def test_decrease_key(self):
+        """Test decrease key using lecture slide example."""
+        heap = heap_from_slides()
+        heap.min.prev.insert(node.Node(21))
+        heap.size += 1
+        heap.extract_min()
+        n = heap.min.child.next.child.next
+        assert n.key == 46
+        heap.decrease_key(n, 15)
+        assert n.key == 15
+        assert len(list(heap.root_nodes)) == 7
