@@ -67,3 +67,20 @@ class TestNode:
         parent.create_child(child_new)
         assert parent.child == existing_child
         assert parent.child.next == child_new
+
+    def test_remove_only_item_in_list(self):
+        """Test removing an item from a list with only it in it."""
+        node = n.Node(10)
+        assert len(list(node)) == 1
+        next_node = node.remove()
+        assert next_node is None
+
+    def test_remove_item_in_list(self):
+        """Test removing item from a list."""
+        node = n.Node(1)
+        other_node = n.Node(2)
+        node.insert(other_node)
+        assert len(list(node)) == 2
+        next_node = node.remove()
+        assert len(list(next_node)) == 1
+        assert next_node.key == other_node.key

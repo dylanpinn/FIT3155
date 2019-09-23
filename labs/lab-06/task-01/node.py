@@ -31,7 +31,6 @@ class Node:
         if self.child is not None:
             self.child.insert(node)
         else:
-            node.prev = node.next = node
             self.child = node
             self.degree = 1
 
@@ -39,10 +38,21 @@ class Node:
         """Insert new node into double circular linked list."""
         node.next = self.next
         node.prev = self
-        self.next.prev = self.next = node
+        self.next.prev = node
+        self.next = node
+
+    def remove(self) -> Optional['Node']:
+        """Remove a node from a double circular linked list return the next item in the list."""
+        # if only item in list then remove and return None
+        if self.prev == self and self.next == self:
+            return None
+        self.prev.next = self.next
+        self.next.prev = self.prev
+        next_node = self.next
+        return next_node
 
     def __iter__(self):
-        """Iterate over nodes in double linked list."""
+        """Iterate once over nodes in double linked list."""
         first = current = self
         while current != first.prev:
             yield current
