@@ -51,6 +51,13 @@ class Node:
         next_node = self.next
         return next_node
 
+    def merge(self, node: 'Node'):
+        """Merge two lists together."""
+        self.next.prev = node.prev
+        node.prev.next = self.next
+        self.next = node
+        node.prev = self
+
     def __iter__(self):
         """Iterate once over nodes in double linked list."""
         first = current = self

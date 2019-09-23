@@ -107,6 +107,26 @@ class FibonacciHeap:
         """Return size of auxiliary array used for consolidate."""
         return math.ceil(math.log2(self.size))
 
-    # TODO: merge
+    def merge(self, heap2: 'FibonacciHeap') -> 'FibonacciHeap':
+        """Merge two Fibonacci Heaps"""
+        new_heap = FibonacciHeap()
+        new_heap.min = self.min
+        if self.root_nodes is None and heap2.root_nodes is None:
+            return new_heap
+
+        # concatenate root list of heap2 with heap2
+        if self.root_nodes is None:
+            new_heap.root_nodes = heap2.root_nodes
+        elif heap2.root_nodes is None:
+            new_heap.root_nodes = self.root_nodes
+        else:
+            new_heap.root_nodes = self.root_nodes
+            new_heap.root_nodes.merge(heap2.root_nodes)
+
+        if (self.min is None) or (heap2.min is not None and heap2.min.key < self.min.key):
+            new_heap.min = heap2.min
+        new_heap.size = self.size + heap2.size
+        return new_heap
+
     # TODO: decrease-key
     # TODO: delete
