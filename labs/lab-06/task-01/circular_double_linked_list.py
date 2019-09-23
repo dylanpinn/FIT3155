@@ -3,9 +3,6 @@
 import typing
 
 
-# import node as list_node
-
-
 class CircularDoubleLinkedList:
     """Circular Double Linked List."""
     size: int
@@ -41,6 +38,7 @@ class CircularDoubleLinkedList:
         if self.last is None:
             node.prev = node
             node.next = node
+            self.size += 1
             self.size += 1
             node.list = self
         else:

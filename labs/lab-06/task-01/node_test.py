@@ -1,7 +1,5 @@
 """Test Node implementation."""
 
-import circular_double_linked_list as cir
-
 import node as n
 
 
@@ -36,7 +34,7 @@ class TestNode:
     def test_children_no_child(self):
         """Returns null if no children."""
         node = n.Node(10)
-        assert node.children() is None
+        assert node.children() == []
 
     def test_children(self):
         """Returns iterable children."""
@@ -46,8 +44,12 @@ class TestNode:
             parent.create_child(n.Node(item))
         arr = list(parent.children())
         assert len(arr) == 3
-        for index, item in enumerate(arr):
-            assert item.key == items[index]
+        for index, item in enumerate(items):
+            found = False
+            for node in arr:
+                if item == node.key:
+                    found = True
+            assert found
 
     def test_create_child_no_children(self):
         """Test creating a child if non exists."""
@@ -55,15 +57,13 @@ class TestNode:
         child = n.Node(2)
         parent.create_child(child)
         assert parent.child == child
-        assert parent.child.list is not None
 
     def test_create_child_with_children(self):
         """Test creating a child if children exist."""
         parent = n.Node(1)
         existing_child = n.Node(3)
         parent.child = existing_child
-        parent.child.list = cir.CircularDoubleLinkedList()
         child_new = n.Node(2)
         parent.create_child(child_new)
         assert parent.child == existing_child
-        assert parent.child.list.last == child_new
+        assert parent.child.next == child_new
