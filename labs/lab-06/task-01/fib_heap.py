@@ -3,18 +3,17 @@
 import math
 from typing import List, Union, Optional
 
-from circular_double_linked_list import CircularDoubleLinkedList
 from node import Node
 
 
 class FibonacciHeap:
     """Fibonacci Heap using double linked list."""
-    root_nodes: CircularDoubleLinkedList
+    root_nodes: Optional[Node]
     min: Optional[Node]
     size: int
 
     def __init__(self):
-        self.root_nodes = CircularDoubleLinkedList()
+        self.root_nodes = None
         self.min = None
         self.size = 0
 
@@ -23,10 +22,10 @@ class FibonacciHeap:
         node = Node(item)
         # list is empty
         if self.min is None:
-            self.root_nodes.insert_end(node)
+            self.root_nodes = node
             self.min = node
         else:
-            self.root_nodes.insert_before(self.min, node)
+            self.root_nodes.insert(node)
             if node.key < self.min.key:
                 self.min = node
         self.size += 1
@@ -38,9 +37,14 @@ class FibonacciHeap:
             current = min_node.next
             if min_node.child:
                 for child in min_node.children():
-                    self.root_nodes.insert_before(current, child)
+                    # Insert into root nodes before current
+                    current.prev.insert(child)
                     child.parent = None
-            self.root_nodes.remove(min_node)
+            # if min_node is root_node pointer then change to next after removing
+            if min_node == self.root_nodes:
+                self.root_nodes = min_node.remove()
+            else:
+                min_node.remove()
             if min_node == min_node.next:
                 self.min = None
             else:
@@ -71,14 +75,14 @@ class FibonacciHeap:
 
             aux_array[d] = x
         self.min = None
+        self.root_nodes = None
         for i in range(aux_size):
             if aux_array[i] is not None:
                 if self.min is None:
-                    self.root_nodes = CircularDoubleLinkedList()
-                    self.root_nodes.insert_end(aux_array[i])
+                    self.root_nodes = aux_array[i]
                     self.min = aux_array[i]
                 else:
-                    self.root_nodes.insert_end(aux_array[i])
+                    self.root_nodes.insert(aux_array[i])
                     if aux_array[i].key < self.min.key:
                         self.min = aux_array[i]
 
@@ -89,8 +93,12 @@ class FibonacciHeap:
         :param parent: Node which will become parent of the child.
         :type parent: Node
         """
-        self.root_nodes.remove(child)
-        child.list = None
+        # Remove child from root_nodes
+        if self.root_nodes == child:
+            self.root_nodes = child.remove()
+        else:
+            child.remove()
+        child.next = child.prev = child
         parent.degree += 1
         parent.create_child(child)
         child.mark = False

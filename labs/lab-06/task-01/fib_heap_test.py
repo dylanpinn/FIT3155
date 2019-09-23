@@ -1,44 +1,40 @@
 """Test Fibonacci Heap implementation."""
 
-import circular_double_linked_list as cir
 import fib_heap
 import node
 
 
 def heap_from_slides():
     """Create Fib Heap from lecture slides."""
-    root_nodes = cir.CircularDoubleLinkedList()
-    root_nodes.insert_end(node.Node(23))
-    root_nodes.insert_end(node.Node(7))
-    parent = node.Node(3)
-    min_node = parent
-    sub_node = node.Node(18)
-    sub_node.list = cir.CircularDoubleLinkedList()
-    sub_node.list.insert_end(sub_node)
-    sub_node.list.insert_end(node.Node(52))
-    sub_sub_node = node.Node(38)
-    sub_sub_node.degree = 1
-    sub_sub_node.create_child(node.Node(41))
-    sub_node.list.insert_end(sub_sub_node)
-    sub_node.create_child(node.Node(39))
-    parent.create_child(sub_node)
-    sub_node.degree = 1
-    parent.degree = 2
-    root_nodes.insert_end(parent)
-    parent = node.Node(17)
-    parent.create_child(node.Node(30))
-    parent.degree = 1
-    root_nodes.insert_end(parent)
-    parent = node.Node(24)
+    root_nodes = parent = node.Node(24)
     sub_node = node.Node(26)
-    sub_node.list = cir.CircularDoubleLinkedList()
-    sub_node.list.insert_end(sub_node)
-    sub_node.list.insert_end(node.Node(46))
+    sub_node.insert(sub_node)
+    sub_node.insert(node.Node(46))
     sub_node.create_child(node.Node(35))
     parent.create_child(sub_node)
     sub_node.degree = 1
     parent.degree = 2
-    root_nodes.insert_end(parent)
+    parent = node.Node(17)
+    parent.create_child(node.Node(30))
+    parent.degree = 1
+    root_nodes.insert(parent)
+    parent = node.Node(3)
+    min_node = parent
+    sub_node = node.Node(18)
+    sub_node.insert(sub_node)
+    sub_sub_node = node.Node(38)
+    sub_sub_node.degree = 1
+    sub_sub_node.create_child(node.Node(41))
+    sub_node.insert(sub_sub_node)
+    sub_node.insert(node.Node(52))
+    sub_node.create_child(node.Node(39))
+    parent.create_child(sub_node)
+    sub_node.degree = 1
+    parent.degree = 2
+    root_nodes.insert(parent)
+    root_nodes.insert(node.Node(7))
+    root_nodes.insert(node.Node(23))
+
     heap = fib_heap.FibonacciHeap()
     heap.root_nodes = root_nodes
     heap.size = 14
@@ -70,15 +66,15 @@ class TestFibonacciHeap:
         heap.insert(10)
         heap.insert(5)
         assert heap.min.key == 5
-        assert heap.root_nodes.size == 2
+        assert len(list(heap.root_nodes)) == 2
         assert heap.size == 2
 
     def test_insert_from_slides(self):
         """Test inserting into a heap using example from lecture slides."""
         heap = heap_from_slides()
-        assert heap.root_nodes.size == 5
+        assert len(list(heap.root_nodes)) == 5
         heap.insert(21)
-        assert heap.root_nodes.size == 6
+        assert len(list(heap.root_nodes)) == 6
         assert heap.size == 15
 
     def test_extract_min(self):
@@ -98,12 +94,28 @@ class TestFibonacciHeap:
     def test_extract_min_from_slides(self):
         """Test extract min using lecture slides example."""
         heap = heap_from_slides()
-        heap.insert(21)
-        assert heap.root_nodes.size == 6
+        heap.min.prev.insert(node.Node(21))
+        heap.size += 1
+        assert len(list(heap.root_nodes)) == 6
         assert heap.size == 15
         min_node = heap.extract_min()
         assert min_node == 3
-        assert heap.root_nodes.size == 3
+        root_nodes = list(heap.root_nodes)
+        assert len(root_nodes) == 3
+        for item in [7, 18, 38]:
+            found = False
+            for n in root_nodes:
+                if item == n.key:
+                    found = True
+            assert found
         assert heap.size == 14
         assert heap.min.degree == 3
-        assert heap.min.child.list.size == 3
+
+        min_children = list(heap.min.child)
+        assert len(min_children) == 3
+        for item in [24, 17, 23]:
+            found = False
+            for n in min_children:
+                if item == n.key:
+                    found = True
+            assert found
