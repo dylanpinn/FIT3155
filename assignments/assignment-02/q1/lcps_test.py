@@ -3,6 +3,7 @@
 import lcps
 
 
+# noinspection PyProtectedMember
 class TestLCPS:
     def test_generate_suffixes(self):
         """Test generating suffixes for a given text."""
@@ -16,11 +17,17 @@ class TestLCPS:
         tree = lcps.generate_suffix_tree(text)
         assert tree.n == 4
         assert tree.text == text
-        root_edges = list(filter(None, tree.root.edges))
+        root_edges = tree.root._filtered_edges
         assert len(root_edges) == 2
-        assert root_edges[0].destination.suffix_index == 0
-        assert root_edges[1].start == 1
-        assert root_edges[1].end == 1
+        assert root_edges[0].destination.index == 0
+        assert root_edges[0].label == 'abba'
+        assert root_edges[1].label == 'b'
+        edges = root_edges[1].destination._filtered_edges
+        assert len(edges) == 2
+        assert edges[0].label == 'a'
+        assert edges[0].destination.index == 2
+        assert edges[1].label == 'ba'
+        assert edges[1].destination.index == 1
 
     # def test_generate_suffix_tree_simple(self):
     #     """Test naively generating a suffix tree."""

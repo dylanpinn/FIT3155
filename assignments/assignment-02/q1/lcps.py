@@ -35,8 +35,8 @@ class Node:
     """A node in the suffix tree."""
     edges: List[Optional['Edge']]
 
-    def __init__(self, suffix_index: Optional[int]):
-        self.suffix_index = suffix_index
+    def __init__(self, index: Optional[int] = None):
+        self.index = index
         self.edges = [None] * ALPHABET_SIZE
 
     def add_edge(self, edge: 'Edge', char: str):
@@ -49,8 +49,9 @@ class Node:
         return self.edges[ord(char)]
 
     def __repr__(self):
-        return "Node"
+        return f'Node({self.index})'
 
+    @property
     def _filtered_edges(self):
         return list(filter(None, self.edges))
 
@@ -58,18 +59,27 @@ class Node:
 class Edge:
     """An edge in the suffix tree."""
 
-    def __init__(self, start, end, destination: 'Node'):
-        self.start = start
-        self.end = end
+    def __init__(self, label: str, destination: 'Node'):
+        self.label = label
         self.destination = destination
+
+    def split(self, label: str) -> 'Edge':
+        remaining_label = self.label[self.label.find(label) + 1:]
+        internal_node = Node()
+        new_edge = Edge(remaining_label, self.destination)
+        self.label = label
+        self.destination = internal_node
+        internal_node.add_edge(new_edge, remaining_label[0])
+
+        return new_edge
 
     # def __init__(self, start, end):
     #     self.start = start
     #     self.end = end
     #     # self.destination = destination
 
-    # def __repr__(self):
-    #     return 'Edge(%d, %d)' % (self.start, self.end if isinstance(self.end, int) else self.end.end)
+    def __repr__(self):
+        return f'Edge({self.label}) -> N({self.destination.index if self.destination else None})'
 
 
 # class CurrentEnd:
@@ -102,28 +112,36 @@ class SuffixTree:
                 # begin suffix extension j
                 # find end of the path from root denoting str[j..i] in the current state of the suffix tree
 
+                search_node = self.root
+
                 # Tree traversal return edge
 
-                edge = self.root.search(self.text[j])
+                edge = search_node.search(self.text[j])
+
+                path = self.text[j:i + 1]
 
                 # apply one of the three suffix extension rules
 
                 # Rule 2: Edge not found; insert at root
                 if edge is None:
-                    self.root.add_edge(Edge(j, i, Node(j)), self.text[j])
-                # Rule 1: Ends at a leaf, adjust edge to extend extra character.
-                elif i - 1 == edge.end:
-                    edge.end = i
-                elif edge.start < i - 1 < edge.end:
-                    # Rule 2: Rule 2: In tree but next value is not in path.
-                    # if next character is not same as current character then create new internal node and split
-                    print('')
-                    # Rule 3: Within path, do nothing.
-                    pass
+                    self.root.add_edge(Edge(path, Node(j)), self.text[j])
                 else:
-                    # raise Exception
-                    pass
-                print('next')
+                    # Rule 1: text[j..i-1] ends at a leaf
+                    if path[:-1] == edge.label:
+                        edge.label = path
+                    elif edge.label.startswith(path):
+                        # Rule 3: Within path, do nothing.
+                        print('')
+                        # pass
+                    elif edge.label.startswith(path[:-1]):
+                        # Rule 2: Rule 2: In tree but next value is not in path.
+                        edge.split(path[:-1])
+                        edge.destination.add_edge(Edge(path[-1], Node(j)), path[-1])
+                    else:
+                        print('')
+                        # raise Exception
+                        # pass
+                    print('next')
 
             #  end of extension step j
             # end of phase i+ 1
