@@ -17,7 +17,7 @@ class FibonacciHeap:
         self.min = None
         self.size = 0
 
-    def insert(self, item: Union[str, int]):
+    def insert(self, item: Union[str, Union[int, float]]):
         """Insert item into heap."""
         node = Node(item)
         # list is empty
@@ -30,7 +30,7 @@ class FibonacciHeap:
                 self.min = node
         self.size += 1
 
-    def extract_min(self) -> Union[str, int]:
+    def extract_min(self) -> Union[str, Union[int, float]]:
         """Extract min value from heap."""
         min_node = self.min
         if min_node is not None:
@@ -129,7 +129,7 @@ class FibonacciHeap:
         new_heap.size = self.size + heap2.size
         return new_heap
 
-    def decrease_key(self, node: Node, value: Union[str, int]):
+    def decrease_key(self, node: Node, value: Union[str, Union[int, float]]):
         """Decrease a nodes value."""
         if value > node.key:
             raise ValueError
@@ -158,4 +158,7 @@ class FibonacciHeap:
                 self.cut(node, z)
                 self.cascading_cut(z)
 
-    # TODO: delete
+    def delete(self, node: Node):
+        """Delete a node from the heap"""
+        self.decrease_key(node, float('-inf'))
+        self.extract_min()

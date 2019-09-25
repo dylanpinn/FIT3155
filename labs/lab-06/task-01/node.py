@@ -5,7 +5,7 @@ from typing import Union, Optional
 
 class Node:
     """Fibonacci Heap Linked List Node."""
-    key: Union[str, int]
+    key: Union[str, Union[int, float]]
     mark: bool
     degree: int
     parent: Optional['Node']
@@ -13,7 +13,7 @@ class Node:
     next: Optional['Node']
     child: Optional['Node']
 
-    def __init__(self, item: Union[str, int]):
+    def __init__(self, item: Union[str, Union[int, float]]):
         self.key = item
         self.mark = False
         self.degree = 0
