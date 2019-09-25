@@ -188,3 +188,26 @@ class TestFibonacciHeap:
         heap.decrease_key(n, 5)
         assert len(list(heap.root_nodes)) == 7
         assert heap.min == n
+
+    def test_delete(self):
+        """Test delete using lecture slide example."""
+        heap = heap_from_slides()
+        heap.min.prev.insert(node.Node(21))
+        heap.size += 1
+        heap.extract_min()
+        n = heap.min.child.next.child.next
+        assert n.key == 46
+        assert n.parent.mark is False
+        heap.decrease_key(n, 15)
+        assert n.key == 15
+        assert heap.min.child.next.mark is True
+        assert len(list(heap.root_nodes)) == 4
+        n = heap.min.child.next.child.child
+        assert n.key == 35
+        assert n.parent.mark is True
+        assert n.parent.parent.mark is True
+        assert n.parent.parent.parent.mark is False
+        assert n.parent.parent.parent.key == 7
+        assert heap.size == 14
+        heap.delete(n)
+        assert heap.size == 13
