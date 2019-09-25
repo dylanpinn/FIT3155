@@ -28,6 +28,7 @@ class Node:
 
     def create_child(self, node: 'Node'):
         """Make a node a child of the current node."""
+        node.parent = self
         if self.child is not None:
             self.child.insert(node)
         else:

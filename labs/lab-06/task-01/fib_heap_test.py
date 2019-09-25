@@ -8,8 +8,12 @@ def heap_from_slides():
     """Create Fib Heap from lecture slides."""
     root_nodes = parent = node.Node(24)
     sub_node = node.Node(26)
+    sub_node.mark = True
+    sub_node.parent = parent
     sub_node.insert(sub_node)
-    sub_node.insert(node.Node(46))
+    n = node.Node(46)
+    n.parent = parent
+    sub_node.insert(n)
     sub_node.create_child(node.Node(35))
     parent.create_child(sub_node)
     sub_node.degree = 1
@@ -21,13 +25,19 @@ def heap_from_slides():
     parent = node.Node(3)
     min_node = parent
     sub_node = node.Node(18)
+    sub_node.mark = True
     sub_node.insert(sub_node)
     sub_sub_node = node.Node(38)
     sub_sub_node.degree = 1
     sub_sub_node.create_child(node.Node(41))
+    sub_sub_node.parent = sub_node
     sub_node.insert(sub_sub_node)
-    sub_node.insert(node.Node(52))
-    sub_node.create_child(node.Node(39))
+    n = node.Node(52)
+    n.parent = sub_node
+    sub_node.insert(n)
+    n = node.Node(39)
+    n.mark = True
+    sub_node.create_child(n)
     parent.create_child(sub_node)
     sub_node.degree = 1
     parent.degree = 2
@@ -155,3 +165,26 @@ class TestFibonacciHeap:
         new_heap = heap1.merge(heap2)
         assert new_heap.size == 6
         assert len(list(new_heap.root_nodes)) == 6
+
+    def test_decrease_key(self):
+        """Test decrease key using lecture slide example."""
+        heap = heap_from_slides()
+        heap.min.prev.insert(node.Node(21))
+        heap.size += 1
+        heap.extract_min()
+        n = heap.min.child.next.child.next
+        assert n.key == 46
+        assert n.parent.mark is False
+        heap.decrease_key(n, 15)
+        assert n.key == 15
+        assert heap.min.child.next.mark is True
+        assert len(list(heap.root_nodes)) == 4
+        n = heap.min.child.next.child.child
+        assert n.key == 35
+        assert n.parent.mark is True
+        assert n.parent.parent.mark is True
+        assert n.parent.parent.parent.mark is False
+        assert n.parent.parent.parent.key == 7
+        heap.decrease_key(n, 5)
+        assert len(list(heap.root_nodes)) == 7
+        assert heap.min == n

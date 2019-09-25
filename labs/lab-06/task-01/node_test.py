@@ -57,16 +57,20 @@ class TestNode:
         child = n.Node(2)
         parent.create_child(child)
         assert parent.child == child
+        assert child.parent == parent
 
     def test_create_child_with_children(self):
         """Test creating a child if children exist."""
         parent = n.Node(1)
         existing_child = n.Node(3)
         parent.child = existing_child
+        existing_child.parent = parent
         child_new = n.Node(2)
         parent.create_child(child_new)
         assert parent.child == existing_child
         assert parent.child.next == child_new
+        assert child_new.parent == parent
+        assert existing_child.parent == parent
 
     def test_remove_only_item_in_list(self):
         """Test removing an item from a list with only it in it."""
