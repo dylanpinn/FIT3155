@@ -44,7 +44,51 @@ class TestLCPS:
     #     text = 'abcabxabcd'
     #     tree = lcps.generate_suffix_tree(text)
 
-    # def test_naive_generate_suffix_tree(self):
-    #     """Test naively generating a suffix tree."""
-    #     text = 'abcab$'
-    #     lcps.naive_generate_suffix_tree(text)
+    def test_generate_suffix_tree(self):
+        """Test generating a suffix tree."""
+        text = 'banana'
+        tree = lcps.generate_suffix_tree(text)
+        edges = tree.root._filtered_edges
+        assert len(edges) == 3
+        assert edges[0].label == 'anana'
+        assert edges[1].label == 'banana'
+        assert edges[2].label == 'nana'
+
+    def test_generate_suffix_tree_2(self):
+        """Test generating a suffix tree."""
+        text = 'mississippi'
+        tree = lcps.generate_suffix_tree(text)
+        edges = tree.root._filtered_edges
+        assert len(edges) == 4
+        assert edges[0].label == 'i'
+        assert len(edges[0].destination._filtered_edges) == 2
+        assert edges[0].destination._filtered_edges[0].label == 'ppi'
+        assert edges[0].destination._filtered_edges[0].destination.index == 7
+        assert edges[0].destination._filtered_edges[1].label == 'ssi'
+        assert len(edges[0].destination._filtered_edges[1].destination._filtered_edges) == 2
+        assert edges[0].destination._filtered_edges[1].destination._filtered_edges[0].label == 'ppi'
+        assert edges[0].destination._filtered_edges[1].destination._filtered_edges[0].destination.index == 4
+        assert edges[0].destination._filtered_edges[1].destination._filtered_edges[1].label == 'ssippi'
+        assert edges[0].destination._filtered_edges[1].destination._filtered_edges[1].destination.index == 1
+        assert edges[1].label == 'mississippi'
+        assert edges[1].destination.index == 0
+        assert edges[2].label == 'p'
+        assert len(edges[2].destination._filtered_edges) == 2
+        assert edges[2].destination._filtered_edges[0].label == 'i'
+        assert edges[2].destination._filtered_edges[0].destination.index == 9
+        assert edges[2].destination._filtered_edges[1].label == 'pi'
+        assert edges[2].destination._filtered_edges[1].destination.index == 8
+        assert edges[3].label == 's'
+        assert len(edges[3].destination._filtered_edges) == 2
+        assert edges[3].destination._filtered_edges[0].label == 'i'
+        assert len(edges[3].destination._filtered_edges[0].destination._filtered_edges) == 2
+        assert edges[3].destination._filtered_edges[0].destination._filtered_edges[0].label == 'ppi'
+        assert edges[3].destination._filtered_edges[0].destination._filtered_edges[0].destination.index == 6
+        assert edges[3].destination._filtered_edges[0].destination._filtered_edges[1].label == 'ssippi'
+        assert edges[3].destination._filtered_edges[0].destination._filtered_edges[1].destination.index == 3
+        assert edges[3].destination._filtered_edges[1].label == 'si'
+        assert len(edges[3].destination._filtered_edges[1].destination._filtered_edges) == 2
+        assert edges[3].destination._filtered_edges[1].destination._filtered_edges[0].label == 'ppi'
+        assert edges[3].destination._filtered_edges[1].destination._filtered_edges[0].destination.index == 5
+        assert edges[3].destination._filtered_edges[1].destination._filtered_edges[1].label == 'ssippi'
+        assert edges[3].destination._filtered_edges[1].destination._filtered_edges[1].destination.index == 2

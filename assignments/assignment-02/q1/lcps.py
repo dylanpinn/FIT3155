@@ -47,7 +47,7 @@ class Edge:
         self.destination = destination
 
     def split(self, label: str) -> 'Edge':
-        remaining_label = self.label[self.label.find(label) + 1:]
+        remaining_label = self.label[len(label):]
         internal_node = Node()
         new_edge = Edge(remaining_label, self.destination)
         self.label = label
@@ -107,20 +107,55 @@ class SuffixTree:
 
                 # Rule 2: Edge not found; insert at root
                 if edge is None:
-                    self.root.add_edge(Edge(path, Node(j)), self.text[j])
+                    node = Node(j)
+                    edge = Edge(path, node)
+                    self.root.add_edge(edge, self.text[j])
                 else:
+                    # Do some traversal if required
+                    while edge is not None and len(path) > len(edge.label) + 1:
+                        path: str = path[path.find(edge.label) + len(edge.label):]
+                        edge = edge.destination.search(path[0])
+
+                    if edge is None:
+                        # Handle this
+                        raise Exception
+
                     # Rule 1: text[j..i-1] ends at a leaf
-                    if path[:-1] == edge.label:
+                    if path[:-1] == edge.label and edge.destination.index is not None:
                         edge.label = path
                     elif edge.label.startswith(path):
                         # Rule 3: Within path, do nothing.
                         pass
-                    elif edge.label.startswith(path[:-1]):
-                        # Rule 2: Rule 2: In tree but next value is not in path.
-                        edge.split(path[:-1])
-                        edge.destination.add_edge(Edge(path[-1], Node(j)), path[-1])
                     else:
-                        raise Exception
+                        # if next value is an edge go to it
+                        if len(edge.label) + 1 == len(path):
+                            path: str = path[path.find(edge.label) + len(edge.label):]
+                            edge = edge.destination.search(path[-1])
+                            if edge is None:
+                                # Handle this
+                                raise Exception
+                            else:
+                                if path[:-1] == edge.label and edge.destination.index is not None:
+                                    edge.label = path
+                                elif edge.label.startswith(path):
+                                    # Rule 3: Within path, do nothing.
+                                    pass
+                                else:
+                                    raise Exception
+                        else:
+                            index_of_mismatch = -1
+                            if len(path) < len(edge.label):
+                                for n in range(0, len(path)):
+                                    if path[n] != edge.label[n]:
+                                        index_of_mismatch = n
+                                        break
+                            else:
+                                # Handle this
+                                raise Exception
+
+                            # Rule 2: Rule 2: In tree but next value is not in path.
+                            edge.split(edge.label[0:index_of_mismatch])
+                            edge.destination.add_edge(Edge(path[-1], Node(j)), path[-1])
 
             #  end of extension step j
             # end of phase i+ 1
