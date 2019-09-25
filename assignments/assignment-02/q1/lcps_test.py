@@ -92,3 +92,10 @@ class TestLCPS:
         assert edges[3].destination._filtered_edges[1].destination._filtered_edges[0].destination.index == 5
         assert edges[3].destination._filtered_edges[1].destination._filtered_edges[1].label == 'ssippi'
         assert edges[3].destination._filtered_edges[1].destination._filtered_edges[1].destination.index == 2
+
+    def test_generate_suffix_tree_3(self):
+        """Test generating a suffix tree."""
+        text = 'GATAGACA'
+        tree = lcps.generate_suffix_tree(text)
+        edges = tree.root._filtered_edges
+        assert len(edges) == 4

@@ -90,6 +90,7 @@ class SuffixTree:
             phase = i + 1
             print('phase ', phase)
             for j in range(0, i + 1):
+                old_edge = None
                 extension = j + 1
                 print('extension ', extension)
                 # begin suffix extension j
@@ -114,11 +115,14 @@ class SuffixTree:
                     # Do some traversal if required
                     while edge is not None and len(path) > len(edge.label) + 1:
                         path: str = path[path.find(edge.label) + len(edge.label):]
+                        old_edge = edge
                         edge = edge.destination.search(path[0])
 
-                    if edge is None:
-                        # Handle this
-                        raise Exception
+                    if edge is None and old_edge:
+                        node = Node(j)
+                        edge = Edge(path, node)
+                        old_edge.destination.add_edge(edge, self.text[j])
+                        return
 
                     # Rule 1: text[j..i-1] ends at a leaf
                     if path[:-1] == edge.label and edge.destination.index is not None:
@@ -130,10 +134,12 @@ class SuffixTree:
                         # if next value is an edge go to it
                         if len(edge.label) + 1 == len(path):
                             path: str = path[path.find(edge.label) + len(edge.label):]
+                            old_edge = edge
                             edge = edge.destination.search(path[-1])
                             if edge is None:
-                                # Handle this
-                                raise Exception
+                                node = Node(j)
+                                edge = Edge(path, node)
+                                old_edge.destination.add_edge(edge, self.text[j])
                             else:
                                 if path[:-1] == edge.label and edge.destination.index is not None:
                                     edge.label = path
