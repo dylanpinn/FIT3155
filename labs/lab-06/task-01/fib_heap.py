@@ -80,6 +80,7 @@ class FibonacciHeap:
             if aux_array[i] is not None:
                 if self.min is None:
                     self.root_nodes = aux_array[i]
+                    self.root_nodes.next = self.root_nodes.prev = self.root_nodes
                     self.min = aux_array[i]
                 else:
                     self.root_nodes.insert(aux_array[i])

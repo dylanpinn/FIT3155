@@ -9,8 +9,11 @@ def heap_from_slides():
     root_nodes = parent = node.Node(24)
     sub_node = node.Node(26)
     sub_node.mark = True
+    sub_node.parent = parent
     sub_node.insert(sub_node)
-    sub_node.insert(node.Node(46))
+    n = node.Node(46)
+    n.parent = parent
+    sub_node.insert(n)
     sub_node.create_child(node.Node(35))
     parent.create_child(sub_node)
     sub_node.degree = 1
@@ -27,8 +30,11 @@ def heap_from_slides():
     sub_sub_node = node.Node(38)
     sub_sub_node.degree = 1
     sub_sub_node.create_child(node.Node(41))
+    sub_sub_node.parent = sub_node
     sub_node.insert(sub_sub_node)
-    sub_node.insert(node.Node(52))
+    n = node.Node(52)
+    n.parent = sub_node
+    sub_node.insert(n)
     n = node.Node(39)
     n.mark = True
     sub_node.create_child(n)
