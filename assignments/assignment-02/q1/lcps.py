@@ -5,23 +5,6 @@ from typing import List, Optional
 ALPHABET_SIZE = 256
 
 
-def naive_implementation():
-    """Solution using naive inefficient algorithm."""
-    # Generate all suffixes of a given text.
-    # Consider all suffixes as individual words and build a compressed trie.
-    # - insert largest to smallest in tree
-    # - label each leaf with the starting point of the corresponding suffix
-
-    # Pattern Search
-    # - starting from the first character of the pattern and root of suffix tree, do following for every character
-    # -- for the current character of the pattern, if there is an edge from teh current node of suffix tree,
-    # --  follow the edge
-    # --- if there is no edge, then pattern doesn't exist and return.
-    # --- if all of the characters of pattern have been processed, then pattern is found.
-
-    pass
-
-
 def generate_suffixes(text: str) -> List[str]:
     """Generate a list of suffixes for a given text."""
     n = len(text)
@@ -131,23 +114,16 @@ class SuffixTree:
                         edge.label = path
                     elif edge.label.startswith(path):
                         # Rule 3: Within path, do nothing.
-                        print('')
-                        # pass
+                        pass
                     elif edge.label.startswith(path[:-1]):
                         # Rule 2: Rule 2: In tree but next value is not in path.
                         edge.split(path[:-1])
                         edge.destination.add_edge(Edge(path[-1], Node(j)), path[-1])
                     else:
-                        print('')
-                        # raise Exception
-                        # pass
-                    print('next')
+                        raise Exception
 
             #  end of extension step j
             # end of phase i+ 1
-
-            # self.insert(self.text[i], i)
-            # self.insert(text[i:self.n], i, self.n)
 
     # def insert(self, suffix: str, start_index: int):
     #     """Insert a prefix into the Tree."""
