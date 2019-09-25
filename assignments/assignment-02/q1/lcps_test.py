@@ -99,3 +99,10 @@ class TestLCPS:
         tree = lcps.generate_suffix_tree(text)
         edges = tree.root._filtered_edges
         assert len(edges) == 4
+
+    def test_generate_suffix_tree_4(self):
+        """Test generating a suffix tree."""
+        text = 'aabbabaa'
+        tree = lcps.generate_suffix_tree(text)
+        edges = tree.root._filtered_edges
+        assert len(edges) == 2
