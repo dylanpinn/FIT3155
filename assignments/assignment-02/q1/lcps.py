@@ -51,6 +51,9 @@ class Node:
     def __repr__(self):
         return "Node"
 
+    def _filtered_edges(self):
+        return list(filter(None, self.edges))
+
 
 class Edge:
     """An edge in the suffix tree."""
@@ -90,30 +93,37 @@ class SuffixTree:
 
     def build(self):
         """Build a suffix tree using provided text."""
-        for i in range(1, self.n + 1):
-            phase = i
+        for i in range(0, self.n):
+            phase = i + 1
             print('phase ', phase)
-            for j in range(0, i):
+            for j in range(0, i + 1):
                 extension = j + 1
                 print('extension ', extension)
-                path = self.text[j:i]
                 # begin suffix extension j
                 # find end of the path from root denoting str[j..i] in the current state of the suffix tree
+
+                # Tree traversal return edge
+
                 edge = self.root.search(self.text[j])
 
                 # apply one of the three suffix extension rules
 
-                # Rule 2: Edge not found
+                # Rule 2: Edge not found; insert at root
                 if edge is None:
                     self.root.add_edge(Edge(j, i, Node(j)), self.text[j])
                 # Rule 1: Ends at a leaf, adjust edge to extend extra character.
                 elif i - 1 == edge.end:
                     edge.end = i
                 elif edge.start < i - 1 < edge.end:
+                    # Rule 2: Rule 2: In tree but next value is not in path.
+                    # if next character is not same as current character then create new internal node and split
+                    print('')
                     # Rule 3: Within path, do nothing.
-                    continue
+                    pass
                 else:
-                    raise Exception
+                    # raise Exception
+                    pass
+                print('next')
 
             #  end of extension step j
             # end of phase i+ 1
