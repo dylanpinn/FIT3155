@@ -211,9 +211,7 @@ class SuffixTree:
 
 
 def generate_suffix_tree(text: str):
-    """Naive implementation to generate suffix tree."""
+    """Generate suffix tree."""
     tree = SuffixTree(text)
-
-    # raise
 
     return tree
