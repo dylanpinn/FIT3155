@@ -27,7 +27,7 @@ class Node:
         self.edges[ord(char)] = edge
         # self.edges.append(edge)
 
-    def search(self, char: str):
+    def search(self, char: str) -> Optional['Edge']:
         """Search for the edge for the node."""
         return self.edges[ord(char)]
 
@@ -82,7 +82,13 @@ class SuffixTree:
         self.n = len(text)
         self.text = text
         self.root = Node(None)
+        self.active_node = self.root
         self.build()
+
+    def add_new_edge_to_active_node(self, j, path):
+        node = Node(j)
+        edge = Edge(path, node)
+        self.active_node.add_edge(edge, self.text[j])
 
     def build(self):
         """Build a suffix tree using provided text."""
@@ -90,17 +96,15 @@ class SuffixTree:
             phase = i + 1
             print('phase ', phase)
             for j in range(0, i + 1):
-                old_edge = None
+                self.active_node = self.root
                 extension = j + 1
                 print('extension ', extension)
                 # begin suffix extension j
                 # find end of the path from root denoting str[j..i] in the current state of the suffix tree
 
-                search_node = self.root
-
                 # Tree traversal return edge
 
-                edge = search_node.search(self.text[j])
+                edge = self.active_node.search(self.text[j])
 
                 path = self.text[j:i + 1]
 
@@ -108,20 +112,16 @@ class SuffixTree:
 
                 # Rule 2: Edge not found; insert at root
                 if edge is None:
-                    node = Node(j)
-                    edge = Edge(path, node)
-                    self.root.add_edge(edge, self.text[j])
+                    self.add_new_edge_to_active_node(j, path)
                 else:
                     # Do some traversal if required
                     while edge is not None and len(path) > len(edge.label) + 1:
                         path: str = path[path.find(edge.label) + len(edge.label):]
-                        old_edge = edge
+                        self.active_node = edge.destination
                         edge = edge.destination.search(path[0])
 
-                    if edge is None and old_edge:
-                        node = Node(j)
-                        edge = Edge(path, node)
-                        old_edge.destination.add_edge(edge, self.text[j])
+                    if edge is None:
+                        self.add_new_edge_to_active_node(j, path)
                         return
 
                     # Rule 1: text[j..i-1] ends at a leaf
