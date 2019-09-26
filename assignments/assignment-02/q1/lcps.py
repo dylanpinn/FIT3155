@@ -131,16 +131,16 @@ class SuffixTree:
                         # Rule 3: Within path, do nothing.
                         pass
                     else:
+                        # Rule 2: Add new edge to node.
                         # if next value is an edge go to it
                         if len(edge.label) + 1 == len(path):
                             path: str = path[path.find(edge.label) + len(edge.label):]
-                            old_edge = edge
+                            self.active_node = edge.destination
                             edge = edge.destination.search(path[-1])
                             if edge is None:
-                                node = Node(j)
-                                edge = Edge(path, node)
-                                old_edge.destination.add_edge(edge, self.text[j])
+                                self.add_new_edge_to_active_node(j, path)
                             else:
+                                # Rule 1: Extend label
                                 if path[:-1] == edge.label and edge.destination.index is not None:
                                     edge.label = path
                                 elif edge.label.startswith(path):
@@ -149,6 +149,8 @@ class SuffixTree:
                                 else:
                                     raise Exception
                         else:
+                            # Rule 2: Split on edge.
+                            # Find mismatch to split on.
                             index_of_mismatch = -1
                             if len(path) < len(edge.label):
                                 for n in range(0, len(path)):
