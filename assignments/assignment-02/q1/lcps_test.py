@@ -29,20 +29,19 @@ class TestLCPS:
         assert edges[1].label == 'ba'
         assert edges[1].destination.index == 1
 
-    # def test_generate_suffix_tree_simple(self):
-    #     """Test naively generating a suffix tree."""
-    #     text = 'abc'
-    #     tree = lcps.generate_suffix_tree(text)
-    #     assert tree.current_end.end == 2
-    #     assert len(tree.root.edges) == 3
-    #     for i in range(len(tree.root.edges)):
-    #         assert tree.root.edges[i].start == i
-    #         assert tree.root.edges[i].end.end == 2
-    #
-    # def test_generate_suffix_tree_simple_repetitions(self):
-    #     """Test generating suffix tree with simple repetitions."""
-    #     text = 'abcabxabcd'
-    #     tree = lcps.generate_suffix_tree(text)
+    def test_suffix_tree_simple(self):
+        """Test naively generating a suffix tree."""
+        text = 'abc'
+        tree = lcps.generate_suffix_tree(text)
+        assert len(tree.root._filtered_edges) == 3
+        assert tree.root._filtered_edges[0].label == 'abc'
+        assert tree.root._filtered_edges[1].label == 'bc'
+        assert tree.root._filtered_edges[2].label == 'c'
+
+    def test_generate_suffix_tree_simple_repetitions(self):
+        """Test generating suffix tree with simple repetitions."""
+        text = 'abcabxabcd'
+        tree = lcps.generate_suffix_tree(text)
 
     def test_generate_suffix_tree(self):
         """Test generating a suffix tree."""
