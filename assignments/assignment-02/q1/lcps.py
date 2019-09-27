@@ -173,7 +173,7 @@ class SuffixTree:
 
                     edge = self.active_point()
                     internal_node = edge.split(self.active_length)
-                    leaf_node = Node(i, self.root)
+                    leaf_node = Node(i, None)
                     new_edge = Edge(i, self.current_end, leaf_node, self)
                     edge.destination.add_edge(new_edge, self.text[i])
                     self.remaining -= 1
