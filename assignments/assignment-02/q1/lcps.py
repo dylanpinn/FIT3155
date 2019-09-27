@@ -120,6 +120,7 @@ class SuffixTree:
     def build2(self):
         for i in range(0, self.n):
             self._phase(i)
+        self.update_indices(self.root, 0, self.n)
 
     def _phase(self, i):
         self.remaining += 1
@@ -170,40 +171,8 @@ class SuffixTree:
                 else:
                     # Rule 2: Split edge with new internal node and create new edge
 
-                    # get node
-                    # old_start = node.start
-                    # node.start = node.start + self.active_length
-                    # new_node = Node(old_start, old_start + active_length - 1)
-
-                    # create new leaf node
-                    # new_leaf_node = Node(i, this.end)
-
-                    # set internal nodes child as old node and new leaf node.
-                    # newInternalNode.child[input[newInternalNode.start + active.activeLength]] = node;
-                    # newInternalNode.child[input[i]] = newLeafNode;
-                    # newInternalNode.index = -1;
-                    # active.activeNode.child[input[newInternalNode.start]] = newInternalNode;
-
-                    # Create Suffix Link
-                    # if last_internal_node is not None:
-                    #     last_internal_node.link = internal_node
-
-                    # last_internal_node = internal_node
-
-                    # if active node is not root then follow suffix link
-                    # if self.active_node != self.root:
-                    #     self.active_node = self.active_node.link
-                    # else:
-                    #     self.active_length -= 1
-                    #     self.active_edge_idx += 1
-                    #     self.active_edge = self.active_node.search(self.text[self.active_edge_idx])
-
-                    # self.remaining -= 1
-
                     edge = self.active_point()
-
                     internal_node = edge.split(self.active_length)
-                    # TODO: Check this node index.
                     leaf_node = Node(i, self.root)
                     new_edge = Edge(i, self.current_end, leaf_node, self)
                     edge.destination.add_edge(new_edge, self.text[i])
@@ -236,7 +205,6 @@ class SuffixTree:
                     self.active_length = self.active_length - len(edge) - 1
                     self.active_edge = new_edge.start
                     return self.text[self.active_point().start]
-                    # return self.next_char(index)
                 else:
                     print('')
             else:
@@ -244,6 +212,23 @@ class SuffixTree:
 
     def active_point(self) -> 'Edge':
         return self.active_node.search(self.text[self.active_edge])
+
+    def update_indices(self, root: 'RootNode', value: int, size: int):
+        if root is None:
+            return
+
+        edges = root.filtered_edges
+        for edge in edges:
+            self._update_index(edge, value, size)
+
+    def _update_index(self, edge, value, size):
+        value += len(edge) + 1
+        destination = edge.destination
+        if len(destination.filtered_edges) == 0:
+            destination.index = size - value
+        else:
+            for child_edge in destination.filtered_edges:
+                self._update_index(child_edge, value, size)
 
 
 def generate_suffix_tree(text: str):
