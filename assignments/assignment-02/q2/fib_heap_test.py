@@ -97,7 +97,7 @@ class TestFibonacciHeap:
         assert heap.min.key == 3
         assert heap.size == 4
         min_node = heap.extract_min()
-        assert min_node == 3
+        assert min_node.key == 3
         assert heap.size == 3
         assert heap.min.key == 5
 
@@ -109,7 +109,7 @@ class TestFibonacciHeap:
         assert len(list(heap.root_nodes)) == 6
         assert heap.size == 15
         min_node = heap.extract_min()
-        assert min_node == 3
+        assert min_node.key == 3
         root_nodes = list(heap.root_nodes)
         assert len(root_nodes) == 3
         for item in [7, 18, 38]:

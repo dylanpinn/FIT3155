@@ -1,6 +1,6 @@
 """Node to be used in double linked list in Fib Heap."""
 
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 
 
 class Node:
@@ -9,12 +9,14 @@ class Node:
     mark: bool
     degree: int
     parent: Optional['Node']
+    items: Optional[Tuple]
     prev: Optional['Node']
     next: Optional['Node']
     child: Optional['Node']
 
-    def __init__(self, item: Union[str, Union[int, float]]):
-        self.key = item
+    def __init__(self, key: Union[str, Union[int, float]], items: Tuple = None):
+        self.key = key
+        self.items = items
         self.mark = False
         self.degree = 0
         self.parent = self.child = None

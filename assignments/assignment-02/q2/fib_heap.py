@@ -1,7 +1,7 @@
 """Fibonacci Heap."""
 
 import math
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Tuple
 
 from node import Node
 
@@ -17,9 +17,9 @@ class FibonacciHeap:
         self.min = None
         self.size = 0
 
-    def insert(self, item: Union[str, Union[int, float]]):
+    def insert(self, key: Union[str, Union[int, float]], items: Tuple = None):
         """Insert item into heap."""
-        node = Node(item)
+        node = Node(key, items)
         # list is empty
         if self.min is None:
             self.root_nodes = node
@@ -30,7 +30,7 @@ class FibonacciHeap:
                 self.min = node
         self.size += 1
 
-    def extract_min(self) -> Union[str, Union[int, float]]:
+    def extract_min(self) -> Node:
         """Extract min value from heap."""
         min_node = self.min
         if min_node is not None:
@@ -52,7 +52,7 @@ class FibonacciHeap:
                 self.consolidate()
             self.size -= 1
 
-        return min_node.key
+        return min_node
 
     def consolidate(self):
         """Consolidate Heap."""
@@ -162,3 +162,6 @@ class FibonacciHeap:
         """Delete a node from the heap"""
         self.decrease_key(node, float('-inf'))
         self.extract_min()
+
+    def is_empty(self):
+        return self.size == 0

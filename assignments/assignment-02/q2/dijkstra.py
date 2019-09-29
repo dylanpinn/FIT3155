@@ -5,7 +5,7 @@ import math
 import os
 import sys
 
-from min_heap import MinHeap
+from fib_heap import FibonacciHeap
 
 
 class Graph:
@@ -22,16 +22,17 @@ class Graph:
         """Find the shortest path from source to target."""
         # Keep track of state and heap indices
         vertices = [-2] * len(self.vertices)
-        discovered = MinHeap()
-        discovered.insert([source, 0, None])
+        discovered_fib = FibonacciHeap()
+        discovered_fib.insert(0, (source, 0, None))
         vertices[0] = 0
         finalised = []
         # keep track of the min distance for a vertex
         min_distances = [math.inf] * len(self.vertices)
-        while not discovered.is_empty():
+        while not discovered_fib.is_empty():
             # get the vertex from the discovered list with the smallest
             # distance
-            vertex = discovered.pop_min()
+            min_node = discovered_fib.extract_min()
+            vertex = min_node.items
             v = vertex[0]
             v_dist = vertex[1]
             # finalised vertices are marked with index in finalised > 0
@@ -42,7 +43,7 @@ class Graph:
                     u, w = edge[0], edge[1]
                     dist = v_dist + w
                     if vertices[u] < 0 and (vertices[u] == -2 or min_distances[u] > dist):
-                        discovered.insert((u, dist, v))
+                        discovered_fib.insert(dist, (u, dist, v))
                         vertices[u] = -1
                         min_distances[u] = dist
 
