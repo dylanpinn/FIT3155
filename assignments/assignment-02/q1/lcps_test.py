@@ -203,4 +203,4 @@ class TestLCPS:
     def test_generate_suffix_tree_5(self):
         """Test generating a suffix tree."""
         text = 'mississi$'
-        # tree = lcps.generate_suffix_tree(text)
+        tree = lcps.generate_suffix_tree(text)
