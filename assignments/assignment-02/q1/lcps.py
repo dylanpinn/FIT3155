@@ -5,6 +5,10 @@ from typing import List, Optional, Union
 ALPHABET_SIZE = 256
 
 
+class EndOfPathException(Exception):
+    pass
+
+
 def generate_suffixes(text: str) -> List[str]:
     """Generate a list of suffixes for a given text."""
     n = len(text)
@@ -27,7 +31,9 @@ class RootNode:
 
     def search(self, char: str) -> Optional['Edge']:
         """Search for the edge for the node."""
-        return self.edges[ord(char)]
+        if isinstance(char, str):
+            return self.edges[ord(char)]
+        print('')
 
     def __repr__(self):
         return 'RootNode'
@@ -59,17 +65,11 @@ class Edge:
     def split(self, index: int) -> 'Node':
         internal_node = Node(None, self.tree.root)
         new_edge = Edge(self.start + index, self.end, self.destination, self.tree)
-        # if single character split then self.end = index else index - 1
-        self.end = self.start if index == 1 else index - 1
+        self.end = self.start + index - 1
         self.destination = internal_node
         internal_node.add_edge(new_edge, self.tree.text[self.start + index])
 
         return internal_node
-
-    # def __init__(self, start, end):
-    #     self.start = start
-    #     self.end = end
-    #     # self.destination = destination
 
     @property
     def label(self):
@@ -103,12 +103,10 @@ class SuffixTree:
         self.n = len(text)
         self.text = text
         self.root = RootNode()
-        # active_point = (active_node, active_edge, active_length)
-        # self.active_point = (self.root, -1, 0)
         self.current_end = GlobalEnd()
         self.active_length = 0
-        self.active_edge = -1
         self.active_node = self.root
+        self.active_edge = -1
         self.remaining = 0
         self.build2()
 
@@ -140,39 +138,65 @@ class SuffixTree:
                     self.active_length += 1
                     break  # Phase 3: Show stopper - end phase
             else:
-                next_char = self.next_char(i)
-                # check from active point if next character is self.text[i]
-                if next_char == self.text[i]:
-                    edge = self.active_point()
-                    # if it is past next node then update
-                    if len(edge) < self.active_length:
-                        # Update active edge
-                        # active.activeNode = node;
-                        # active.activeLength = active.activeLength - diff(node);
-                        # active.activeEdge = node.child[input[index]].start;
-                        print('TODO')
-                    else:
-                        self.active_length += 1
-                    break  # Phase 3: Show stopper - end phase
-                elif next_char is None:
-                    # TODO: Remove this branch.
-                    next_node = self.active_edge.destination
-                    edge = next_node.search(self.text[self.active_length])
-                    # Rule 2: Create new edge from node
-                    if edge is None:
-                        print('')
-                    else:
-                        # Rule 3: Show stopper - end phase
-                        self.active_node = self.active_edge.destination
-                        self.active_length = 1
-                        self.active_edge_idx = edge.start
-                        self.active_edge = edge
-                        break
-                else:
-                    # Rule 2: Split edge with new internal node and create new edge
+                try:
+                    next_char = self.next_char(i)
+                    # check from active point if next character is self.text[i]
+                    if next_char == self.text[i]:
+                        edge = self.active_point()
+                        # if it is past next node then update
+                        if len(edge) < self.active_length:
+                            # if len(edge) == self.active_length:
+                            # Update active edge
+                            self.active_node = edge.destination
+                            self.active_length = self.active_length - len(edge)
+                            self.active_edge = self.active_node.search(self.text[i]).start
 
-                    edge = self.active_point()
-                    internal_node = edge.split(self.active_length)
+                        else:
+                            self.active_length += 1
+                        break  # Phase 3: Show stopper - end phase
+                    elif next_char is None:
+                        # Rule 2: Add new edge to node
+                        node = self.active_node
+                        leaf_node = Node(i, None)
+                        new_edge = Edge(i, self.current_end, leaf_node, self)
+                        node.add_edge(new_edge, self.text[i])
+                        self.remaining -= 1
+                        if self.active_node != self.root:
+                            self.active_node = self.active_node.link
+                        else:
+                            self.active_length -= 1
+                            self.active_edge += 1
+
+                        # Create Suffix Link
+                        if last_internal_node is not None:
+                            last_internal_node.link = node
+
+                        last_internal_node = node
+                    else:
+                        # Rule 2: Split edge with new internal node and create new edge
+
+                        edge = self.active_point()
+                        internal_node = edge.split(self.active_length)
+                        leaf_node = Node(i, None)
+                        new_edge = Edge(i, self.current_end, leaf_node, self)
+                        edge.destination.add_edge(new_edge, self.text[i])
+                        self.remaining -= 1
+                        if self.active_node != self.root:
+                            self.active_node = self.active_node.link
+                        else:
+                            self.active_length -= 1
+                            self.active_edge += 1
+
+                        # Create Suffix Link
+                        if last_internal_node is not None:
+                            last_internal_node.link = internal_node
+
+                        last_internal_node = internal_node
+
+                except EndOfPathException:
+                    # Rule 2: Add new edge to node
+                    node = self.active_node
+                    edge = node.search(self.text[self.active_edge])
                     leaf_node = Node(i, None)
                     new_edge = Edge(i, self.current_end, leaf_node, self)
                     edge.destination.add_edge(new_edge, self.text[i])
@@ -185,30 +209,30 @@ class SuffixTree:
 
                     # Create Suffix Link
                     if last_internal_node is not None:
-                        last_internal_node.link = internal_node
+                        last_internal_node.link = node
 
-                    last_internal_node = internal_node
+                    last_internal_node = node
 
-    def next_char(self, index: int) -> str:
+    def next_char(self, index: int) -> Optional[str]:
         """Return the next character in the active edge from the tree's active point."""
         edge = self.active_point()
+        if edge is None:
+            return None
         # In edge path
         if len(edge) >= self.active_length:
             return self.text[edge.start + self.active_length]
         else:
-            if self.active_node == self.root:
-                # not in current edge
-                self.active_node = edge.destination
-                new_edge = self.active_node.search(self.text[index])
-                # update active node, edge and length and search again.
-                if new_edge is not None:
-                    self.active_length = self.active_length - len(edge) - 1
-                    self.active_edge = new_edge.start
-                    return self.text[self.active_point().start]
-                else:
-                    print('')
+            if len(edge) + 1 == self.active_length:
+                if edge.destination.search(self.text[index]) is not None:
+                    return self.text[index]
+                raise EndOfPathException
             else:
-                return self.text[edge.start + self.active_length]
+                # not in current edge
+                # update active node, edge and length.
+                self.active_node = edge.destination
+                self.active_length = self.active_length - len(edge) - 1
+                self.active_edge = self.active_edge + len(edge) + 1
+                return self.next_char(index)
 
     def active_point(self) -> 'Edge':
         return self.active_node.search(self.text[self.active_edge])
