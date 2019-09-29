@@ -60,21 +60,6 @@ class Graph:
 
         return finalised, vertices
 
-    @staticmethod
-    def backtrack_path(finalised_heap, source, target, reverse=True):
-        """Backtrack to find path"""
-        path = []
-        current = target
-        while current != source:
-            for item in finalised_heap:
-                if item[0] == current:
-                    path.append(item[0])
-                    current = item[2]
-        path.append(source)
-        if reverse:
-            path = list(reversed(path))
-        return path
-
 
 def file_in_current_dir(filename: str) -> str:
     """Load file from current directory."""
