@@ -7,7 +7,7 @@ class TestLCPS:
     def test_generate_suffix_tree_simple_lecture(self):
         """Generate simple tree using lecture example."""
         text = 'abba'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
         assert tree.n == 4
         assert tree.text == text
         root_edges = tree.root.filtered_edges
@@ -25,7 +25,7 @@ class TestLCPS:
     def test_suffix_tree_simple(self):
         """Test naively generating a suffix tree."""
         text = 'abc'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
         assert len(tree.root.filtered_edges) == 3
         assert tree.root.filtered_edges[0].label == 'abc'
         assert tree.root.filtered_edges[1].label == 'bc'
@@ -34,12 +34,12 @@ class TestLCPS:
     def test_generate_suffix_tree_simple_repetitions(self):
         """Test generating suffix tree with simple repetitions."""
         text = 'abcabxabcd'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
 
     def test_generate_suffix_tree(self):
         """Test generating a suffix tree."""
         text = 'banana'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
         edges = tree.root.filtered_edges
         assert len(edges) == 3
         assert edges[0].label == 'anana'
@@ -49,7 +49,7 @@ class TestLCPS:
     def test_generate_suffix_tree_2(self):
         """Test generating a suffix tree."""
         text = 'mississippi'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
         edges = tree.root.filtered_edges
         assert len(edges) == 4
         assert edges[0].label == 'i'
@@ -88,14 +88,14 @@ class TestLCPS:
     def test_generate_suffix_tree_3(self):
         """Test generating a suffix tree."""
         text = 'GATAGACA'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
         edges = tree.root.filtered_edges
         assert len(edges) == 4
 
     def test_generate_suffix_tree_4(self):
         """Test generating a suffix tree."""
         text = 'aabbabaa'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
         edges = tree.root.filtered_edges
         assert len(edges) == 2
 
@@ -203,4 +203,4 @@ class TestLCPS:
     def test_generate_suffix_tree_5(self):
         """Test generating a suffix tree."""
         text = 'mississi$'
-        tree = lcps.generate_suffix_tree(text)
+        tree = lcps.SuffixTree(text)
