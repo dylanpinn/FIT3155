@@ -1,5 +1,7 @@
-"""Lowest Common Prefix Common to the suffixes."""
+#!/usr/bin/env python3
 
+"""Lowest Common Prefix Common to the suffixes."""
+import sys
 from typing import List, Optional, Union
 
 ALPHABET_SIZE = 256
@@ -278,3 +280,26 @@ class SuffixTree:
             leaf = self._dfs_for_lcps(child_edge, index, index_offset)
             if leaf is not None:
                 return leaf
+
+
+if __name__ == "__main__":
+    # executed directly
+    input_text = open(sys.argv[1], 'r')
+    pairs_file = open(sys.argv[2], 'r')
+    text = input_text.read()
+    text = text.rstrip() + '$'
+    tree = SuffixTree(text)
+
+    output_file = open('output_lcps.txt', 'w')
+    line = pairs_file.readline()
+    while line:
+        line = line.rstrip()
+        values = line.split()
+        if len(values) == 2:
+            i, j = values[0], values[1]
+            res = tree.find_lcps(int(i), int(j), 1)
+            output_file.write(f'{i} {j} {res}\n')
+
+        line = pairs_file.readline()
+
+    output_file.close()
