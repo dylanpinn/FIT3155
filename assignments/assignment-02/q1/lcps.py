@@ -35,6 +35,7 @@ class RootNode:
 
 class Node(RootNode):
     """A node in the tree that can have an index and suffix link."""
+    edge: 'Edge'
 
     def __init__(self, index: int = None, link: Union['Node', 'RootNode'] = None):
         super().__init__()
@@ -48,16 +49,20 @@ class Node(RootNode):
 class Edge:
     """An edge in the suffix tree."""
 
-    def __init__(self, start: int, end: Union[int, 'GlobalEnd'], destination: 'Node', tree: 'SuffixTree'):
+    def __init__(self, start: int, end: Union[int, 'GlobalEnd'], destination: 'Node',
+                 tree: 'SuffixTree', beginning: Union['RootNode', 'Node']):
         self.start = start
         self.end = end
         self.destination = destination
+        self.beginning = beginning
         self.tree = tree
 
     def split(self, index: int) -> 'Node':
         """Split the edge at an index to create a new internal node and new edge to the previous end."""
         internal_node = Node(None, self.tree.root)
-        new_edge = Edge(self.start + index, self.end, self.destination, self.tree)
+        internal_node.edge = self
+        new_edge = Edge(self.start + index, self.end, self.destination, self.tree, internal_node)
+        self.destination.edge = new_edge
         self.end = self.start + index - 1
         self.destination = internal_node
         internal_node.add_edge(new_edge, self.tree.text[self.start + index])
@@ -106,7 +111,8 @@ class SuffixTree:
 
     def add_new_edge_to_active_node(self, start: int):
         node = Node(start)
-        edge = Edge(start, self.current_end, node, self)
+        edge = Edge(start, self.current_end, node, self, self.active_node)
+        node.edge = edge
         self.active_node.add_edge(edge, self.text[start])
 
     def build(self):
@@ -155,7 +161,8 @@ class SuffixTree:
                         edge = self.active_point()
                         internal_node = edge.split(self.active_length)
                         leaf_node = Node(i, None)
-                        new_edge = Edge(i, self.current_end, leaf_node, self)
+                        new_edge = Edge(i, self.current_end, leaf_node, self, edge.destination)
+                        leaf_node.edge = new_edge
                         edge.destination.add_edge(new_edge, self.text[i])
                         self.remaining -= 1
                         if self.active_node != self.root:
@@ -175,7 +182,8 @@ class SuffixTree:
                     node = self.active_node
                     edge = node.search(self.text[self.active_edge])
                     leaf_node = Node(i, None)
-                    new_edge = Edge(i, self.current_end, leaf_node, self)
+                    new_edge = Edge(i, self.current_end, leaf_node, self, edge.destination)
+                    leaf_node.edge = new_edge
                     edge.destination.add_edge(new_edge, self.text[i])
                     self.remaining -= 1
                     if self.active_node != self.root:
@@ -232,9 +240,41 @@ class SuffixTree:
             for child_edge in destination.filtered_edges:
                 self._update_index(child_edge, value, size)
 
+    def find_lcps(self, i: int, j: int, index_offset: int = 1) -> int:
+        """Find longest prefix common to the suffixes starting at position i and j."""
+        result = 0
+        j_edge, i_edge = None, None
+        if i + index_offset > self.n or j + index_offset > self.n:
+            return result
+        # find each index node
+        for edge in self.root.filtered_edges:
+            if i_edge is not None:
+                break
+            i_edge = self._dfs_for_lcps(edge, i, index_offset)
+        for edge in self.root.filtered_edges:
+            if j_edge is not None:
+                break
+            j_edge = self._dfs_for_lcps(edge, j, index_offset)
+        # find common ancestor to both
+        i_parent, j_parent = i_edge.beginning, j_edge.beginning
+        while i_parent != j_parent:
+            if i_parent != self.root:
+                i_parent = i_parent.edge.beginning
+            if j_parent != self.root:
+                j_parent = j_parent.edge.beginning
 
-def generate_suffix_tree(text: str):
-    """Generate suffix tree."""
-    tree = SuffixTree(text)
+        while i_parent is not self.root:
+            result += len(i_parent.edge) + 1
+            i_parent = i_parent.edge.beginning
 
-    return tree
+        # count from common ancestor to root
+        return result
+
+    def _dfs_for_lcps(self, edge: 'Edge', index: int, index_offset: int):
+        if edge.destination.index == index - index_offset:
+            return edge
+
+        for child_edge in edge.destination.filtered_edges:
+            leaf = self._dfs_for_lcps(child_edge, index, index_offset)
+            if leaf is not None:
+                return leaf

@@ -204,3 +204,12 @@ class TestLCPS:
         """Test generating a suffix tree."""
         text = 'mississi$'
         tree = lcps.SuffixTree(text)
+
+    def test_find_lcps(self):
+        """Test generating a suffix tree."""
+        text = 'mississippi$'
+        tree = lcps.SuffixTree(text)
+        assert tree.find_lcps(8, 11) == 1
+        assert tree.find_lcps(2, 5) == 4
+        assert tree.find_lcps(1, 5) == 0
+        assert tree.find_lcps(4, 7) == 2
