@@ -9,17 +9,8 @@ class EndOfPathException(Exception):
     pass
 
 
-def generate_suffixes(text: str) -> List[str]:
-    """Generate a list of suffixes for a given text."""
-    n = len(text)
-    suffixes = []
-    for i in range(0, n):
-        suffixes.append(text[i:n])
-    return suffixes
-
-
 class RootNode:
-    """A node in the suffix tree."""
+    """The Root Node in the suffix tree."""
     edges: List[Optional['Edge']]
 
     def __init__(self):
@@ -31,19 +22,20 @@ class RootNode:
 
     def search(self, char: str) -> Optional['Edge']:
         """Search for the edge for the node."""
-        if isinstance(char, str):
-            return self.edges[ord(char)]
-        print('')
+        return self.edges[ord(char)]
 
     def __repr__(self):
         return 'RootNode'
 
     @property
     def filtered_edges(self):
+        """Get a list of edges that have values."""
         return list(filter(lambda x: isinstance(x, Edge), self.edges))
 
 
 class Node(RootNode):
+    """A node in the tree that can have an index and suffix link."""
+
     def __init__(self, index: int = None, link: Union['Node', 'RootNode'] = None):
         super().__init__()
         self.index = index
@@ -63,6 +55,7 @@ class Edge:
         self.tree = tree
 
     def split(self, index: int) -> 'Node':
+        """Split the edge at an index to create a new internal node and new edge to the previous end."""
         internal_node = Node(None, self.tree.root)
         new_edge = Edge(self.start + index, self.end, self.destination, self.tree)
         self.end = self.start + index - 1
@@ -73,6 +66,7 @@ class Edge:
 
     @property
     def label(self):
+        """Show the label for the edge."""
         return self.tree.text[self.start:int(self.end) + 1]
 
     def __len__(self):
@@ -99,7 +93,7 @@ class GlobalEnd:
 
 
 class SuffixTree:
-    def __init__(self, text):
+    def __init__(self, text: str):
         self.n = len(text)
         self.text = text
         self.root = RootNode()
@@ -108,19 +102,21 @@ class SuffixTree:
         self.active_node = self.root
         self.active_edge = -1
         self.remaining = 0
-        self.build2()
+        self.build()
 
-    def add_new_edge_to_active_node(self, start):
+    def add_new_edge_to_active_node(self, start: int):
         node = Node(start)
         edge = Edge(start, self.current_end, node, self)
         self.active_node.add_edge(edge, self.text[start])
 
-    def build2(self):
+    def build(self):
+        """Build suffix tree using Ukkonen's algorithm."""
         for i in range(0, self.n):
             self._phase(i)
         self.update_indices(self.root, 0, self.n)
 
-    def _phase(self, i):
+    def _phase(self, i: int):
+        """Do work for each phase in building the tree."""
         self.remaining += 1
         self.current_end.increment()  # Rule 1 Extension.
         last_internal_node = None
@@ -145,7 +141,6 @@ class SuffixTree:
                         edge = self.active_point()
                         # if it is past next node then update
                         if len(edge) < self.active_length:
-                            # if len(edge) == self.active_length:
                             # Update active edge
                             self.active_node = edge.destination
                             self.active_length = self.active_length - len(edge)
@@ -154,24 +149,6 @@ class SuffixTree:
                         else:
                             self.active_length += 1
                         break  # Phase 3: Show stopper - end phase
-                    elif next_char is None:
-                        # Rule 2: Add new edge to node
-                        node = self.active_node
-                        leaf_node = Node(i, None)
-                        new_edge = Edge(i, self.current_end, leaf_node, self)
-                        node.add_edge(new_edge, self.text[i])
-                        self.remaining -= 1
-                        if self.active_node != self.root:
-                            self.active_node = self.active_node.link
-                        else:
-                            self.active_length -= 1
-                            self.active_edge += 1
-
-                        # Create Suffix Link
-                        if last_internal_node is not None:
-                            last_internal_node.link = node
-
-                        last_internal_node = node
                     else:
                         # Rule 2: Split edge with new internal node and create new edge
 
@@ -216,8 +193,6 @@ class SuffixTree:
     def next_char(self, index: int) -> Optional[str]:
         """Return the next character in the active edge from the tree's active point."""
         edge = self.active_point()
-        if edge is None:
-            return None
         # In edge path
         if len(edge) >= self.active_length:
             return self.text[edge.start + self.active_length]
@@ -235,9 +210,11 @@ class SuffixTree:
                 return self.next_char(index)
 
     def active_point(self) -> 'Edge':
+        """Return the active edge."""
         return self.active_node.search(self.text[self.active_edge])
 
     def update_indices(self, root: 'RootNode', value: int, size: int):
+        """Use DFS Traversal to update all of the leaf indices."""
         if root is None:
             return
 
@@ -245,7 +222,8 @@ class SuffixTree:
         for edge in edges:
             self._update_index(edge, value, size)
 
-    def _update_index(self, edge, value, size):
+    def _update_index(self, edge: 'Edge', value: int, size: int):
+        """"Update the index for an edge."""
         value += len(edge) + 1
         destination = edge.destination
         if len(destination.filtered_edges) == 0:

@@ -4,12 +4,6 @@ import lcps
 
 
 class TestLCPS:
-    def test_generate_suffixes(self):
-        """Test generating suffixes for a given text."""
-        text = 'banana$'
-        expected = ['banana$', 'anana$', 'nana$', 'ana$', 'na$', 'a$', '$']
-        assert lcps.generate_suffixes(text) == expected
-
     def test_generate_suffix_tree_simple_lecture(self):
         """Generate simple tree using lecture example."""
         text = 'abba'
