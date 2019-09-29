@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-"""Lowest Common Prefix Common to the suffixes."""
+"""Lowest Common Prefix Common to the suffixes.
+
+FIT3155 - Assignment 2.
+Dylan Pinn 24160547
+"""
 import sys
 from typing import List, Optional, Union
 
@@ -39,7 +43,8 @@ class Node(RootNode):
     """A node in the tree that can have an index and suffix link."""
     edge: 'Edge'
 
-    def __init__(self, index: int = None, link: Union['Node', 'RootNode'] = None):
+    def __init__(self, index: int = None,
+                 link: Union['Node', 'RootNode'] = None):
         super().__init__()
         self.index = index
         self.link = link
@@ -51,7 +56,8 @@ class Node(RootNode):
 class Edge:
     """An edge in the suffix tree."""
 
-    def __init__(self, start: int, end: Union[int, 'GlobalEnd'], destination: 'Node',
+    def __init__(self, start: int, end: Union[int, 'GlobalEnd'],
+                 destination: 'Node',
                  tree: 'SuffixTree', beginning: Union['RootNode', 'Node']):
         self.start = start
         self.end = end
@@ -60,10 +66,13 @@ class Edge:
         self.tree = tree
 
     def split(self, index: int) -> 'Node':
-        """Split the edge at an index to create a new internal node and new edge to the previous end."""
+        """Split the edge at an index to create a new internal node
+        and new edge to the previous end.
+        """
         internal_node = Node(None, self.tree.root)
         internal_node.edge = self
-        new_edge = Edge(self.start + index, self.end, self.destination, self.tree, internal_node)
+        new_edge = Edge(self.start + index, self.end, self.destination,
+                        self.tree, internal_node)
         self.destination.edge = new_edge
         self.end = self.start + index - 1
         self.destination = internal_node

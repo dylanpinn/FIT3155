@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-"""Dijkstra shortest path using Fibonacci Heap."""
+"""Dijkstra shortest path using Fibonacci Heap.
+
+FIT3155 - Assignment 2.
+Dylan Pinn 24160547
+"""
 import math
 import os
 import sys
