@@ -52,7 +52,7 @@ class FibonacciHeap:
                 self.consolidate()
             self.size -= 1
 
-        return min_node.key
+        return min_node
 
     def consolidate(self):
         """Consolidate Heap."""

@@ -3,7 +3,7 @@
 import node as n
 
 
-class TestNode:
+class TestLabNode:
     """Test Node implementation."""
 
     def test_initial_mark(self):
