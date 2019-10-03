@@ -11,9 +11,9 @@ take n and p as arguments to write out a random string to a file
 Dylan Pinn - 24160547
 """
 
-from random import choice
+from numpy.random import choice
 
 
 def generate(n, p):
-    string = ''.join(choice(['H', 'T']) for i in range(n))
+    string = ''.join(choice(['H', 'T'], n, p=[p, (1-p)]))
     return string
