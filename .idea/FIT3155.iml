@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/assignments/assignment-02/q1" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/assignments/assignment-02/q2" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/labs/lab-01" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/labs/lab-10" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.github" />
       <excludeFolder url="file://$MODULE_DIR$/.pytest_cache" />
       <excludeFolder url="file://$MODULE_DIR$/.vscode" />
