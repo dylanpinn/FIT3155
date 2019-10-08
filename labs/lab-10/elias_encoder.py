@@ -3,7 +3,15 @@ FIT3155 - Lab 10 - Task 1
 """
 
 
-def encode(number_to_encode):
+def encode(numbers_to_encode):
+    result = ""
+    for number in numbers_to_encode:
+        result += encode_single_value(number)
+
+    return (len(numbers_to_encode), result)
+
+
+def encode_single_value(number_to_encode):
     # Convert to binary string
     n = convert_to_binary(number_to_encode)
 
