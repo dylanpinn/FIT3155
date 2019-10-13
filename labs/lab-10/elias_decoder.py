@@ -22,3 +22,10 @@ def decode_single_value(codeword):
 
 def convert_to_decimal(binary_string: str):
     return int(binary_string, 2)
+
+
+def decode(codewords):
+    result = []
+    for codeword in codewords:
+        result.append(decode_single_value(codeword))
+    return result

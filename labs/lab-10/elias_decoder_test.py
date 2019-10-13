@@ -5,12 +5,19 @@ class TestEliasDecoder:
     def test_from_lecture_slides(self):
         """Test using example from lecture slides."""
         expected = 561
-        assert elias_decoder.decode_single_value('00100011000110001') == expected
+        assert elias_decoder.decode_single_value("00100011000110001") == expected
 
-    # def test_multiple_values(self):
-    #     expected = '0010001100011000100100011000110001'
-    #     assert elias_encoder.encode([561, 561]) == (2, expected)
-    #
-    # def test_multiple_values_2(self):
-    #     expected = '001000110001100010010001100011000100000010000'
-    #     assert elias_encoder.encode([561, 561, 16]) == (3, expected)
+    def test_multiple_values(self):
+        expected = [561, 561]
+        assert (
+            elias_decoder.decode(["00100011000110001", "00100011000110001"]) == expected
+        )
+
+    def test_multiple_values_2(self):
+        expected = [561, 561, 16]
+        assert (
+            elias_decoder.decode(
+                ["00100011000110001", "00100011000110001", "00000010000"]
+            )
+            == expected
+        )
