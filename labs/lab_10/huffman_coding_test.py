@@ -16,3 +16,7 @@ class TestHuffmanCoding:
         assert result["_"] == 10
         assert result["D"] == 10
         assert result["A"] == 11
+
+    def test_huffman(self):
+        code = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
+        result = huffman_coding.huffman(code)

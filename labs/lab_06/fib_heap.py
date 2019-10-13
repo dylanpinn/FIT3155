@@ -1,13 +1,14 @@
 """Fibonacci Heap."""
 
 import math
-from typing import List, Union, Optional
+from typing import List, Union, Optional, Tuple
 
 from node import Node
 
 
 class FibonacciHeap:
     """Fibonacci Heap using double linked list."""
+
     root_nodes: Optional[Node]
     min: Optional[Node]
     size: int
@@ -17,9 +18,9 @@ class FibonacciHeap:
         self.min = None
         self.size = 0
 
-    def insert(self, item: Union[str, Union[int, float]]):
+    def insert(self, key: Union[str, Union[int, float]], items: Tuple = None):
         """Insert item into heap."""
-        node = Node(item)
+        node = Node(key, items)
         # list is empty
         if self.min is None:
             self.root_nodes = node
@@ -30,7 +31,7 @@ class FibonacciHeap:
                 self.min = node
         self.size += 1
 
-    def extract_min(self) -> Union[str, Union[int, float]]:
+    def extract_min(self) -> Node:
         """Extract min value from heap."""
         min_node = self.min
         if min_node is not None:
@@ -59,7 +60,7 @@ class FibonacciHeap:
         aux_size = self.__sizeof_aux_array()
         aux_array: List[Optional[Node]] = [None] * aux_size
         nodes = list(self.root_nodes)
-        nodes = nodes[nodes.index(self.min):] + nodes[:nodes.index(self.min)]
+        nodes = nodes[nodes.index(self.min) :] + nodes[: nodes.index(self.min)]
         for w in nodes:
             x: Node = w
             d = x.degree
@@ -108,7 +109,7 @@ class FibonacciHeap:
         """Return size of auxiliary array used for consolidate."""
         return math.ceil(math.log2(self.size))
 
-    def merge(self, heap2: 'FibonacciHeap') -> 'FibonacciHeap':
+    def merge(self, heap2: "FibonacciHeap") -> "FibonacciHeap":
         """Merge two Fibonacci Heaps"""
         new_heap = FibonacciHeap()
         new_heap.min = self.min
@@ -124,7 +125,9 @@ class FibonacciHeap:
             new_heap.root_nodes = self.root_nodes
             new_heap.root_nodes.merge(heap2.root_nodes)
 
-        if (self.min is None) or (heap2.min is not None and heap2.min.key < self.min.key):
+        if (self.min is None) or (
+            heap2.min is not None and heap2.min.key < self.min.key
+        ):
             new_heap.min = heap2.min
         new_heap.size = self.size + heap2.size
         return new_heap
@@ -160,5 +163,8 @@ class FibonacciHeap:
 
     def delete(self, node: Node):
         """Delete a node from the heap"""
-        self.decrease_key(node, float('-inf'))
+        self.decrease_key(node, float("-inf"))
         self.extract_min()
+
+    def is_empty(self):
+        return self.size == 0
