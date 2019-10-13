@@ -14,13 +14,12 @@ def encoder(code: str, window_size: int, buffer_size: int):
     pass
 
 
-def encode_header(code):
+def encode_header(code, huffman_values) -> str:
     header = ""
     unique_chars = huffman_coding.unique_chars(code)
     # Encode the number of unique values in the input txt
     header += elias_encoder.encode_single_value(len(unique_chars))
-    huffman_values = huffman_coding.encoded_values(code)[0]
-    for val in unique_chars:
+    for val in sorted(unique_chars):
         # Encode the 8-bit ASCII code
         header += convert_to_8_bit_acii(val)
         huff_code = huffman_values[val]
@@ -34,3 +33,9 @@ def encode_header(code):
 
 def convert_to_8_bit_acii(char: str) -> str:
     return "{0:0=8d}".format(int(bin(ord(char))[2:]))
+
+
+def encode_data(code: str, window_size: int, buffer_size: int) -> str:
+    data = ""
+
+    return data
