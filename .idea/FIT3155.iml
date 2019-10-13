@@ -2,15 +2,15 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment-01/q1" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment-01/q2" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment-01/q3" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment01/q1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment01/q2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment01/q3" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/labs/lab-06/task-01" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment-02/q1" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment-02/q2" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/labs/lab_01" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/labs/lab_10" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/labs/lab_06" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment02/q1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assignments/assignment02/q2" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/labs/lab01" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/labs/lab10" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/labs/lab06" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.github" />
       <excludeFolder url="file://$MODULE_DIR$/.pytest_cache" />
       <excludeFolder url="file://$MODULE_DIR$/.vscode" />
