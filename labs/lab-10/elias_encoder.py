@@ -8,7 +8,7 @@ def encode(numbers_to_encode):
     for number in numbers_to_encode:
         result += encode_single_value(number)
 
-    return (len(numbers_to_encode), result)
+    return len(numbers_to_encode), result
 
 
 def encode_single_value(number_to_encode):
