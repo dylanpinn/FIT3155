@@ -9,7 +9,7 @@ def decode_single_value(codeword):
     while True:
         component = codeword[pos : pos + read_len]
         if component[0] == "1":
-            return convert_to_decimal(component)
+            return convert_to_decimal(component[: len(component)])
         else:
             # flip first bit of binary string
             encoded_list = list(component)

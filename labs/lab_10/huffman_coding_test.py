@@ -1,5 +1,13 @@
-import elias_encoder
+import random
+import string
+
 import huffman_coding
+
+
+def random_string(string_length=10):
+    """Generates a random string of a fixed length."""
+    chars = string.ascii_letters + string.digits
+    return "".join(random.choice(chars) for _ in range(string_length))
 
 
 class TestHuffmanCoding:
@@ -20,13 +28,23 @@ class TestHuffmanCoding:
 
     def test_huffman(self):
         code = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
-        result = ""
-        res = huffman_coding.unique_chars(code)
-        result += elias_encoder.encode_single_value(len(res))
-        for val in res:
-            result += elias_encoder.encode_single_value(res[val])
-            result += "{0:0=3d}".format(ord(val))
-        result += elias_encoder.encode_single_value(len(code))
+        result = huffman_coding.encode_header(code)
         result += huffman_coding.encode(code)
         decoded_value = huffman_coding.decode(result)
         assert decoded_value == "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
+
+    def test_more(self):
+        codes = ["ao"]
+        for code in codes:
+            result = huffman_coding.encode_header(code)
+            result += huffman_coding.encode(code)
+            decoded_value = huffman_coding.decode(result)
+            assert decoded_value == code
+
+    def test_random(self):
+        for i in range(2, 1000):
+            code = random_string(random.randint(1, i))
+            result = huffman_coding.encode_header(code)
+            result += huffman_coding.encode(code)
+            decoded_value = huffman_coding.decode(result)
+            assert decoded_value == code

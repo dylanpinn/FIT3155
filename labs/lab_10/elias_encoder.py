@@ -26,9 +26,10 @@ def encode_single_value(number_to_encode):
         l_values.append(encoded_l_x)
         l_x = len(encoded_l_x) - 1
 
-    # Add value for 1
-    l_values.append("0")
-    l_values.reverse()
+    if number_to_encode > 1:
+        # Add value for 1
+        l_values.append("0")
+        l_values.reverse()
 
     # Join length values with actual value.
     return "".join(l_values) + n

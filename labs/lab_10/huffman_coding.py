@@ -24,13 +24,27 @@ def unique_chars(code: str) -> Counter:
     return Counter(code)
 
 
+def encode_header(code):
+    res = unique_chars(code)
+    # Total number of unique characters
+    result = elias_encoder.encode_single_value(len(res))
+    for val in res:
+        # Frequency of each character
+        result += elias_encoder.encode_single_value(res[val])
+        # ASCII code of character padded to 3 digits.
+        result += "{0:0=3d}".format(ord(val))
+    # Total number of characters in the input file.
+    result += elias_encoder.encode_single_value(len(code))
+    return result
+
+
 def encode(code):
     unique = unique_chars(code)
     heap = []
-    root = None
     for val in unique:
         node = Node(val, unique[val])
         heapq.heappush(heap, node)
+    root = heap[0]
     while len(heap) > 1:
         min1: Node = heapq.heappop(heap)
         min2: Node = heapq.heappop(heap)
@@ -79,10 +93,10 @@ def decode(code):
     code = code[len(total_chars_encoded) :]
 
     heap = []
-    root = None
     for val in frequencies:
         node = Node(val, frequencies[val])
         heapq.heappush(heap, node)
+    root = heap[0]
 
     while len(heap) > 1:
         min1: Node = heapq.heappop(heap)
