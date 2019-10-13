@@ -21,7 +21,7 @@ def encode_header(code, huffman_values) -> str:
     header += elias_encoder.encode_single_value(len(unique_chars))
     for val in sorted(unique_chars):
         # Encode the 8-bit ASCII code
-        header += convert_to_8_bit_acii(val)
+        header += convert_to_8_bit_ascii(val)
         huff_code = huffman_values[val]
         # Encode the length of the Huffman code
         header += elias_encoder.encode_single_value(len(huff_code))
@@ -31,7 +31,7 @@ def encode_header(code, huffman_values) -> str:
     return header
 
 
-def convert_to_8_bit_acii(char: str) -> str:
+def convert_to_8_bit_ascii(char: str) -> str:
     return "{0:0=8d}".format(int(bin(ord(char))[2:]))
 
 
