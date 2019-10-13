@@ -1,5 +1,5 @@
-import huffman_coding
 import elias_encoder
+import huffman_coding
 
 
 class TestHuffmanCoding:
@@ -25,9 +25,8 @@ class TestHuffmanCoding:
         result += elias_encoder.encode_single_value(len(res))
         for val in res:
             result += elias_encoder.encode_single_value(res[val])
-            result += str(ord(val))
+            result += "{0:0=3d}".format(ord(val))
         result += elias_encoder.encode_single_value(len(code))
         result += huffman_coding.encode(code)
-
         decoded_value = huffman_coding.decode(result)
-        print(result)
+        assert decoded_value == "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
