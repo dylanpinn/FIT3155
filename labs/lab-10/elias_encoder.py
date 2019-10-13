@@ -21,13 +21,13 @@ def encode_single_value(number_to_encode):
         encoded_l_x = convert_to_binary(l_x)
         # flip first bit of binary string
         encoded_l_x_list = list(encoded_l_x)
-        encoded_l_x_list[0] = '0'
+        encoded_l_x_list[0] = "0"
         encoded_l_x = "".join(encoded_l_x_list)
         l_values.append(encoded_l_x)
         l_x = len(encoded_l_x) - 1
 
     # Add value for 1
-    l_values.append('0')
+    l_values.append("0")
     l_values.reverse()
 
     # Join length values with actual value.
