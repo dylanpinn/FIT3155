@@ -1,32 +1,35 @@
 """Node to be used in double linked list in Fib Heap."""
 
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 
 
 class Node:
     """Fibonacci Heap Linked List Node."""
+
     key: Union[str, Union[int, float]]
     mark: bool
     degree: int
-    parent: Optional['Node']
-    prev: Optional['Node']
-    next: Optional['Node']
-    child: Optional['Node']
+    parent: Optional["Node"]
+    items: Optional[Tuple]
+    prev: Optional["Node"]
+    next: Optional["Node"]
+    child: Optional["Node"]
 
-    def __init__(self, item: Union[str, Union[int, float]]):
-        self.key = item
+    def __init__(self, key: Union[str, Union[int, float]], items: Tuple = None):
+        self.key = key
+        self.items = items
         self.mark = False
         self.degree = 0
         self.parent = self.child = None
         self.prev = self.next = self
 
-    def children(self) -> iter('Node'):
+    def children(self) -> iter("Node"):
         """Iterate of the nodes children."""
         if self.child is None:
             return []
         return list(self.child)
 
-    def create_child(self, node: 'Node'):
+    def create_child(self, node: "Node"):
         """Make a node a child of the current node."""
         node.parent = self
         if self.child is not None:
@@ -35,14 +38,14 @@ class Node:
             self.child = node
             self.degree = 1
 
-    def insert(self, node: 'Node'):
+    def insert(self, node: "Node"):
         """Insert new node into double circular linked list."""
         node.next = self.next
         node.prev = self
         self.next.prev = node
         self.next = node
 
-    def remove(self) -> Optional['Node']:
+    def remove(self) -> Optional["Node"]:
         """Remove a node from a double circular linked list return the next item in the list."""
         # if only item in list then remove and return None
         if self.prev == self and self.next == self:
@@ -52,7 +55,7 @@ class Node:
         next_node = self.next
         return next_node
 
-    def merge(self, node: 'Node'):
+    def merge(self, node: "Node"):
         """Merge two lists together."""
         self.next.prev = node.prev
         node.prev.next = self.next

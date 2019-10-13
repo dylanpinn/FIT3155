@@ -1,10 +1,11 @@
 {
   "python.linting.enabled": true,
   "python.linting.flake8Enabled": true,
-  "python.pythonPath": "/Users/dylan/.pyenv/shims/python",
+  "python.pythonPath": "/Users/dylan/.pyenv/versions/fit3155/bin/python",
   "python.testing.pytestArgs": ["."],
   "python.testing.unittestEnabled": false,
   "python.testing.nosetestsEnabled": false,
   "python.testing.pytestEnabled": true,
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "python.linting.pylintEnabled": false
 }
