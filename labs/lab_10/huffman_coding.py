@@ -21,7 +21,7 @@ def unique_chars(code: str) -> Counter:
     return Counter(code)
 
 
-def huffman(code):
+def encode(code):
     unique = unique_chars(code)
     heap = []
     for val in unique:
@@ -52,3 +52,7 @@ def calculate_string(node: Node, string: str, dict: dict):
 
     calculate_string(node.left, string + "0", dict)
     calculate_string(node.right, string + "1", dict)
+
+
+def decode(code):
+    pass

@@ -1,4 +1,5 @@
 import huffman_coding
+import elias_encoder
 
 
 class TestHuffmanCoding:
@@ -19,4 +20,14 @@ class TestHuffmanCoding:
 
     def test_huffman(self):
         code = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
-        result = huffman_coding.huffman(code)
+        result = ""
+        res = huffman_coding.unique_chars(code)
+        result += elias_encoder.encode_single_value(len(res))
+        for val in res:
+            result += elias_encoder.encode_single_value(res[val])
+            result += str(ord(val))
+        result += elias_encoder.encode_single_value(len(code))
+        result += huffman_coding.encode(code)
+
+        decoded_value = huffman_coding.decode(result)
+        print(result)
