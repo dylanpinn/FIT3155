@@ -16,7 +16,7 @@
       <excludeFolder url="file://$MODULE_DIR$/assignments/.pytest_cache" />
       <excludeFolder url="file://$MODULE_DIR$/assignments/assignment-01/q1/.pytest_cache" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.7" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (fit3155)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
