@@ -36,6 +36,7 @@ class LZSSEncoder:
     def encode_data(self):
         data = ""
         encoding = self.lz77_encoding()
+        print(encoding)
 
         return data
 
@@ -67,17 +68,6 @@ class LZSSEncoder:
             i += val[1] + 1
         return encoding
 
-    def find_prefix(self, current_position: int):
-        end_of_search = current_position + self.buffer_size
-        longest_match = ()
-        start_position = max(0, current_position - self.window_size)
-
-        for i in range(current_position, start_position, -1):
-            for j in range(current_position, end_of_search):
-                if self.code[i - 1] != self.code[j]:
-                    break
-                longest_match = (i - j + 1, i - j + 1, self.code[i + 1])
-
-        if longest_match:
-            return longest_match
-        return False
+    def find_prefix(self, index: int):
+        # Use z-algorithm to find longest prefix that matches.
+        return
