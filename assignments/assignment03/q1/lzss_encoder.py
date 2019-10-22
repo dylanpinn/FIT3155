@@ -8,6 +8,7 @@ Dylan Pinn 24160547
 
 import elias_encoder
 import huffman_coding
+import z_algorithm
 
 
 class LZSSEncoder:
@@ -70,4 +71,34 @@ class LZSSEncoder:
 
     def find_prefix(self, index: int):
         # Use z-algorithm to find longest prefix that matches.
-        return
+        string = f"{self.__buffer(index)}"
+        string += f"🎓{self.__dict(index)}{self.__buffer(index)}"
+        print(string)
+        index_to_stop = self.buffer_size + 1 + len(self.__dict(index))
+        print(index_to_stop)
+        z_array = z_algorithm.find_z_array(string, index_to_stop)
+        print(z_array)
+        dist_from_index = 1
+        # TODO: Generate z_array starting at each character of dict.
+        # No matches on prefix
+        if z_array[self.buffer_size + 1] is None:
+            i = 0
+            l = 0
+            c = self.code[index]  # first char of input
+        else:
+            # Find max value in remaining z_array
+            remaining_list = z_array[self.buffer_size + 1 :]
+            max_val = max(list(filter(None.__ne__, remaining_list)))
+            i = dist_from_index  # distance to start of prefix
+            l = max_val  # length of the prefix
+            c = self.code[dist_from_index + 1]  # char following prefix in input
+            print(max_val)
+        return (i, l, c)
+
+    def __buffer(self, index: int) -> str:
+        """Return the current buffer from index."""
+        return self.code[index : index + self.buffer_size]
+
+    def __dict(self, index: int) -> str:
+        """The current dictionary from index."""
+        return self.code[max(0, index - self.window_size) : index]

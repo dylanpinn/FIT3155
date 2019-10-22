@@ -28,3 +28,7 @@ class TestLZSSEncoder:
         encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
         result = encoder.find_prefix(0)
         assert (0, 0, "a") == result
+        result = encoder.find_prefix(1)
+        assert (1, 1, "c") == result
+        result = encoder.find_prefix(3)
+        assert (3, 4, "b") == result

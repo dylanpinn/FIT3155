@@ -6,12 +6,17 @@ def find_match(string, right, left):
     return right < len(string) and string[right] == string[right - left]
 
 
-def find_z_array(string):
-    """Calculate Z-Array using Gusfield's Algorithm."""
+def find_z_array(string: str, index_to_stop=None):
+    """Calculate Z-Array using Gusfield's Algorithm.
+
+    Modified to optionally stop at an index.
+    """
     z_array = [None] * len(string)
     left, right = 0, 0
 
     for k in range(1, len(string)):
+        if k >= index_to_stop:
+            break
         if k > right:
             left = right = k
             while find_match(string, right, left):
