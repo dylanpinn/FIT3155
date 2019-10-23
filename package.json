@@ -19,6 +19,7 @@
     ],
     "*.{py}": [
       "black",
+      "isort",
       "flake8",
       "git add"
     ]
