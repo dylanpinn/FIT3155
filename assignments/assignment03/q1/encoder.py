@@ -4,8 +4,8 @@ FIT3155 Assigment 3
 Task 1
 """
 
-import huffman_coding
-import elias_encoder
+from . import elias_encoder
+from . import huffman_coding
 
 
 class Encoder:

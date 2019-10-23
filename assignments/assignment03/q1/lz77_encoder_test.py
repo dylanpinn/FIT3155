@@ -1,5 +1,6 @@
 import pytest
-import lz77_encoder
+
+from . import lz77_encoder
 
 
 class TestLZSSEncoder:

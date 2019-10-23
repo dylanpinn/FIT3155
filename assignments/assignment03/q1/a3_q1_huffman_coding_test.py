@@ -1,7 +1,7 @@
 import random
 import string
 
-import huffman_coding
+from . import huffman_coding
 
 
 def random_string(string_length=10):

@@ -1,4 +1,5 @@
-import z_algorithm
+# import z_algorithm
+from . import z_algorithm
 
 
 class TestZAlgorithm:

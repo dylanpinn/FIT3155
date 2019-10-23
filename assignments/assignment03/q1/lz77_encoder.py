@@ -9,7 +9,7 @@ Dylan Pinn 24160547
 LZSS Encoder
 """
 
-import z_algorithm
+from . import z_algorithm
 
 
 class LZSSEncoder:
