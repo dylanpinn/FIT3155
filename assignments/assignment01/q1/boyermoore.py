@@ -127,16 +127,16 @@ def match(pat, txt):
 
 
 def output_result(results):
-    output_name = 'output_boyermoore.txt'
-    with open(output_name, 'a') as file:
+    output_name = "output_boyermoore.txt"
+    with open(output_name, "a") as file:
         for line in results:
             file.write("%s\n" % line)
 
 
 if __name__ == "__main__":
     # executed directly
-    input_text = open(sys.argv[1], 'r')
-    pattern_text = open(sys.argv[2], 'r')
+    input_text = open(sys.argv[1], "r")
+    pattern_text = open(sys.argv[2], "r")
     text = input_text.read()
     pattern = pattern_text.read()
     text, pattern = text.rstrip(), pattern.rstrip()
