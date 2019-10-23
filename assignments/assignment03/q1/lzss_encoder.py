@@ -6,8 +6,6 @@ Semester 2 2019
 Dylan Pinn 24160547
 """
 
-import elias_encoder
-import huffman_coding
 import z_algorithm
 
 
@@ -16,36 +14,8 @@ class LZSSEncoder:
         self.code = code
         self.window_size = window_size
         self.buffer_size = buffer_size
-        self.huffman_values = huffman_coding.encoded_values(code)[0]
-
-    def encode_header(self) -> str:
-        header = ""
-        unique_chars = huffman_coding.unique_chars(self.code)
-        # Encode the number of unique values in the input txt
-        header += elias_encoder.encode_single_value(len(unique_chars))
-        for val in sorted(unique_chars):
-            # Encode the 8-bit ASCII code
-            header += self.convert_to_8_bit_ascii(val)
-            huff_code = self.huffman_values[val]
-            # Encode the length of the Huffman code
-            header += elias_encoder.encode_single_value(len(huff_code))
-            # Add the Huffman code
-            header += huff_code
-
-        return header
 
     def encode_data(self):
-        data = ""
-        encoding = self.lz77_encoding()
-        print(encoding)
-
-        return data
-
-    @staticmethod
-    def convert_to_8_bit_ascii(char: str) -> str:
-        return "{0:0=8d}".format(int(bin(ord(char))[2:]))
-
-    def lz77_encoding(self):
         i = 0
         encoding = []
         while i < len(self.code):
