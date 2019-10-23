@@ -2,7 +2,6 @@ import random
 import string
 
 import huffman_coding
-import lzss_encoder
 
 
 def random_string(string_length=10):
@@ -29,10 +28,6 @@ class TestHuffmanCoding:
 
     def test_huffman(self):
         code = "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
-        # window_size = 6
-        # look_buffer = 4
-        # encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
-        # result = encoder.encode_header()
         result = huffman_coding.encode_header(code)
         result += huffman_coding.encode(code)
         decoded_value = huffman_coding.decode(result)
@@ -41,10 +36,6 @@ class TestHuffmanCoding:
     def test_more(self):
         codes = ["ao"]
         for code in codes:
-            # window_size = 6
-            # look_buffer = 4
-            # encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
-            # result = encoder.encode_header()
             result = huffman_coding.encode_header(code)
             result += huffman_coding.encode(code)
             decoded_value = huffman_coding.decode(result)
@@ -53,10 +44,6 @@ class TestHuffmanCoding:
     def test_random(self):
         for i in range(2, 1000):
             code = random_string(random.randint(1, i))
-            # window_size = 6
-            # look_buffer = 4
-            # encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
-            # result = encoder.encode_header()
             result = huffman_coding.encode_header(code)
             result += huffman_coding.encode(code)
             decoded_value = huffman_coding.decode(result)
