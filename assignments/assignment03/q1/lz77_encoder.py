@@ -20,29 +20,18 @@ class LZSSEncoder:
 
     def encode(self):
         i = 0
-        encoding = []
+        encodings = []
         while i < len(self.code):
-            #     prefix := longest prefix of input that begins in window
-            prefix = self.find_prefix(i)
-
-            #     if prefix exists then
-            #         i := distance to start of prefix
-            #         l := length of prefix
-            #         c := char following prefix in input
-            if prefix:
-                val = prefix
-            else:
-                val = (0, 0, self.code[i])
-
-            encoding.append(val)
+            encoding = self.encode_single(i)
+            encodings.append(encoding)
 
             #     s := pop l+1 chars from front of input
             #     discard l+1 chars from front of window
             #     append s to back of window
-            i += val[1] + 1
-        return encoding
+            i += encoding[1] + 1
+        return encodings
 
-    def find_prefix(self, index: int):
+    def encode_single(self, index: int):
         # Use z-algorithm to find longest prefix that matches.
         buffer = self.__buffer(index)
         dictionary = self.__dict(index)
