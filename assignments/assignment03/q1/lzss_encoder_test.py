@@ -34,3 +34,5 @@ class TestLZSSEncoder:
         assert (3, 4, "b") == result
         result = encoder.find_prefix(8)
         assert (3, 3, "a") == result
+        result = encoder.find_prefix(12)
+        assert (1, 2, "c") == result

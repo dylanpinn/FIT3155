@@ -74,24 +74,10 @@ class LZSSEncoder:
         buffer = self.__buffer(index)
         dictionary = self.__dict(index)
 
-        # First index
-        if len(dictionary) == 0:
-            i = 0
-            l = 0
-            c = self.code[index]  # first char of input
-
-            return i, l, c
-
         # Calculate longest prefix for each val in dictionary
-        print(len(dictionary))
         string = f"{buffer}🎓{dictionary}{buffer}"
-        print(string)
-
-        index_to_stop = self.buffer_size + 1 + len(dictionary)
-        print(index_to_stop)
+        index_to_stop = len(buffer) + 1 + len(dictionary)
         z_array = z_algorithm.find_z_array(string, index_to_stop)
-        print(z_array)
-        # TODO: Generate z_array starting at each character of dict.
         # No matches on prefix
         if z_array[self.buffer_size + 1] is None:
             i = 0
@@ -99,15 +85,13 @@ class LZSSEncoder:
             c = self.code[index]  # first char of input
         else:
             # Length of the current longest prefix.
-            remaining_list = z_array[self.buffer_size + 1 :]
-            max_val = max(list(filter(None.__ne__, remaining_list)))
-            print(max_val)
+            rem_list = z_array[self.buffer_size + 1 :]
+            max_val = max(list(filter(None.__ne__, rem_list)))
             # distance to start of prefix
-            i = index_to_stop - remaining_list.index(max_val) - self.buffer_size - 1
+            i = index_to_stop - rem_list.index(max_val) - self.buffer_size - 1
             l = max_val  # length of the prefix
             # char following prefix in input
             c = self.code[index + max_val]
-            print((i, l, c))
 
         return i, l, c
 
