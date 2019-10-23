@@ -71,14 +71,26 @@ class LZSSEncoder:
 
     def find_prefix(self, index: int):
         # Use z-algorithm to find longest prefix that matches.
-        string = f"{self.__buffer(index)}"
-        string += f"🎓{self.__dict(index)}{self.__buffer(index)}"
+        buffer = self.__buffer(index)
+        dictionary = self.__dict(index)
+
+        # First index
+        if len(dictionary) == 0:
+            i = 0
+            l = 0
+            c = self.code[index]  # first char of input
+
+            return i, l, c
+
+        # Calculate longest prefix for each val in dictionary
+        print(len(dictionary))
+        string = f"{buffer}🎓{dictionary}{buffer}"
         print(string)
-        index_to_stop = self.buffer_size + 1 + len(self.__dict(index))
+
+        index_to_stop = self.buffer_size + 1 + len(dictionary)
         print(index_to_stop)
         z_array = z_algorithm.find_z_array(string, index_to_stop)
         print(z_array)
-        dist_from_index = index - 0
         # TODO: Generate z_array starting at each character of dict.
         # No matches on prefix
         if z_array[self.buffer_size + 1] is None:
@@ -86,14 +98,18 @@ class LZSSEncoder:
             l = 0
             c = self.code[index]  # first char of input
         else:
-            # Find max value in remaining z_array
+            # Length of the current longest prefix.
             remaining_list = z_array[self.buffer_size + 1 :]
             max_val = max(list(filter(None.__ne__, remaining_list)))
-            i = dist_from_index  # distance to start of prefix
-            l = max_val  # length of the prefix
-            c = self.code[index + max_val]  # char following prefix in input
             print(max_val)
-        return (i, l, c)
+            # distance to start of prefix
+            i = index_to_stop - remaining_list.index(max_val) - self.buffer_size - 1
+            l = max_val  # length of the prefix
+            # char following prefix in input
+            c = self.code[index + max_val]
+            print((i, l, c))
+
+        return i, l, c
 
     def __buffer(self, index: int) -> str:
         """Return the current buffer from index."""
