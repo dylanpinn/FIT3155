@@ -31,7 +31,9 @@ class TestHuffmanCoding:
         result = huffman_coding.encode_header(code)
         result += huffman_coding.encode(code)
         decoded_value = huffman_coding.decode(result)
-        assert decoded_value == "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
+        assert (
+            decoded_value == "A_DEAD_DAD_CEDED_A_BAD_BABE_A_BEADED_ABACA_BED"
+        )
 
     def test_more(self):
         codes = ["ao"]

@@ -124,11 +124,17 @@ def decode(code):
     return result
 
 
-def search_for_char(node: Node, string: str, codeword: str, index_to_search: int):
+def search_for_char(
+    node: Node, string: str, codeword: str, index_to_search: int
+):
     if node.left is None and node.right is None:
         return string, node.char
     index_to_search += 1
     if codeword[index_to_search] == "0":
-        return search_for_char(node.left, string + "0", codeword, index_to_search)
+        return search_for_char(
+            node.left, string + "0", codeword, index_to_search
+        )
     else:
-        return search_for_char(node.right, string + "1", codeword, index_to_search)
+        return search_for_char(
+            node.right, string + "1", codeword, index_to_search
+        )
