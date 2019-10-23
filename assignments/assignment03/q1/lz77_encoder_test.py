@@ -1,18 +1,7 @@
-import pytest
-
 from . import lz77_encoder
 
 
 class TestLZSSEncoder:
-    @pytest.mark.skip(reason="Waiting on find_prefix to be implemented")
-    def test_example_data(self):
-        code = "aacaacabcaba"
-        window_size = 6
-        look_buffer = 4
-        encoder = lz77_encoder.LZSSEncoder(code, window_size, look_buffer)
-        result = encoder.encode()
-        assert "00011111111010011000100100001101111" == result
-
     def test_find_prefix(self):
         code = "aacaacabcabaaac"
         window_size = 6
