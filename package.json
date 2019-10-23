@@ -19,6 +19,7 @@
     ],
     "*.{py}": [
       "black",
+      "flake8",
       "git add"
     ]
   },
