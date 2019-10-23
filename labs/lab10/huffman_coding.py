@@ -5,8 +5,8 @@ FIT3155 - Lab 10 - Task 3
 import heapq
 from collections import Counter
 
-import elias_decoder
-import elias_encoder
+from . import elias_decoder
+from . import elias_encoder
 
 
 class Node:
