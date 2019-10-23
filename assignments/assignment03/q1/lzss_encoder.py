@@ -78,7 +78,7 @@ class LZSSEncoder:
         print(index_to_stop)
         z_array = z_algorithm.find_z_array(string, index_to_stop)
         print(z_array)
-        dist_from_index = 1
+        dist_from_index = index - 0
         # TODO: Generate z_array starting at each character of dict.
         # No matches on prefix
         if z_array[self.buffer_size + 1] is None:
@@ -91,7 +91,7 @@ class LZSSEncoder:
             max_val = max(list(filter(None.__ne__, remaining_list)))
             i = dist_from_index  # distance to start of prefix
             l = max_val  # length of the prefix
-            c = self.code[dist_from_index + 1]  # char following prefix in input
+            c = self.code[index + max_val]  # char following prefix in input
             print(max_val)
         return (i, l, c)
 
