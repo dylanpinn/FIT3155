@@ -16,6 +16,10 @@
     "*.{md,json}": [
       "prettier --write",
       "git add"
+    ],
+    "*.{py}": [
+      "black",
+      "git add"
     ]
   },
   "husky": {

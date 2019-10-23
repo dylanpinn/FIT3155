@@ -24,10 +24,6 @@ class LZSSEncoder:
         while i < len(self.code):
             encoding = self.encode_single(i)
             encodings.append(encoding)
-
-            #     s := pop l+1 chars from front of input
-            #     discard l+1 chars from front of window
-            #     append s to back of window
             i += encoding[1] + 1
         return encodings
 
