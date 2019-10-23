@@ -6,7 +6,7 @@ def find_match(string, right, left):
     return right < len(string) and string[right] == string[right - left]
 
 
-def find_z_array(string: str, index_to_stop: int):
+def z_array(string: str, index_to_stop: int):
     """Calculate Z-Array using Gusfield's Algorithm.
 
     Modified to optionally stop at an index.

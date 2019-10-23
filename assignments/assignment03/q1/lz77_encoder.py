@@ -50,7 +50,7 @@ class LZSSEncoder:
         # Calculate longest prefix for each val in dictionary
         string = f"{buffer}🎓{dictionary}{buffer}"
         index_to_stop = len(buffer) + 1 + len(dictionary)
-        z_array = z_algorithm.find_z_array(string, index_to_stop)
+        z_array = z_algorithm.z_array(string, index_to_stop)
         # No matches on prefix
         if z_array[self.buffer_size + 1] is None:
             i = 0
