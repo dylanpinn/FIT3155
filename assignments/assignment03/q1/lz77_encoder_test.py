@@ -8,7 +8,13 @@ class TestLZSSEncoder:
         look_buffer = 4
         encoder = lz77_encoder.LZSSEncoder(code, window_size, look_buffer)
         result = encoder.encode()
-        expected = [(0, 0, "a"), (1, 1, "c"), (3, 4, "b"), (3, 3, "a"), (1, 2, "c")]
+        expected = [
+            (0, 0, "a"),
+            (1, 1, "c"),
+            (3, 4, "b"),
+            (3, 3, "a"),
+            (1, 2, "c"),
+        ]
         assert expected == result
 
     def test_encode_single(self):
