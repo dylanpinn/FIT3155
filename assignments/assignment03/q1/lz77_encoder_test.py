@@ -9,7 +9,7 @@ class TestLZSSEncoder:
         window_size = 6
         look_buffer = 4
         encoder = lz77_encoder.LZSSEncoder(code, window_size, look_buffer)
-        result = encoder.encode_data()
+        result = encoder.encode()
         assert "00011111111010011000100100001101111" == result
 
     def test_find_prefix(self):

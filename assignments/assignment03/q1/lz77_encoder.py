@@ -4,6 +4,9 @@ FIT3155 - Assignment 3
 Semester 2 2019
 
 Dylan Pinn 24160547
+
+
+LZSS Encoder
 """
 
 import z_algorithm
@@ -15,7 +18,7 @@ class LZSSEncoder:
         self.window_size = window_size
         self.buffer_size = buffer_size
 
-    def encode_data(self):
+    def encode(self):
         i = 0
         encoding = []
         while i < len(self.code):
