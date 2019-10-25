@@ -39,7 +39,7 @@ class LZSSEncoder:
         # No matches on prefix
         if z_array[self.buffer_size + 1] is None:
             i = 0
-            l = 0
+            length = 0
             c = self.code[index]  # first char of input
         else:
             # Length of the current longest prefix.
@@ -47,11 +47,11 @@ class LZSSEncoder:
             max_val = max(list(filter(None.__ne__, rem_list)))
             # distance to start of prefix
             i = index_to_stop - rem_list.index(max_val) - self.buffer_size - 1
-            l = max_val  # length of the prefix
+            length = max_val  # length of the prefix
             # char following prefix in input
             c = self.code[index + max_val]
 
-        return i, l, c
+        return i, length, c
 
     def __buffer(self, index: int) -> str:
         """Return the current buffer from index."""

@@ -1,5 +1,7 @@
 """Calculate Z-Algorithm using Gusfield's algorithm"""
 
+from typings import List, Optional
+
 
 def find_match(string, right, left):
     """See if we should keep moving through z_box."""
@@ -11,7 +13,7 @@ def z_array(string: str, index_to_stop: int):
 
     Modified to optionally stop at an index.
     """
-    z_array = [None] * len(string)
+    z_array: List[Optional[int]] = [None] * len(string)
     left, right = 0, 0
 
     for k in range(1, len(string)):
