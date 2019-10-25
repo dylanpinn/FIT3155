@@ -9,10 +9,12 @@ class TestLZSSEncoder:
         encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
         result = encoder.encode()
         expected = [
-            (0, 0, "a"),
-            (1, 1, "c"),
-            (3, 4, "b"),
-            (3, 3, "a"),
+            (1, "a"),
+            (1, "a"),
+            (1, "c"),
+            (0, 3, 4),
+            # TODO: Manually calculate rest.
+            (0, 3, 3),
             (1, 2, "c"),
         ]
         assert expected == result
