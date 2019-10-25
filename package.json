@@ -18,9 +18,10 @@
       "git add"
     ],
     "*.{py}": [
-      "black",
-      "isort",
-      "flake8",
+      "poetry run black",
+      "poetry run isort",
+      "poetry run flake8",
+      "poetry run mypy",
       "git add"
     ]
   },
