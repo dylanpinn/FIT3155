@@ -15,5 +15,5 @@ from numpy.random import choice
 
 
 def generate(n, p):
-    string = ''.join(choice(['H', 'T'], n, p=[p, (1-p)]))
+    string = "".join(choice(["H", "T"], n, p=[p, (1 - p)]))
     return string
