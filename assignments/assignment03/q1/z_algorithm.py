@@ -1,6 +1,6 @@
 """Calculate Z-Algorithm using Gusfield's algorithm"""
 
-from typings import List, Optional
+from typing import List, Optional
 
 
 def find_match(string, right, left):
@@ -27,7 +27,7 @@ def z_array(string: str, index_to_stop: int):
             right -= 1
         else:
             kl = k - left
-            if z_array[kl] < right - k + 1:
+            if z_array[kl] < right - k + 1:  # type: ignore
                 z_array[k] = z_array[kl]
             else:
                 left = k
