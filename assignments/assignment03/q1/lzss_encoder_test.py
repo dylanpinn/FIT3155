@@ -13,24 +13,11 @@ class TestLZSSEncoder:
             (1, "a"),
             (1, "c"),
             (0, 3, 4),
-            # TODO: Manually calculate rest.
+            (1, "b"),
             (0, 3, 3),
-            (1, 2, "c"),
+            (1, "a"),
+            (1, "a"),
+            (1, "a"),
+            (1, "c"),
         ]
         assert expected == result
-
-    def test_encode_single(self):
-        code = "aacaacabcabaaac"
-        window_size = 6
-        look_buffer = 4
-        encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
-        result = encoder.encode_single(0)
-        assert (0, 0, "a") == result
-        result = encoder.encode_single(1)
-        assert (1, 1, "c") == result
-        result = encoder.encode_single(3)
-        assert (3, 4, "b") == result
-        result = encoder.encode_single(8)
-        assert (3, 3, "a") == result
-        result = encoder.encode_single(12)
-        assert (1, 2, "c") == result

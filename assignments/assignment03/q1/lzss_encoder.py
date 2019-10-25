@@ -9,7 +9,13 @@ Dylan Pinn 24160547
 LZSS Encoder
 """
 
+from typing import List, Tuple, Union
+
 from . import z_algorithm
+
+Format0 = Tuple[int, int, int]
+Format1 = Tuple[int, str]
+EncodingType = Union[Format0, Format1]
 
 
 class LZSSEncoder:
@@ -18,16 +24,19 @@ class LZSSEncoder:
         self.window_size = window_size
         self.buffer_size = buffer_size
 
-    def encode(self):
+    def encode(self) -> List[EncodingType]:
         i = 0
         encodings = []
         while i < len(self.code):
             encoding = self.encode_single(i)
             encodings.append(encoding)
-            i += encoding[1] + 1
+            if encoding[0] == 1:
+                i += 1
+            else:
+                i += encoding[2]  # type: ignore
         return encodings
 
-    def encode_single(self, index: int):
+    def encode_single(self, index: int) -> EncodingType:
         # Use z-algorithm to find longest prefix that matches.
         buffer = self.__buffer(index)
         dictionary = self.__dict(index)
@@ -38,9 +47,8 @@ class LZSSEncoder:
         z_array = z_algorithm.z_array(string, index_to_stop)
         # No matches on prefix
         if z_array[self.buffer_size + 1] is None:
-            i = 0
-            length = 0
             c = self.code[index]  # first char of input
+            return 1, c
         else:
             # Length of the current longest prefix.
             rem_list = z_array[self.buffer_size + 1 :]
@@ -49,9 +57,12 @@ class LZSSEncoder:
             i = index_to_stop - rem_list.index(max_val) - self.buffer_size - 1
             length = max_val  # length of the prefix
             # char following prefix in input
-            c = self.code[index + max_val]
+            c = self.code[index]
 
-        return i, length, c
+            if length >= 3:
+                return 0, i, length
+            else:
+                return 1, c
 
     def __buffer(self, index: int) -> str:
         """Return the current buffer from index."""
