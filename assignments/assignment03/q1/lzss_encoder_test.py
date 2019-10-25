@@ -1,4 +1,4 @@
-from . import lz77_encoder
+from . import lzss_encoder
 
 
 class TestLZSSEncoder:
@@ -6,7 +6,7 @@ class TestLZSSEncoder:
         code = "aacaacabcabaaac"
         window_size = 6
         look_buffer = 4
-        encoder = lz77_encoder.LZ77Encoder(code, window_size, look_buffer)
+        encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
         result = encoder.encode()
         expected = [
             (0, 0, "a"),
@@ -21,7 +21,7 @@ class TestLZSSEncoder:
         code = "aacaacabcabaaac"
         window_size = 6
         look_buffer = 4
-        encoder = lz77_encoder.LZ77Encoder(code, window_size, look_buffer)
+        encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
         result = encoder.encode_single(0)
         assert (0, 0, "a") == result
         result = encoder.encode_single(1)

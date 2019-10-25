@@ -6,13 +6,13 @@ Semester 2 2019
 Dylan Pinn 24160547
 
 
-LZ77 Encoder
+LZSS Encoder
 """
 
 from . import z_algorithm
 
 
-class LZ77Encoder:
+class LZSSEncoder:
     def __init__(self, code: str, window_size: int, buffer_size: int):
         self.code = code
         self.window_size = window_size

@@ -6,7 +6,7 @@ Semester 2 2019
 Dylan Pinn 24160547
 
 
-LZSS Decoder
+LZ77 Decoder
 """
 from typing import List, Tuple
 
