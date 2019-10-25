@@ -1,3 +1,13 @@
+"""
+FIT3155 - Assignment 3
+
+Semester 2 2019
+
+Dylan Pinn 24160547
+
+
+LZSS Decoder
+"""
 from typing import List, Tuple
 
 
