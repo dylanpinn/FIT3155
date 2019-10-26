@@ -19,8 +19,10 @@ class Encoder:
         self.string = string
         self.window_size = window_size
         self.buffer_size = buffer_size
+        self.huffman_values = huffman_coding.encoded_values(string)[0]
 
     def encode(self):
+        """Combine the header and data."""
         result = self.encode_header()
         result += self.encode_data()
         return result
@@ -41,14 +43,11 @@ class Encoder:
         unique_chars_list.sort()
         no_of_unique = len(unique_chars_list)
 
-        huffman_values = huffman_coding.encoded_values(self.string)[0]
-        print(huffman_values)
-
         result += elias_encoder.encode_single_value(no_of_unique)
 
         for char in unique_chars_list:
             ascii_8_bit = self.convert_to_8_bit_ascii(char)
-            huffman_code = huffman_values[char]
+            huffman_code = self.huffman_values[char]
             encoded_huffman_len = elias_encoder.encode_single_value(
                 len(huffman_code)
             )
@@ -56,9 +55,6 @@ class Encoder:
             result += ascii_8_bit
             result += encoded_huffman_len
             result += huffman_code
-            print(ascii_8_bit)
-            print(encoded_huffman_len)
-            print(huffman_code)
 
         return result
 
