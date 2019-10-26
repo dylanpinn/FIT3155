@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
 FIT3155 - Assignment 3
 
@@ -6,7 +8,7 @@ Semester 2 2019
 Dylan Pinn 24160547
 
 
-LZSS Encoder
+Q1: LZSS Encoder
 """
 
 from typing import List, Tuple, Union
@@ -59,7 +61,7 @@ class LZSSEncoder:
             # char following prefix in input
             c = self.code[index]
 
-            if length >= 3:
+            if length is not None and length >= 3:
                 return 0, i, length
             else:
                 return 1, c
