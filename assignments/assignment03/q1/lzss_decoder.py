@@ -11,6 +11,7 @@ Dylan Pinn 24160547
 Q1: LZSS Decoder
 """
 
+import sys
 from typing import Dict, List, Tuple, Union
 
 import elias_decoder
@@ -104,3 +105,13 @@ class Decoder:
                 if val == value:
                     return key, val
         raise Exception
+
+
+if __name__ == "__main__":
+    input_file = open(sys.argv[1], "r")
+    input_text = input_file.read().rstrip()
+    decoder = Decoder(input_text)
+    decoding = decoder.decode()
+    output_file = open("output_lzss_decoder.txt", "w")
+    output_file.write(decoding)
+    output_file.close()
