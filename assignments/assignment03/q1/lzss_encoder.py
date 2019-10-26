@@ -90,9 +90,12 @@ class Encoder:
 
 
 if __name__ == "__main__":
-    print("aaa")
-    input_text = open(sys.argv[1], "r")
-    w_size = sys.argv[2]
-    b_size = sys.argv[3]
-    print(w_size)
-    print(b_size)
+    input_file = open(sys.argv[1], "r")
+    input_text = input_file.read().rstrip()
+    w_size = int(sys.argv[2])
+    b_size = int(sys.argv[3])
+    encoder = Encoder(input_text, w_size, b_size)
+    encoding = encoder.encode()
+    output_file = open("output_lzss_encoder.bin", "w")
+    output_file.write(encoding)
+    output_file.close()
