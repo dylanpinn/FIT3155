@@ -11,7 +11,7 @@ Q1: LZSS Encoder
 
 from typing import List, Tuple, Union
 
-from . import z_algorithm
+import a3_z_algorithm
 
 Format0 = Tuple[int, int, int]
 Format1 = Tuple[int, str]
@@ -44,7 +44,7 @@ class LZSSEncoder:
         # Calculate longest prefix for each val in dictionary
         string = f"{buffer}🎓{dictionary}{buffer}"
         index_to_stop = len(buffer) + 1 + len(dictionary)
-        z_array = z_algorithm.z_array(string, index_to_stop)
+        z_array = a3_z_algorithm.z_array(string, index_to_stop)
         try:
             # No matches on prefix
             if z_array[self.buffer_size + 1] is None:

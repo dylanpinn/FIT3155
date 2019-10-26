@@ -6,7 +6,8 @@ import heapq
 from collections import Counter
 from typing import Dict, List, Optional, Tuple
 
-from . import elias_decoder, elias_encoder
+import elias_decoder
+import elias_encoder
 
 
 class Node:

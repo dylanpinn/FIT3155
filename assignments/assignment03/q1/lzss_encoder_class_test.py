@@ -1,4 +1,4 @@
-from . import lzss_encoder_class
+import lzss_encoder_class
 
 
 class TestLZSSEncoderClass:

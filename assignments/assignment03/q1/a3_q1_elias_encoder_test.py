@@ -1,4 +1,4 @@
-from . import elias_encoder
+import elias_encoder
 
 
 class TestEliasEncoder:

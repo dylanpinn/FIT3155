@@ -11,7 +11,7 @@ LZ77 Encoder
 
 from typing import List, Tuple
 
-from . import z_algorithm
+import a3_z_algorithm
 
 EncodingType = Tuple[int, int, str]
 
@@ -39,7 +39,7 @@ class LZ77Encoder:
         # Calculate longest prefix for each val in dictionary
         string = f"{buffer}🎓{dictionary}{buffer}"
         index_to_stop = len(buffer) + 1 + len(dictionary)
-        z_array = z_algorithm.z_array(string, index_to_stop)
+        z_array = a3_z_algorithm.z_array(string, index_to_stop)
         # No matches on prefix
         if z_array[self.buffer_size + 1] is None:
             i = 0
@@ -48,7 +48,9 @@ class LZ77Encoder:
         else:
             # Length of the current longest prefix.
             rem_list = z_array[self.buffer_size + 1 :]
-            max_val = max(list(filter(None.__ne__, rem_list)))
+            max_val: int = max(  # type: ignore
+                list(filter(None.__ne__, rem_list))
+            )
             # distance to start of prefix
             i = index_to_stop - rem_list.index(max_val) - self.buffer_size - 1
             length = max_val  # length of the prefix

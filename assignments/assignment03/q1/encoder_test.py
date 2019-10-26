@@ -1,7 +1,8 @@
 import random
 import string
 
-from . import lzss_decoder, lzss_encoder
+import lzss_decoder
+import lzss_encoder
 
 
 def random_string(string_length=10):

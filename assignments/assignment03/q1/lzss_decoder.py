@@ -13,7 +13,9 @@ Q1: LZSS Decoder
 
 from typing import Dict, List, Tuple, Union
 
-from . import elias_decoder, elias_encoder, lzss_decoder_class
+import elias_decoder
+import elias_encoder
+import lzss_decoder_class
 
 Format0 = Tuple[int, int, int]
 Format1 = Tuple[int, str]
