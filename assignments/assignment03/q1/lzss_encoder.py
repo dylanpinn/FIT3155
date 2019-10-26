@@ -66,7 +66,6 @@ class Encoder:
         result += elias_encoder.encode_single_value(len(lzss_encoding))
 
         for encoding in lzss_encoding:
-            print(encoding)
             if encoding[0] == 0:
                 result += "0"
                 result += elias_encoder.encode_single_value(
