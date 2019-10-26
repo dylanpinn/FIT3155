@@ -1,21 +1,37 @@
-import pytest
+import random
+import string
 
-from . import encoder
+from . import lzss_encoder
+
+
+def random_string(string_length=10):
+    """Generates a random string of a fixed length."""
+    chars = string.printable
+    return "".join(random.choice(chars) for _ in range(string_length))
+
+
+def random_number(end_value):
+    """Generate a random number between 2 and end_value"""
+    return random.randint(1, end_value)
 
 
 class TestEncoder:
-    # From assignment sheet.
-    @pytest.mark.skip(reason="Need to implement.")
-    def test_example_data(self):
-        code = "aacaacabcaba"
-        window_size = 6
-        look_buffer = 4
-        enc = encoder.Encoder(code, window_size, look_buffer)
-        result = enc.encode()
-        assert "00011111111010011000100100001101111" == result
+    def test_random(self):
+        for i in range(2, 1000):
+            print("new iteration")
+            code = random_string(random.randint(1, i))
+            buffer_size = random_number(len(code))
+            window_size = random_number(len(code))
+            print(code)
+            print(window_size)
+            print(buffer_size)
+            encoder = lzss_encoder.Encoder(code, window_size, buffer_size)
+            encoded_value = encoder.encode()
+            print(encoded_value)
 
-    def test_example_header(self):
-        code = "aacaacabcaba"
-        enc = encoder.Encoder(code)
-        result = enc.encode_header()
-        assert "011011000011101100010010000110001101001" == result
+            # TODO: Decode and match against code.
+
+            # result = huffman_coding.encode_header(code)
+            # result += huffman_coding.encode(code)
+            # decoded_value = huffman_coding.decode(result)
+            # assert decoded_value == code

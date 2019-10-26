@@ -11,10 +11,13 @@ Dylan Pinn 24160547
 Q1: LZSS Decoder
 """
 
+# from . import elias_decoder
+
 
 class Decoder:
     def __init__(self, code: str):
         self.code = code
 
     def decode(self) -> str:
+        # no_of_unique = elias_decoder.decode
         return ""
