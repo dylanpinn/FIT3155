@@ -11,7 +11,11 @@ Dylan Pinn 24160547
 Q1: LZSS Encoder
 """
 
-from . import elias_encoder, huffman_coding, lzss_encoder_class
+import sys
+
+import elias_encoder
+import huffman_coding
+import lzss_encoder_class
 
 
 class Encoder:
@@ -83,3 +87,15 @@ class Encoder:
     @staticmethod
     def convert_to_8_bit_ascii(char: str) -> str:
         return "{0:0=8d}".format(int(bin(ord(char))[2:]))
+
+
+if __name__ == "__main__":
+    input_file = open(sys.argv[1], "r")
+    input_text = input_file.read().rstrip()
+    w_size = int(sys.argv[2])
+    b_size = int(sys.argv[3])
+    encoder = Encoder(input_text, w_size, b_size)
+    encoding = encoder.encode()
+    output_file = open("output_lzss_encoder.bin", "w")
+    output_file.write(encoding)
+    output_file.close()

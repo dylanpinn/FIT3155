@@ -1,4 +1,4 @@
-from . import lzss_encoder_class
+import lzss_encoder_class
 
 
 class TestLZSSEncoderClass:
@@ -42,3 +42,12 @@ class TestLZSSEncoderClass:
             (1, "a"),
         ]
         assert expected == result
+
+    def test_failing(self):
+        code = '$;UW9#"O'
+        window_size = 6
+        look_buffer = 8
+        encoder = lzss_encoder_class.LZSSEncoder(
+            code, window_size, look_buffer
+        )
+        encoder.encode()

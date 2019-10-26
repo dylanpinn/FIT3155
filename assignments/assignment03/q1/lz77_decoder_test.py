@@ -1,4 +1,4 @@
-from . import lz77_decoder
+import lz77_decoder
 
 
 class TestLZ77Decoder:

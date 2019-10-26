@@ -11,7 +11,7 @@ Q1: LZSS Encoder
 
 from typing import List, Tuple, Union
 
-from . import z_algorithm
+import a3_z_algorithm
 
 Format0 = Tuple[int, int, int]
 Format1 = Tuple[int, str]
@@ -44,25 +44,34 @@ class LZSSEncoder:
         # Calculate longest prefix for each val in dictionary
         string = f"{buffer}🎓{dictionary}{buffer}"
         index_to_stop = len(buffer) + 1 + len(dictionary)
-        z_array = z_algorithm.z_array(string, index_to_stop)
-        # No matches on prefix
-        if z_array[self.buffer_size + 1] is None:
+        z_array = a3_z_algorithm.z_array(string, index_to_stop)
+        try:
+            # No matches on prefix
+            if z_array[self.buffer_size + 1] is None:
+                c = self.code[index]  # first char of input
+                return 1, c
+            else:
+                # Length of the current longest prefix.
+                rem_list = z_array[self.buffer_size + 1 :]
+                max_val = max(list(filter(None.__ne__, rem_list)))
+                # distance to start of prefix
+                i = (
+                    index_to_stop
+                    - rem_list.index(max_val)
+                    - self.buffer_size
+                    - 1
+                )
+                length = max_val  # length of the prefix
+                # char following prefix in input
+                c = self.code[index]
+
+                if length is not None and length >= 3:
+                    return 0, i, length
+                else:
+                    return 1, c
+        except IndexError:
             c = self.code[index]  # first char of input
             return 1, c
-        else:
-            # Length of the current longest prefix.
-            rem_list = z_array[self.buffer_size + 1 :]
-            max_val = max(list(filter(None.__ne__, rem_list)))
-            # distance to start of prefix
-            i = index_to_stop - rem_list.index(max_val) - self.buffer_size - 1
-            length = max_val  # length of the prefix
-            # char following prefix in input
-            c = self.code[index]
-
-            if length is not None and length >= 3:
-                return 0, i, length
-            else:
-                return 1, c
 
     def __buffer(self, index: int) -> str:
         """Return the current buffer from index."""

@@ -4,9 +4,10 @@ FIT3155 - Lab 10 - Task 3
 
 import heapq
 from collections import Counter
+from typing import Dict, List, Tuple
 
-from . import elias_decoder
-from . import elias_encoder
+import l_elias_decoder
+import l_elias_encoder
 
 
 class Node:
@@ -27,20 +28,20 @@ def unique_chars(code: str) -> Counter:
 def encode_header(code):
     res = unique_chars(code)
     # Total number of unique characters
-    result = elias_encoder.encode_single_value(len(res))
+    result = l_elias_encoder.encode_single_value(len(res))
     for val in res:
         # Frequency of each character
-        result += elias_encoder.encode_single_value(res[val])
+        result += l_elias_encoder.encode_single_value(res[val])
         # ASCII code of character padded to 3 digits.
         result += "{0:0=3d}".format(ord(val))
     # Total number of characters in the input file.
-    result += elias_encoder.encode_single_value(len(code))
+    result += l_elias_encoder.encode_single_value(len(code))
     return result
 
 
-def encoded_values(code: str) -> (dict, Node):
+def encoded_values(code: str) -> Tuple[Dict[str, str], Node]:
     unique = unique_chars(code)
-    heap = []
+    heap: List[Node] = []
     for val in unique:
         node = Node(val, unique[val])
         heapq.heappush(heap, node)
@@ -56,7 +57,7 @@ def encoded_values(code: str) -> (dict, Node):
         heapq.heappush(heap, new_node)
 
     # Traverse
-    bin_representation = {}
+    bin_representation: Dict[str, str] = {}
     calculate_string(root, "", bin_representation)
     return bin_representation, root
 
@@ -82,21 +83,21 @@ def calculate_string(node: Node, string: str, dict: dict):
 
 def decode(code):
     # Calculate no of unique and remove from code.
-    no_of_unique = elias_decoder.decode_single_value(code)
-    no_of_unique_encoded = elias_encoder.encode_single_value(no_of_unique)
+    no_of_unique = l_elias_decoder.decode_single_value(code)
+    no_of_unique_encoded = l_elias_encoder.encode_single_value(no_of_unique)
     code = code[len(no_of_unique_encoded) :]
 
     frequencies = {}
     for i in range(no_of_unique):
-        freq = elias_decoder.decode_single_value(code)
-        freq_encoded = elias_encoder.encode_single_value(freq)
+        freq = l_elias_decoder.decode_single_value(code)
+        freq_encoded = l_elias_encoder.encode_single_value(freq)
         code = code[len(freq_encoded) :]
         char = chr(int(code[0:3]))
         code = code[3:]
         frequencies[char] = freq
 
-    total_chars = elias_decoder.decode_single_value(code)
-    total_chars_encoded = elias_encoder.encode_single_value(total_chars)
+    total_chars = l_elias_decoder.decode_single_value(code)
+    total_chars_encoded = l_elias_encoder.encode_single_value(total_chars)
     code = code[len(total_chars_encoded) :]
 
     heap = []
@@ -124,11 +125,17 @@ def decode(code):
     return result
 
 
-def search_for_char(node: Node, string: str, codeword: str, index_to_search: int):
+def search_for_char(
+    node: Node, string: str, codeword: str, index_to_search: int
+):
     if node.left is None and node.right is None:
         return string, node.char
     index_to_search += 1
     if codeword[index_to_search] == "0":
-        return search_for_char(node.left, string + "0", codeword, index_to_search)
+        return search_for_char(
+            node.left, string + "0", codeword, index_to_search
+        )
     else:
-        return search_for_char(node.right, string + "1", codeword, index_to_search)
+        return search_for_char(
+            node.right, string + "1", codeword, index_to_search
+        )

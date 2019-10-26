@@ -1,4 +1,4 @@
-from . import lz77_encoder
+import lz77_encoder
 
 
 class TestLZSSEncoder:
