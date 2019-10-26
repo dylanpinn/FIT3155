@@ -4,19 +4,19 @@ FIT3155 - Lab 10 - Task 3
 
 import heapq
 from collections import Counter
+from typing import Dict, List, Optional, Tuple
 
-from . import elias_decoder
-from . import elias_encoder
+from . import elias_decoder, elias_encoder
 
 
 class Node:
-    def __init__(self, char, count):
+    def __init__(self, char: str, count: int):
         self.char = char
         self.count = count
-        self.left = None
-        self.right = None
+        self.left: Optional[Node] = None
+        self.right: Optional[Node] = None
 
-    def __lt__(self, other):
+    def __lt__(self, other: "Node"):
         return self.count < other.count
 
 
@@ -24,7 +24,7 @@ def unique_chars(code: str) -> Counter:
     return Counter(code)
 
 
-def encode_header(code):
+def encode_header(code: str) -> str:
     res = unique_chars(code)
     # Total number of unique characters
     result = elias_encoder.encode_single_value(len(res))
@@ -38,9 +38,9 @@ def encode_header(code):
     return result
 
 
-def encoded_values(code: str) -> (dict, Node):
+def encoded_values(code: str) -> Tuple[Dict[str, str], Node]:
     unique = unique_chars(code)
-    heap = []
+    heap: List[Node] = []
     for val in unique:
         node = Node(val, unique[val])
         heapq.heappush(heap, node)
@@ -56,7 +56,7 @@ def encoded_values(code: str) -> (dict, Node):
         heapq.heappush(heap, new_node)
 
     # Traverse
-    bin_representation = {}
+    bin_representation: Dict[str, str] = {}
     calculate_string(root, "", bin_representation)
     return bin_representation, root
 
@@ -71,16 +71,20 @@ def encode(code):
     return huffman_code
 
 
-def calculate_string(node: Node, string: str, dict: dict):
+def calculate_string(
+    node: Optional[Node], string: str, dictionay: Dict[str, str]
+):
+    if node is None:
+        return
     if node.left is None and node.right is None:
-        dict[node.char] = string
+        dictionay[node.char] = string
         return
 
-    calculate_string(node.left, string + "0", dict)
-    calculate_string(node.right, string + "1", dict)
+    calculate_string(node.left, string + "0", dictionay)
+    calculate_string(node.right, string + "1", dictionay)
 
 
-def decode(code):
+def decode(code: str) -> str:
     # Calculate no of unique and remove from code.
     no_of_unique = elias_decoder.decode_single_value(code)
     no_of_unique_encoded = elias_encoder.encode_single_value(no_of_unique)
@@ -99,7 +103,7 @@ def decode(code):
     total_chars_encoded = elias_encoder.encode_single_value(total_chars)
     code = code[len(total_chars_encoded) :]
 
-    heap = []
+    heap: List[Node] = []
     for val in frequencies:
         node = Node(val, frequencies[val])
         heapq.heappush(heap, node)
@@ -124,11 +128,19 @@ def decode(code):
     return result
 
 
-def search_for_char(node: Node, string: str, codeword: str, index_to_search: int):
+def search_for_char(
+    node: Optional[Node], string: str, codeword: str, index_to_search: int
+):
+    if node is None:
+        return string, None
     if node.left is None and node.right is None:
         return string, node.char
     index_to_search += 1
     if codeword[index_to_search] == "0":
-        return search_for_char(node.left, string + "0", codeword, index_to_search)
+        return search_for_char(
+            node.left, string + "0", codeword, index_to_search
+        )
     else:
-        return search_for_char(node.right, string + "1", codeword, index_to_search)
+        return search_for_char(
+            node.right, string + "1", codeword, index_to_search
+        )

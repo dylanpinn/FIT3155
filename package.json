@@ -16,6 +16,13 @@
     "*.{md,json}": [
       "prettier --write",
       "git add"
+    ],
+    "*.{py}": [
+      "poetry run black",
+      "poetry run isort",
+      "poetry run flake8",
+      "poetry run mypy",
+      "git add"
     ]
   },
   "husky": {
