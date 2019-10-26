@@ -16,12 +16,8 @@ EncodingType = Union[Format0, Format1]
 
 
 class LZSSDecoder:
-    def __init__(
-        self, code: List[EncodingType], window_size: int, buffer_size: int
-    ):
+    def __init__(self, code: List[EncodingType]):
         self.code = code
-        self.window_size = window_size
-        self.buffer_size = buffer_size
 
     def decode(self) -> str:
         result = ""

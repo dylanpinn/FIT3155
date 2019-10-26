@@ -72,16 +72,16 @@ def encode(code):
 
 
 def calculate_string(
-    node: Optional[Node], string: str, dictionay: Dict[str, str]
+    node: Optional[Node], string: str, dictionary: Dict[str, str]
 ):
     if node is None:
         return
     if node.left is None and node.right is None:
-        dictionay[node.char] = string
+        dictionary[node.char] = string
         return
 
-    calculate_string(node.left, string + "0", dictionay)
-    calculate_string(node.right, string + "1", dictionay)
+    calculate_string(node.left, string + "0", dictionary)
+    calculate_string(node.right, string + "1", dictionary)
 
 
 def decode(code: str) -> str:

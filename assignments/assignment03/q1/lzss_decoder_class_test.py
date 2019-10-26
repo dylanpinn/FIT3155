@@ -15,11 +15,7 @@ class TestLZSSDecoder:
             (1, "a"),
             (1, "c"),
         ]
-        window_size = 6
-        look_buffer = 4
-        decoder = lzss_decoder_class.LZSSDecoder(
-            code, window_size, look_buffer
-        )
+        decoder = lzss_decoder_class.LZSSDecoder(code)
         result = decoder.decode()
         expected = "aacaacabcabaaac"
         assert expected == result
@@ -34,11 +30,7 @@ class TestLZSSDecoder:
             (0, 3, 3),
             (1, "a"),
         ]
-        window_size = 6
-        look_buffer = 4
-        decoder = lzss_decoder_class.LZSSDecoder(
-            code, window_size, look_buffer
-        )
+        decoder = lzss_decoder_class.LZSSDecoder(code)
         result = decoder.decode()
         expected = "aacaacabcaba"
         assert expected == result
