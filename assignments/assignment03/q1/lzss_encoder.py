@@ -11,7 +11,7 @@ Dylan Pinn 24160547
 Q1: LZSS Encoder
 """
 
-from . import elias_encoder, huffman_coding
+from . import elias_encoder, huffman_coding, lzss_encoder_class
 
 
 class Encoder:
@@ -56,6 +56,29 @@ class Encoder:
             result += encoded_huffman_len
             result += huffman_code
 
+        return result
+
+    def encode_data(self) -> str:
+        result = ""
+        lzss_encoding = lzss_encoder_class.LZSSEncoder(
+            self.string, self.window_size, self.buffer_size
+        ).encode()
+        result += elias_encoder.encode_single_value(len(lzss_encoding))
+
+        for encoding in lzss_encoding:
+            print(encoding)
+            if encoding[0] == 0:
+                result += "0"
+                result += elias_encoder.encode_single_value(
+                    encoding[1]  # type: ignore
+                )
+                result += elias_encoder.encode_single_value(
+                    encoding[2]  # type: ignore
+                )
+            else:
+                result += "1"
+                huffman_code = self.huffman_values[encoding[1]]  # type: ignore
+                result += huffman_code
         return result
 
     @staticmethod
