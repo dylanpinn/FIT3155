@@ -77,7 +77,10 @@ def calculate_string(
     if node is None:
         return
     if node.left is None and node.right is None:
-        dictionary[node.char] = string
+        if len(string) == 0:
+            dictionary[node.char] = "1"
+        else:
+            dictionary[node.char] = string
         return
 
     calculate_string(node.left, string + "0", dictionary)

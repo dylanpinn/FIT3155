@@ -1,7 +1,7 @@
 import random
 import string
 
-from . import lzss_encoder
+from . import lzss_decoder, lzss_encoder
 
 
 def random_string(string_length=10):
@@ -17,7 +17,7 @@ def random_number(end_value):
 
 class TestEncoder:
     def test_random(self):
-        for i in range(2, 1000):
+        for i in range(1, 1000):
             print("new iteration")
             code = random_string(random.randint(1, i))
             buffer_size = random_number(len(code))
@@ -29,9 +29,7 @@ class TestEncoder:
             encoded_value = encoder.encode()
             print(encoded_value)
 
-            # TODO: Decode and match against code.
+            decoder = lzss_decoder.Decoder(encoded_value)
+            decoded_value = decoder.decode()
 
-            # result = huffman_coding.encode_header(code)
-            # result += huffman_coding.encode(code)
-            # decoded_value = huffman_coding.decode(result)
-            # assert decoded_value == code
+            assert decoded_value == code
