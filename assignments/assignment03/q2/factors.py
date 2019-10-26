@@ -12,13 +12,16 @@ Q2: Factors
 """
 
 from collections import Counter
+from typing import List, Tuple
+
+Factors = Tuple[int, int]
 
 
 class PrimeFactors:
     def __init__(self, n: int):
         self.n = n
 
-    def factors(self):
+    def factors(self) -> List[Tuple[int, List[Factors]]]:
         """Find prime factors for the 100 largest prime numbers less than n"""
         result = []
         for i in range(self.n - 1, 1, -1):
@@ -37,7 +40,7 @@ class PrimeFactors:
         return True
 
     @staticmethod
-    def prime_factors(n: int):
+    def prime_factors(n: int) -> List[Factors]:
         """Find prime factors of n."""
         factors = []
         p = 2
