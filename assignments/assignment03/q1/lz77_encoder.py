@@ -9,7 +9,11 @@ Dylan Pinn 24160547
 LZ77 Encoder
 """
 
+from typing import List, Tuple
+
 from . import z_algorithm
+
+EncodingType = Tuple[int, int, str]
 
 
 class LZ77Encoder:
@@ -18,7 +22,7 @@ class LZ77Encoder:
         self.window_size = window_size
         self.buffer_size = buffer_size
 
-    def encode(self):
+    def encode(self) -> List[EncodingType]:
         i = 0
         encodings = []
         while i < len(self.code):
@@ -27,7 +31,7 @@ class LZ77Encoder:
             i += encoding[1] + 1
         return encodings
 
-    def encode_single(self, index: int):
+    def encode_single(self, index: int) -> EncodingType:
         # Use z-algorithm to find longest prefix that matches.
         buffer = self.__buffer(index)
         dictionary = self.__dict(index)
