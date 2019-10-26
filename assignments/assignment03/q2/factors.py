@@ -11,6 +11,7 @@ Dylan Pinn 24160547
 Q2: Factors
 """
 
+import random
 from collections import Counter
 from typing import List, Tuple
 
@@ -34,9 +35,42 @@ class PrimeFactors:
     @staticmethod
     def naive_prime(n: int) -> bool:
         """Naive check if number is prime."""
+        if n <= 1:
+            return False
         for k in range(2, n - 1):
             if n % k == 0:
                 return False
+        return True
+
+    @staticmethod
+    def miller_rabin_prime_test(n: int, k: int = 64) -> bool:
+        """Miller-Rabin's Randomized Primality testing algorithm."""
+        if n <= 1:
+            return False
+        if n == 2 or n == 3:
+            return True
+        # If n is even then composite.
+        if n % 2 == 0:
+            return False
+        # Factor n- 1 as 2^s.t, where t is odd
+        s = 0
+        t = n - 1
+        while t % 2 == 0:
+            s += 1
+            t //= 2
+        # n-1 == 2^s.t, where t is odd
+        # k random tests
+        for _ in range(k):
+            a = random.randrange(2, n - 1)
+            if pow(a, n - 1, n) != 1:
+                return False
+            for i in range(1, s):
+                power = pow(2, ((i - 1) * t))
+                condition = pow(a, power, n)
+                if pow(a, pow(2, (i * t)), n) and (
+                    condition != 1 or condition != n - 1
+                ):
+                    return False
         return True
 
     @staticmethod
