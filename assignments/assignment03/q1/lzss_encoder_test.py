@@ -2,22 +2,7 @@ from . import lzss_encoder
 
 
 class TestLZSSEncoder:
-    def test_encode_string(self):
-        code = "aacaacabcabaaac"
-        window_size = 6
-        look_buffer = 4
-        encoder = lzss_encoder.LZSSEncoder(code, window_size, look_buffer)
-        result = encoder.encode()
-        expected = [
-            (1, "a"),
-            (1, "a"),
-            (1, "c"),
-            (0, 3, 4),
-            (1, "b"),
-            (0, 3, 3),
-            (1, "a"),
-            (1, "a"),
-            (1, "a"),
-            (1, "c"),
-        ]
+    def test_from_assignment_sheet(self):
+        expected = "011011000011101100010010000110001101001"
+        result = lzss_encoder.encode_header("aacaacabcaba", 6, 4)
         assert expected == result
