@@ -2,8 +2,10 @@
 FIT3155 - Lab 10 - Task 1
 """
 
+from typing import List, Tuple
 
-def encode(numbers_to_encode):
+
+def encode(numbers_to_encode: List[int]) -> Tuple[int, str]:
     result = ""
     for number in numbers_to_encode:
         result += encode_single_value(number)
@@ -11,7 +13,7 @@ def encode(numbers_to_encode):
     return len(numbers_to_encode), result
 
 
-def encode_single_value(number_to_encode):
+def encode_single_value(number_to_encode: int) -> str:
     # Convert to binary string
     n = convert_to_binary(number_to_encode)
 
@@ -32,8 +34,8 @@ def encode_single_value(number_to_encode):
         l_values.reverse()
 
     # Join length values with actual value.
-    return "".join(l_values) + n
+    return "".join(l_values) + n  # type: ignore
 
 
-def convert_to_binary(integer: int):
+def convert_to_binary(integer: int) -> str:
     return bin(integer)[2:]

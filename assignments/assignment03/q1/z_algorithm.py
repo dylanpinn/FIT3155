@@ -3,12 +3,12 @@
 from typing import List, Optional
 
 
-def find_match(string, right, left):
+def find_match(string: str, right: int, left: int) -> bool:
     """See if we should keep moving through z_box."""
     return right < len(string) and string[right] == string[right - left]
 
 
-def z_array(string: str, index_to_stop: int):
+def z_array(string: str, index_to_stop: int) -> List[Optional[int]]:
     """Calculate Z-Array using Gusfield's Algorithm.
 
     Modified to optionally stop at an index.
