@@ -94,3 +94,7 @@ class PrimeFactors:
         # e.g. [2, 2] == (2, 2)
         result = list(Counter(factors).items())
         return result
+
+
+if __name__ == "__main__":
+    print("asdf")
