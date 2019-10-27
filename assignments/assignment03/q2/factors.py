@@ -60,6 +60,7 @@ class PrimeFactors:
             t //= 2
 
         def trial_composite(a: int) -> bool:
+            """Check if number is composite or probably prime."""
             if pow(a, n - 1, n) == 1:
                 return False
             for i in range(s):
