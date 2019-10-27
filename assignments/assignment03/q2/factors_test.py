@@ -20,5 +20,5 @@ class TestFactors:
 
     def test_primes(self):
         f = factors.PrimeFactors(10)
-        for i in range(1, 10000):
+        for i in range(1, 20000):
             assert f.naive_prime(i) == f.miller_rabin_prime_test(i)
