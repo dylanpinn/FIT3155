@@ -3,8 +3,11 @@ import factors
 
 class TestFactors:
     def test_simple(self):
-        expected = [(3, [(2, 2)]), (2, [(3, 1)])]
+        expected = [(4, [(2, 2)]), (3, [(3, 1)])]
         assert factors.PrimeFactors(5).factors() == expected
+
+    def test_length_of_factors(self):
+        assert len(factors.PrimeFactors(1000).factors()) == 100
 
     def test_228(self):
         expected = [(2, 2), (3, 1), (19, 1)]
