@@ -20,13 +20,5 @@ class TestFactors:
 
     def test_primes(self):
         f = factors.PrimeFactors(10)
-        for i in range(100, 1000):
-            print(i)
+        for i in range(1, 10000):
             assert f.naive_prime(i) == f.miller_rabin_prime_test(i)
-
-        assert f.miller_rabin_prime_test(547) is True
-        assert f.miller_rabin_prime_test(548) is False
-        assert f.naive_prime(541) is True
-        assert f.miller_rabin_prime_test(541) is True
-        assert factors.PrimeFactors(100).miller_rabin_prime_test(523) is True
-        assert factors.PrimeFactors(100).miller_rabin_prime_test(521) is True

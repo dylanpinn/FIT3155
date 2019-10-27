@@ -58,19 +58,21 @@ class PrimeFactors:
         while t % 2 == 0:
             s += 1
             t //= 2
+
+        def trial_composite(a: int) -> bool:
+            if pow(a, n - 1, n) == 1:
+                return False
+            for i in range(s):
+                if pow(a, 2 ** i * t, n) == n - 1:
+                    return False
+            return True
+
         # n-1 == 2^s.t, where t is odd
         # k random tests
         for _ in range(k):
             a = random.randrange(2, n - 1)
-            if pow(a, n - 1, n) != 1:
+            if trial_composite(a):
                 return False
-            for i in range(1, s):
-                power = pow(2, ((i - 1) * t))
-                condition = pow(a, power, n)
-                if pow(a, pow(2, (i * t)), n) and (
-                    condition != 1 or condition != n - 1
-                ):
-                    return False
         return True
 
     @staticmethod
