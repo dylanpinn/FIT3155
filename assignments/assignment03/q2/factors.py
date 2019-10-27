@@ -12,24 +12,30 @@ Q2: Factors
 """
 
 import random
+import sys
 from collections import Counter
 from typing import List, Tuple
 
 Factors = Tuple[int, int]
+PrimeFactor = Tuple[int, List[Factors]]
 
 
 class PrimeFactors:
     def __init__(self, n: int):
         self.n = n
 
-    def factors(self) -> List[Tuple[int, List[Factors]]]:
+    def factors(self) -> List[PrimeFactor]:
         """Find prime factors for the 100 largest prime numbers less than n"""
-        result = []
+        result: List[PrimeFactor] = []
         for i in range(self.n - 1, 1, -1):
+            # Only collect 100 primes.
+            if len(result) >= 100:
+                break
+
             # If i is prime then find prime factors for i+1
             if self.naive_prime(i):
                 factors = self.prime_factors(i + 1)
-                result.append((i, factors))
+                result.append((i + 1, factors))
         return result
 
     @staticmethod
@@ -95,6 +101,25 @@ class PrimeFactors:
         result = list(Counter(factors).items())
         return result
 
+    @staticmethod
+    def format_for_output(prime_factors: List[PrimeFactor]) -> str:
+        result = ""
+        factors.reverse()
+        for composite in factors:
+            result += f"{composite[0]:>3}    "
+            for index, factor in enumerate(composite[1]):
+                result += f"{factor[0]}^{factor[1]}"
+
+                if index != len(composite[1]) - 1:
+                    result += " x "
+
+            result += "\n"
+        return result
+
 
 if __name__ == "__main__":
-    print("asdf")
+    n_size = int(sys.argv[1])
+    f = PrimeFactors(n_size)
+    factors = f.factors()
+    print(factors)
+    print(f.format_for_output(factors))
