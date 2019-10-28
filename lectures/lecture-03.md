@@ -303,3 +303,117 @@ length skipped along the path until the right location is reached.
 ![image-20191028172358796](attachments/lecture-03/image-20191028172358796.png)
 
 ## Implementational trick 2 - space-efficient representation of edge-labels/substrings
+
+Recall, given any string `str[1..n]`, any substring can be represented by just
+two numbers: (`start-index`, `end-index`). Thus, the entire Ukkonen algorithm is
+processed using this space efficient ($O(n)$-space) representation.
+
+Below is an implicit suffix tree of the string `str=a a b b a a b b`, using
+(`start-index`, `end-index`) edge label representation.
+
+![image-20191028174858714](attachments/lecture-03/image-20191028174858714.png)
+
+## Implementational trick 3 - premature extension stopping criterion: `Showstopper’ rule!`
+
+In any phase $i+j$, if `rule 3` extension applies in some suffix extension $j$,
+then extensions $j+1, j+2, \dots i+1$ will all use `rule 3` because:
+
+- when `rule 3` is used with extension $j$, implies the path corresponding to
+  `str[j..i]` continues wiht the character `str[i+1]`.
+- This implies, the path corresponsding to the substring `str[j+1..i]` also
+  continues with the character `str[i+1]`.
+- Similarly, this remains true for all subsequent extensions.
+- **Punchline**: Since `rule 3` requires `no further action`, extensions in
+  phase can `STOP` prematurely on encountering `rule 3`, and the algorithm can
+  directly start the extensions for the next phase.
+
+## Implementational trick 4 - rapid leaf extension trick
+
+### Observation - In Ukkeonen’s algorithm, **once a leaf, always a leaf**
+
+If at some phase $i$ in Unkkonen’s algorithm, a leaf is created and labelled $j$
+(denoting a suffix `str[j..i]` of the prefix `str[1..i]`), then that leaf will
+remain a leaf in all subsequent phases ($> i$).
+
+### Why?
+
+- Leaf node, when created (via `rule 2`) always stores as its label, the
+  starting index $j$ denoting where the corresponding suffix starts.
+- In subsequent phases, **whenever** this suffix is extended at the leaf (via
+  `rule 1`), only the edge-label connecting the leaf gets updated, and **_not_
+  the leaf node label**.
+- Phase 1 consists of a single edge tree, root node $r$ to leaf node numbered 1
+  (created using rule 2).
+- In each phase $i$, suffixes get extended (using rule 1) and (potentially) new
+  suffixes get added (using rule 2)
+  - before the phase ends (either prematurely using rule 3, or naturally when
+    $j$ reaches $i$).
+- Let `last`i $_{j_{i}}$ denote the **last** extension $j$ (via rule 1 or 2) for
+  phase $i$.
+- Since the number of leaves between two consecutive phases is non-decreasing
+  - and the new leaf is created only upon application of rule 2, it follows that
+    `last`i $_{j_{i}} \le$ `last`i $_{j_{i+1}}$
+- Note: if for any suffix extension $j$ in phase $i$ we applied rule 1 or rule
+  2, it automatically implies that the suffix extension $j$ in phase $i+1$ will
+  require (only) rule 1.
+- Therefore, after each phase $i$, the observation that `last`i $_{j_{i}} \le$
+  `last`i $_{j_{i+1}}$ can be exploited and we can omit/avoid **explicit**
+  suffix extensions 1 to last `last`i $_{j_{i}}$ for the **next** phase $i+1$,
+  and do so rapidly using the (implicit) extension trick shown below.
+- From the space-efficient representation we know that any edge is represented
+  using two numbers: (`start-index`, `end-index`).
+- For each edge connecting the `leaf node` (whose index is $j$, in phase $i+1$,
+  the edge label would be of the form $(k,i+1)$, denoting the substring
+  `str[k..i+1]`).
+- In each suffix extension, instead of EXPLICITYLY updating the `end-index` (of
+  the edge to the leaves) to $i+1$, index it IMPLICITLY to a `global-end`
+  variable, i.e., (`k, global-end`)
+  - Note: when phase $i+1$ starts, `global_end` si implicitly $i+1$.
+- In phase $i+1$, since rule 1 applies to all extensions of leaf nodes froim 1
+  to `last`i $_{j_{i}}$
+  - **no additional explicit work** is required to implement extensions
+    $j=1,j=2,\dots j = \text{last}_{j_{i}}$. These can be straightaway ignored.
+- EXPLICIT extensions only start from $j = \text{last}_{j_{i}} + 1$ until the
+  first extension using rule 3 or until phase ends.
+
+## Putting trick 4 pieces together - procedure to handle extensions in any single phase
+
+Summarising trick 4, for any phase $i+1$, the extension procedure is as follows
+
+1. Increment `gloabal_end` index to $i+1$.
+   1. With just this operation, suffix extensions 1 to `last`$_{j_{i}}$ are
+      implicitly complete without any additional work.
+2. Explicitly compute successive extensions starting from $j = $
+   `last`$_{j_{i}} + 1$, until some position $p \le i + 1$ where the phase
+   either prematiruely terminates (after first encountering rule 3 extension),
+   or all extensions are completed for this phase.
+3. To prepare for the next phase $i + 2$, set `last`$_j{_{i+1}}$ to $p-1$ and
+   repeat the procedure above, until all phases are complete.
+
+### Observation
+
+Two consecutive phases share **at most** one index $p$ where an EXPLICIT
+extension is executed.
+
+## Creating the final suffix tree from `implicitST`$_n$ for `str[1..n]`
+
+The final suffix tree from its implicit version can be computed in $O(n)$-time
+as follows:
+
+- First add a string terminal symbol `$` to the end of `str`, i.e. `str[i..n]$`.
+- Continue one more phase on `implicitST`$_n$ to account for this new character.
+- The effect is that no suffix is now a prefix in `implictST`$_n$.
+- So each suffix of `str[1..n]` gets appended by `$`, yielding the
+  `regular/explicit` suffix tree.
+
+## Ukkonen’s algorithm runs in $O(n)$ time for a stirng `str[1..n]`
+
+- There are only $n$ phases in the algorithm
+- Each phase stares at most 1 explicit suffix extension
+- Hence, total number of explicit suffix extensions is at most $2n$.
+- To quantify the effor in each extension:
+  - If the node in the tree capturing `str[j-1..i]` is at depth $d$ from $r$
+  - Then $u$ is at depth at most $d-1$.
+  - This implies the node receiving its suffix link, $v$ is at most $d-2$.
+- Total number of skips over **all phases** is $O(n)$
+- From this, it follows, Ukkonen takes $O(n)$-time.
