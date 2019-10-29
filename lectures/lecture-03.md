@@ -1,8 +1,6 @@
 ---
-tags: [FIT3155, Lectures, Notebooks/Computer Science Degree]
-title: 'Lecture 3: Linear time suffix tree construction'
-created: '2019-08-20T10:24:27.000Z'
-modified: '2019-10-28T06:09:42.061Z'
+title: 'FIT3155 - Lecture 3'
+subtitle: 'Linear time suffix tree construction'
 ---
 
 # Lecture 3: Linear time suffix tree construction
@@ -43,11 +41,11 @@ Given
 
 #### Path compressed suffix tries = suffix trees
 
-![Suffix Trie of abaaba$ Suffix T aba](attachments/lecture-03/7bb5a489-7b28-456b-a034-046aec3cb43c.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ez9n35jfj30uw0n476q.jpg)
 
 #### Efficient representation of suffix trees requires $O(n)$ space
 
-![Suffix Tree of aba$ abaaba$ aba$ Suffix Tree](attachments/lecture-03/22a93d55-d1e1-4574-86d7-aee74dfbbda2.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ez9y88r8j30uw0g6tan.jpg)
 
 Note, instead of storing the edge labels as substrings **explicitly**, we can
 store them **implicitly** using$(j,i)$ denoting the substring `str[j..i]`, where
@@ -55,7 +53,7 @@ $1≤j≤i≤n$.
 
 ### Building a suffix treenaively
 
-![5](attachments/lecture-03/c8f462cf-deac-40b6-b696-18be370d433a.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezalk9nvj30uw0a2402.jpg)
 
 1. Start with the (empty) root node of the suffix tree $r$
 2. Insert suffix **1** (`str[1...]1`) into an empty tree.
@@ -86,7 +84,7 @@ $1≤j≤i≤n$.
    - Note the suffix `str[6..6]` denotes the sepecial terminal character `$`
    - This creates a new isolated edge branching off the root $r$.
 
-![oeq](attachments/lecture-03/52308b45-25d6-40b7-9b73-7459000092ce.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezavv7d4j30jh0ajq4h.jpg)
 
 ### Ukkonen's linear-time algorithm -- introduction
 
@@ -111,7 +109,7 @@ be understood by the following operations on the regular suffix tree:
 - Then, remove all edges without edge labels (i.e. substrings)
 - Then, path compress the tree by removing all nodes that do not have at least
   two children.
-  ![Regular suffix tree](attachments/lecture-03/d6d71283-bf70-445a-ae0e-b28dfb965e31.png)
+  ![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezbj4ac1j30r10jcdk2.jpg)
 
 ### Ukkonen's algorithm builds implicit suffix trees incrementally in `phases`
 
@@ -158,7 +156,7 @@ If the path `str[j..i]` in `implicitST`$_i$ **ends at a leaf**, adjust the
 **label of the edge** to that leaft to account for the added character
 `str[i+1]`.
 
-![Before suffix extension](attachments/lecture-03/6fdf29e9-29cb-43cd-9564-b9a9c8bec647.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezbylquwj30sg0egmzk.jpg)
 
 #### Rule 2 of 3
 
@@ -168,7 +166,7 @@ after `str[..i]` and create a new node $u$, followed by a new leaf numbered $j$;
 assign character `str[i+1]` as the edge label betwene the new node $u$ and leaf
 $j$.
 
-![Before suffix extension](attachments/lecture-03/13dfb3b3-15d3-40b1-9854-41c664b65200.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezcae6f9j30sg0dhjtv.jpg)
 
 #### Rule 2 of 3 - an alternative scenario that can arise
 
@@ -178,7 +176,7 @@ $x$ are separated by an existing node $u$** ,then split the ege after `str[..i]`
 and create a new node $u$, followed by a new leaf numbered $j$; assign character
 `str[i+1]` as the edge label betwene the new node $u$ and leaf $j$.
 
-![Before suffix extension](attachments/lecture-03/e832bcea-7c30-47a1-b7f8-12179569121b.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezclrg2vj30sg0dhgnv.jpg)
 
 #### Rule 3 of 3
 
@@ -186,11 +184,11 @@ If the path `str[j..i]` in `implicitST`$_i$ **does NOT** end at a leaf, but is
 within some edge label, and the next character in that path is `str[i+1]`, then
 `str[i+1]` is already in the tree. **No further action needed**.
 
-![rule 3](attachments/lecture-03/99585795-da9e-475f-9d07-bbfe2dc7365d.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezcvmgykj30gv0iugmv.jpg)
 
 #### Example
 
-![Example](attachments/lecture-03/dfa1dee9-84ba-4443-a175-8ff2ce101d66.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezd5axzsj30sg0jgn5a.jpg)
 
 ### Speeding up tree traversal usingsuffix links
 
@@ -207,7 +205,7 @@ suffix tree, that speed up traversal time in each phase.
 
 #### Example
 
-![Example](attachments/lecture-03/236d11be-c10a-43e5-9f20-599e1edc18d0.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezdev4xcj30sg0jgju3.jpg)
 
 ### KEY OBSERVATION:
 
@@ -245,7 +243,7 @@ $i+1$. Suffix links are used to speed these extensions.
 - Given `ptr`, the extension from to `str[1..i]` can be handled in constant
   time.
 
-![extension 1](attachments/lecture-03/56ec5fba-f301-4dfb-8214-4808194e78e1.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezdrjxk4j30cv0h2q3w.jpg)
 
 #### Extension 2, phase
 
@@ -300,7 +298,7 @@ length skipped along the path until the right location is reached.
 - ... and so on until the node beyond which furhter skips are not
   possible/necessary.
 
-![image-20191028172358796](attachments/lecture-03/image-20191028172358796.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8eze0dz8mj308u0ddab2.jpg)
 
 ## Implementational trick 2 - space-efficient representation of edge-labels/substrings
 
@@ -311,7 +309,7 @@ processed using this space efficient ($O(n)$-space) representation.
 Below is an implicit suffix tree of the string `str=a a b b a a b b`, using
 (`start-index`, `end-index`) edge label representation.
 
-![image-20191028174858714](attachments/lecture-03/image-20191028174858714.png)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8eze6e9bfj30n009vq57.jpg)
 
 ## Implementational trick 3 - premature extension stopping criterion: `Showstopper’ rule!`
 
