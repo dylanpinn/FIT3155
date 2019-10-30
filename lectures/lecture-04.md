@@ -91,3 +91,21 @@ relations) established.
 
 - `union(·)` in the earlier examples performed a union by making the second
   tree/subset a subtree of the first.
+- This was an arbitrary choice.
+- In general, a smarter way would to make the **smaller** tree (in terms of the
+  number of elements in it) the subtree of the larger tree. This is called
+  `union-by-size`.
+- An even smarter approach would be to make the **shorter**/shallower tree (in
+  tree height) the subtree of the **taller**/deeper tree. This is called
+  `union-by-height`.
+
+## `Union-by-size`
+
+When `union(a,b)` is carried out using `union-by-size`:
+
+- Ensure $a$ and $b$ are in two disjoint trees.
+- Then point the root node of the tree with **smaller number of elements** to
+  the root for the larger one.
+  - If both sizes are equal, break the tie arbitrarily.
+- The cell corresponding to the merged root in the **parent array** is updated
+  to store the merged tree/subset size (as a **negative number**).
