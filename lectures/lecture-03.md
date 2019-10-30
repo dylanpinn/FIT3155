@@ -28,9 +28,12 @@ of the pattern, $O(m)$.
 
 Given
 
-- A `prefix` of `str[1..n]` is a **substring** `str[1..j]`, $∀1≤j≤n$.
-- A `suffix` of `str[1..n]` is a **substring** `str[i..n]`, $∀1≤i≤n$.
-- A `substring` of `str[1..n]` is any `str[j..i]`, $∀1≤j≤i≤n$.
+- A `prefix` of `str[1..n]` is a **substring** `str[1..j]`,
+  $\forall 1 \le j \le n$.
+- A `suffix` of `str[1..n]` is a **substring** `str[i..n]`,
+  $\forall 1 \le i \le n$.
+- A `substring` of `str[1..n]` is any `str[j..i]`,
+  $\forall 1 \le j \le i \le n$.
 - Therefore,
   - A substring is a **prefix of a suffix**
   - (or equivalently) a substring is a **suffix of a prefix**
@@ -39,17 +42,17 @@ Given
 
 ### Recall from FIT2004:
 
-#### Path compressed suffix tries = suffix trees
+### Path compressed suffix tries = suffix trees
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ez9n35jfj30uw0n476q.jpg)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ez9n35jfj30uw0n476q.jpg){width=75%}
 
-#### Efficient representation of suffix trees requires $O(n)$ space
+### Efficient representation of suffix trees requires $O(n)$ space
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ez9y88r8j30uw0g6tan.jpg)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ez9y88r8j30uw0g6tan.jpg){width=75%}
 
 Note, instead of storing the edge labels as substrings **explicitly**, we can
 store them **implicitly** using$(j,i)$ denoting the substring `str[j..i]`, where
-$1≤j≤i≤n$.
+$1 \le j \le i \le n$.
 
 ### Building a suffix treenaively
 
@@ -84,7 +87,8 @@ $1≤j≤i≤n$.
    - Note the suffix `str[6..6]` denotes the sepecial terminal character `$`
    - This creates a new isolated edge branching off the root $r$.
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezavv7d4j30jh0ajq4h.jpg)
+![Completed tree](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezavv7d4j30jh0ajq4h.jpg){
+width=75% }
 
 ### Ukkonen's linear-time algorithm -- introduction
 
@@ -109,14 +113,15 @@ be understood by the following operations on the regular suffix tree:
 - Then, remove all edges without edge labels (i.e. substrings)
 - Then, path compress the tree by removing all nodes that do not have at least
   two children.
-  ![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezbj4ac1j30r10jcdk2.jpg)
+
+![Regular vs Implicit](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezbj4ac1j30r10jcdk2.jpg)
 
 ### Ukkonen's algorithm builds implicit suffix trees incrementally in `phases`
 
 Given a string `str[1..n]`, Ukkonen's algorithm proceeds over $n$ "`phases`"
 
-- Each `phase` $i+1$ (where $1≤i+1≤n$) builds the `implict` suffix tree (denoted
-  by `implicitST`$_{i+1}$) for the **prefix** `str[1..i+1]`.
+- Each `phase` $i+1$ (where $1 \le i+1 \le n$) builds the `implict` suffix tree
+  (denoted by `implicitST`$_{i+1}$) for the **prefix** `str[1..i+1]`.
 - Importantly, each `implicitST`${_i+1}$ is incrementally computed using the
   `implicitST`$_i$ from the previous phase.
   - The construction of `implicitST`$_{i+1}$ from `implicitST`$_i$, in turn
@@ -142,7 +147,8 @@ For i from 1 to n-1
   Begin PHASSE i + 1
     For j from 1 to i + 1
       Begin SUFFIX EXTENSION j
-      - Find end of path from root denoting str[j..i] in the current state of the suffix tree.
+      - Find end of path from root denoting str[j..i] in the
+        current state of the suffix tree.
       - Apply one of the three suffix extension rules.
     End of extension step j
   End of phase i + 1 (implicitSTi+1 computed)
@@ -161,20 +167,21 @@ If the path `str[j..i]` in `implicitST`$_i$ **ends at a leaf**, adjust the
 #### Rule 2 of 3
 
 If the path `str[j..i]` in `implicitST`$_i$ **does NOT** end at a leaf, and the
-next chracter in the existing path is some $x ≠$ `str[i+1]`, then split the ege
-after `str[..i]` and create a new node $u$, followed by a new leaf numbered $j$;
-assign character `str[i+1]` as the edge label betwene the new node $u$ and leaf
-$j$.
+next chracter in the existing path is some $x \ne$ `str[i+1]`, then split the
+ege after `str[..i]` and create a new node $u$, followed by a new leaf numbered
+$j$; assign character `str[i+1]` as the edge label betwene the new node $u$ and
+leaf $j$.
 
 ![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezcae6f9j30sg0dhjtv.jpg)
 
 #### Rule 2 of 3 - an alternative scenario that can arise
 
 If the path `str[j..i]` in `implicitST`$_i$ **does NOT** end at a leaf, and the
-next chracter in the existing path is some $x ≠$ `str[i+1]`, **and `str[i]` and
-$x$ are separated by an existing node $u$** ,then split the ege after `str[..i]`
-and create a new node $u$, followed by a new leaf numbered $j$; assign character
-`str[i+1]` as the edge label betwene the new node $u$ and leaf $j$.
+next chracter in the existing path is some $x \ne$ `str[i+1]`, **and `str[i]`
+and $x$ are separated by an existing node $u$** ,then split the ege after
+`str[..i]` and create a new node $u$, followed by a new leaf numbered $j$;
+assign character `str[i+1]` as the edge label betwene the new node $u$ and leaf
+$j$.
 
 ![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezclrg2vj30sg0dhgnv.jpg)
 
@@ -184,11 +191,11 @@ If the path `str[j..i]` in `implicitST`$_i$ **does NOT** end at a leaf, but is
 within some edge label, and the next character in that path is `str[i+1]`, then
 `str[i+1]` is already in the tree. **No further action needed**.
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezcvmgykj30gv0iugmv.jpg)
+![Rule 3](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezcvmgykj30gv0iugmv.jpg){width=50%}
 
-#### Example
+#### Example\
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezd5axzsj30sg0jgn5a.jpg)
+![Example](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezd5axzsj30sg0jgn5a.jpg){width=75%}
 
 ### Speeding up tree traversal usingsuffix links
 
@@ -203,9 +210,9 @@ suffix tree, that speed up traversal time in each phase.
 - Let the traversal from root node $r$ to $v$ yield a substring `str[j+1..k-1]`.
 - Then the pointer from $u$ to $v$ defines a suffix link between those nodes.
 
-#### Example
+#### Example\
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezdev4xcj30sg0jgju3.jpg)
+![Example](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezdev4xcj30sg0jgju3.jpg){width=75%}
 
 ### KEY OBSERVATION:
 
@@ -243,7 +250,7 @@ $i+1$. Suffix links are used to speed these extensions.
 - Given `ptr`, the extension from to `str[1..i]` can be handled in constant
   time.
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezdrjxk4j30cv0h2q3w.jpg)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ezdrjxk4j30cv0h2q3w.jpg){width=50%}
 
 #### Extension 2, phase
 
@@ -265,13 +272,14 @@ For any extension $j \ge 2$ of phase $i+1$ repeats the same general idea
    - i.e., backtracking **AT MOST one edge** from the end of `str[j-1..i]`.
    - Let the substring `str[k..i]` (possibily empty) denote the edge label
      between $u$ and end of `str[j-1..i]`.
-2. If $u≠r$, traverse the suffix link from $u$ to $v$. Walk down from $v$ along
-   the path dictated by the substring `str[k..i]`. \* On the other hand, if
-   $u=r$, then no choice but to naively follow traverse the path from from $r$.
+2. If $u \ne r$, traverse the suffix link from $u$ to $v$. Walk down from $v$
+   along the path dictated by the substring `str[k..i]`.
+   - On the other hand, if $u=r$, then no choice but to naively follow traverse
+     the path from from $r$.
 3. Once at the desired point (i.e., end of `str[j..i]`), apply pertinent suffix
    extension rules.
 4. Repeat items 1-3 above until each suffix `str[j..i+1]` (of the prefix
-   `str[1..i+1]`), for $1≤j≤i+1$ is `implicitST`$_{i+1}$.
+   `str[1..i+1]`), for $1 \le j \le \le i+1$ is `implicitST`$_{i+1}$.
 5. During these extensions, any new internal nodeucreated in extension $j-1$,
    gets its suffix link to it corresponding node $v$ in the next extension $j$.
 
@@ -298,7 +306,7 @@ length skipped along the path until the right location is reached.
 - ... and so on until the node beyond which furhter skips are not
   possible/necessary.
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8eze0dz8mj308u0ddab2.jpg)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8eze0dz8mj308u0ddab2.jpg){width=50%}
 
 ## Implementational trick 2 - space-efficient representation of edge-labels/substrings
 
@@ -309,7 +317,7 @@ processed using this space efficient ($O(n)$-space) representation.
 Below is an implicit suffix tree of the string `str=a a b b a a b b`, using
 (`start-index`, `end-index`) edge label representation.
 
-![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8eze6e9bfj30n009vq57.jpg)
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8eze6e9bfj30n009vq57.jpg){width=50%}
 
 ## Implementational trick 3 - premature extension stopping criterion: `Showstopper’ rule!`
 
