@@ -12,7 +12,7 @@
 Build files changed into HTML documents
 
 ```bash
-ls lectures/*.md | entr find ./lectures -iname "*.md" -type f -exec sh -c 'pandoc --katex -s "${0}" -o "./build/$(basename ${0%.md}.html)"' {} \;
+ls lectures/*.md | entr find ./lectures -iname "*.md" -type f -exec sh -c 'pandoc --mathml -s "${0}" -o "./build/$(basename ${0%.md}.html)"' {} \;
 ```
 
 Watch changed HTML documents and reload browser.

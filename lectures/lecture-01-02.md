@@ -225,186 +225,165 @@ corresponding **mismatched** character is `x = txt[j + k - 1]`, then **shift**
 `pat[1..m]` to the right so that **the closest `x` in `pat` is to the left of
 position $k$** is now below the (previously **mismatched**) `x` in `txt`.
 
-TODO: FINISH FROM HERE
-
-- To achieve this, pre-processpat[1…m]so that, for each position inpat, and for
-  each character , the position of the closest occurrence of to the left of each
-  position can be efficiently looked up.
-- A 2D (shift/jump table)of size can store this information.
+- To achieve this, pre-process `pat[1…m]` so that, for each position in `pat`,
+  and for each character $x \in N$, the position of the closest occurrence of
+  $x$ to the left of each position can be efficiently looked up.
+- A 2D (**shift/jump table**) of size $m \times |N|$ can store this information.
 
 ### Good Suffix Rule
 
-- In some iteration, say and are being compared via right-to-left scan.
-- Let thekth character oftxt, i.e.x=txt[j+k−1], be mismatched with thekth
-  chracter of the patterny=patk.
-- If we knew that is the rightmost position inpatwhere the longest substring (of
-  length ending at position matches its suffix, that is:
-
-      * patp−m+k+1…p≡patk+1…m
-      * patp−m+k≠pat[k].
-
-- Then,patcan be safely shifted right by positions,
+- In some iteration, say `txt[j...j+m-1]` and are being compared via
+  right-to-left scan.
+- Let the kth character of `txt`, i.e., `x = txt[j+k−1]`, be mismatched with the
+  kth chracter of the pattern `y = pat[k]`.
+- If we knew that $p < m$ is the rightmost position in `pat` where the longest
+  substring (of length $>=1$) ending at position $p$ matches its suffix, that
+  is:
+  - $pat[p−m+k+1…p] ≡ pat[k+1…m]$
+  - $pat[p−m+k] ≠ pat[k]$.
+- Then, `pat` can be safely shifted right by $m-p$ positions,
 - And a new iteration can be restarted.
-
-patp−m+k+1…p≡patk+1…m
 
 #### Ideas to implement the 'good suffix' rule more efficiently
 
 To efficiently implement the 'good suffix' rule, we take 'inspiration' from the
-computation ofZivalues in Gusfield's algorithm, and defineZisuffix(specifically
-onpat) as follows:
+computation of $Z_i$ values in Gusfield's algorithm, and define $Z_i^{suffix}$
+(specifically on `pat`) as follows:
 
-Definition ofZisuffix:Givenapat[1…m],defineZisuffixfor (each positioni<m) as
-thelengthof thelongest substring ending at positioniofpatthat matches
-itssuffix(i.e.,pati−Zisuffix+1…i=pat[m−Zisuffix+1…m]).
+Definition of $Z_i^{suffix}$:
 
-- Note, computation ofZisuffixvalues onpatcorresponds to the computation
-  ofZivalues onreverse(pat).
-- Thus,Zisuffixvalues can be computed inO(m)time forpat[1…m]. In fact, for
-  eachsuffixstarting at position inpat, we want to score the rightmost position
-  inpatsuch that:
+Given a `pat[1…m]`, define $Z_i^{suffix}$ for (each position $i<m$) as the
+**length** of the _longest substring **ending** at position_ $i$ of `pat` that
+matches its **suffix** (i.e.,
+$pat[i−Z_i^{suffix}+1…i] = pat[m−Z_i^{suffix}+1…m]$).
 
-patj..m≡patp−Zisuffix+1..p\* patj..m≡patp−Zisuffix+1..p
+- Note, computation of $Z_i^{suffix}$ values on `pat` corresponds to the
+  computation of $Z_i$ values on `reverse(pat)`.
+- Thus, $Z_i^{suffix}$ values can be computed in $O(m)$ time for `pat[1…m]`.
+- In fact, for each **suffix** starting at position $j$ in `pat`, we want to
+  score the rightmost position $p$ in `pat` such that:
+  - $pat[j..m] ≡ pat[p−Z_i^{suffix}+1..p]$
+  - $pat[j−1] ≠ pat[p−Z_i^{suffix}]$.
 
-- patj−1≠pat[p−Zisuffix]. Store these rightmost positions asgoodsuffixj=p.These
-  can be computed as:
+Store these rightmost positions as `goodsuffix(j) = p`. These can be computed
+as:
 
+```
 m := |pat|
-
-forjfrom1to m+1do
-
-goodsuffix(j) :=0
-
+for j from 1 to m+1 do
+  goodsuffix(j) :=0
 endfor
 
-forpfrom1to m-1do
-
-j := m - Zˆ{suffix}\_p +1
-
-goodsuffix(j) := p
-
+for p from 1 to m-1 do
+  j := m - Zˆ{suffix}_p + 1
+  goodsuffix(j) := p
 endfor
+```
 
 #### Using 'good suffix' rule during search
 
-In any iteration, to use the 'good suffix' rule, the following cases have to
+In any iteration, to use the '**good suffix**' rule, the following cases have to
 handled:
 
-![la:
-1
-txt
-pat
-Case
-1
-goodsuffix(k+l) > O
-mismatched
-characters
-x
-goodsuffix(k+l) = p
-m ](@attachment/c83b7580-53e1-4d7e-a226-4ba26b5b54d5.png)
-Case 1a:if a mismatch occurs at some ,and then
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8ghvyag7qj30sg0be3zs.jpg)
 
-- Shiftpatby places. Case 1b:if a mismatch occurs at somepat[k],
-  andgoodsuffixk+1=0then
+Case 1a: if a mismatch occurs at some `pat[k]`, and `goodsuffix(k+1) > 0` then
 
-- Shiftpatby places
+- Shift `pat` by `m - goodsuffix(k+1)` places.
 
-      * matchedprefix(k+1)denotes the length of thelargest suffix ofpat[k+1..m]that is identical to theprefix ofpat1..m−k.
-      * matchedprefix(.)values forpatcan be precomputed using Z-algorithm inO(m)time.
+Case 1b: if a mismatch occurs at some `pat[k]`, and `goodsuffix(k+1 = 0)` then
 
-Case 2:when fully matches
+- Shift `pat` by `m - matchedprefix(k+1)` places
+  - `matchedprefix(k+1)` denotes the length of the **_largest_ suffix of**
+    `pat[k+1..m]` that is identical to the **prefix of** `pat[1..m−k]`.
+  - `matchedprefix(·)` values for `pat` can be precomputed using Z-algorithm in
+    $O(m)$ time.
 
-- Shiftpatby places.
+Case 2: when `pat[1...m]` fully matches `txt[j...j+m-1]`
+
+- Shift `pat` by `m - matchedprefix(2)` places.
 
 ### Bringing all pieces together
 
 Pre-processing step
 
-- Pre-processpat…
-
-      * … for jump tables (e.g.
-
-  values) needed for 'bad-character' shifts \* … for and values needed for 'good
-  suffix' shifts.
+- Pre-process `pat`…
+  - … for jump tables (e.g. $(R(\cdot)$ values) needed for **'bad-character'**
+    shifts
+  - … for `goodsuffix(·)` and `matchedprefix(·)` and values needed for **'good
+    suffix'** shifts.
 
 Algorithm
 
-- Starting with vs. , in each iteration, scan'right-to-left'.
-- Use (extended)bad-characterrule to find how many places to the rightpatshould
-  be shifted undertxt. Call this amountnbadcharacter.
-- Usegood-suffixrule to find how many places to the rightpatshould be shifted
-  undertxt. Call this amountngoodsuffix.
-- Shiftpatto the right undertxtbymax⁡(nbadcharacter,ngoodsuffix)places.
+- Starting with `pat[1..m]` vs. `txt[1..m]` , in each iteration, scan
+  '**right-to-left**'.
+- Use (extended) **bad-character** rule to find how many places to the right
+  `pat` should be shifted under `txt`. Call this amount $n_{badcharacter}$.
+- Use **good-suffix** rule to find how many places to the right `pat` should be
+  shifted under `txt`. Call this amount $n_{goodsuffix}$.
+- Shift `pat` to the right under `txt` by $max(n_{badcharacter},n_{goodsuffix})$
+  places.
 
 ### Galil's optimisation to ensure linear runtime always
 
-- Suppose, in some iteration, we are comparing with , viaright-to-leftscanning.
-- Saypatk≠txt[j+k−1](or even say the entirepatmatches intxt)…
+- Suppose, in some iteration, we are comparing `pat[1..m]` with
+  `txt[j...j+m-1]`, via **right**-to-left scanning.
+- Say `pat[k] ≠ txt[j+k−1]` (or even say the entire `pat` matches in `txt`)…
 - … in the next iteration (after applying some appropriate shift)…
-- … if the left end ofpat[1]lies between …
-- … then there is definitely a prefixpat[1…]thatmatches , which need not be
-  explicitly compared, after this shift.
+- … if the left end of `pat[1]` lies between `txt[j+k-1...j+m-1]`…
+- … then there is definitely a prefix `pat[1…]` that **matches**
+  `txt[...j+m-1]`, which need not be explicitly compared, after this shift.
 - Thus, in the next iteration, the right-to-left scanning can stop prematurely
-  if positiontxt[j+m−1]is reached, to conclude there tis an occurrence
-  ofpatintxt.
+  if position `txt[j+m−1]` is reached, to conclude there is an occurrence of
+  `pat` in `txt`.
 - Employing Galil's optimisation during shifting between iterations, the
-  Boyer-Moore algorithm guaranteesworst-case time-complexityof .
+  **Boyer-Moore algorithm** guarantees _worst-case time-complexity_ of $O(m+n)$.
 
 ## Knuth-Morris-Pratt (KMP) Algorithm
 
-### DefiningSPivalues forpat[1…m]
+### Defining $SP_i$ values for `pat[1…m]`
 
-Definition ofSPi: Given a patternpat[1…m], defineSPi(for each positioniinpat) as
-thelengthof thelongest proper suffixofpat[1…i]thatmatches a prefixofpat, such
-thatpati+1≠pat[SPi+1].
+Definition of $SP_i$:
 
-![Example
-1 2 3 4 5 6 7 8 9 19 11 12
-Pat= b b c ca e b bc abd
-O SPF 1 SPF O
-SPI
-SPI ](@attachment/bd11c284-3671-49f6-936f-c48c101b2e57.png)m
-:= |pat|
+Given a pattern `pat[1…m]`, define $SP_i$ (for each position $i$ in `pat`) as
+the **length** of the **longest proper suffix** of `pat[1…i]` that **matches a
+prefix** of `pat`, such that `pat[i+1] ≠ pat[SPi+1]`.
 
-forifrom1to mdo
+![](https://tva1.sinaimg.cn/large/006y8mN6ly1g8gifnbft5j30sg06ljt1.jpg)
 
-SP_i :=0
-
+```
+m := |pat|
+for i from 1 to m do
+  SP_i :=0
 endfor
 
-forjfromm down to2do
-
-i := j + Z_j -1
-
-SP_i := Z_j
-
+for j from m down to 2 do
+  i := j + Z_j -1
+  SP_i := Z_j
 endfor
+```
 
 ### KMP Algorithm overview
 
-- KMP algorithm is described in terms of theSPivalues.
+- KMP algorithm is described in terms of the $SP_i$ values.
 - The general procedure/iteration of KMP involves:
-
-      * Compare
-
-  against any region of in thenaturalleft-to-right direction. \* In the
-  firstmismatch, while scanning left-to-right, occurs at posi+i: that
-  is,pat1…i≡txt[j…j+i−1]
-
-          * Shiftpatto the right (relative totxt) so that …
-          * pat1…SPiis now aligned withtxt[j+i−SPi…j+i−1]
-          * KMPshift rulein other words, shiftpatby exactlyi−SPiplaces to the right.
-
-      * Else, in the case of occurrence ofpatis found intxt(i.e., no mismatch), then shiftpatbym−SPmplaces.
+  - Compare `pat[1...m]` against any region of `txt[j...j+m-1`] in the
+    **natural** _left_-to-right direction.
+  - In the first **mismatch**, while scanning **left**-to-right, occurs at pos
+    $i+i$: that is, `pat[1…i] ≡ txt[j…j+i−1]`
+    - Shift `pat` to the right (relative to `txt`) so that …
+    - `pat[1…SP_i]` is now aligned with `txt[j+i−SPi…j+i−1]`
+    - **KMP shift rule** in other words, shift `pat` by exactly $i−SP_i$ places
+      to the right.
+  - Else, in the case of occurrence of `pat` is found in `txt` (i.e., no
+    mismatch), then shift `pat` by $m−SP_m$ places.
 
 ## Summary
 
-- Naïve algorithm takes -time
-- Gusfield's Z-algorithm guaranteed in -time, worst case.
+- Naïve algorithm takes $O(m * n)$-time
+- Gusfield's Z-algorithm guaranteed in $O(n+m)$-time, worst case.
 - Boyer-Moore's algorithm takes
-
-  - O(n+m)-time worst case …
-  - … butO(mn)-time (sublinear) in most 'realworld' usage.
-
-- Knuth-Morris-Pratt algorithm also takes -time worst-case, but inferior in
-  performance to Boyer-Moore in practice.
+  - $O(n+m)$-time worst case …
+  - … but $O(\frac{m}{n})$-time (sublinear) in most 'realworld' usage.
+- Knuth-Morris-Pratt algorithm also takes $O(n+m)$-time worst-case, but inferior
+  in performance to Boyer-Moore in practice.
