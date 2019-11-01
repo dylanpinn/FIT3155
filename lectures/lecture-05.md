@@ -195,3 +195,79 @@ elements.
   node $x$.
 - Running time (worst-case): $O(\log N)$ - depth of the binomial tree in which
   $x$ resides is bounded above by $\lfloor \log N \rfloor$.
+
+### `delete`
+
+We want to delete any node $x$ is a binomial heap containing $N$ elements.
+
+- run `decrease-key` by setting $x$ to $- \inf$.
+- run `extract-min`.
+- Running time (worst-case): $O(\log N)$.
+
+### `insert`
+
+We want to insert a new element $x$ into an existing binomial heap $H_1$
+
+- Make a new binomial heap $H_2$ with $x$ as its **only** element.
+- Run $\mathtt{merge}(H_1,H_2)$.
+
+#### Amortized analysis of `insert` operation
+
+Consider the problem of building a `binomial` heap of $N$ elements:
+
+Claim
+
+: A `binomial` heap of $N$ elements can be built by $N$ successive insert in
+$O(N$)-time.
+
+- Time required for inserting **each** element $x$ into a heap $H_1$ (starting
+  from an empty heap) involves:
+  - time to create a new binomial heap $H_2$ containing only 1 element $x$ -
+    which requires constant effort, `plus`
+  - time to merge $H_2$ into $H_1$.
+- Total over $N$ insertions requires:
+  - $O(N)$ + total merging time
+
+It is easy to see (by beholding how the numbers starting from 0 change when 1 is
+added each time):
+
+- The **first insertion** into an empty $H_1$ heap requires **zero** merges.
+- The second insertion involves exactly **one** merge between to $B_0$ binomial
+  trees, yielding a heap containing one $B_1$ tree.
+- The **third insertion** involves **zero** merges
+  - $H_1$ before insertion contains 2 elements (contained in 1 $B_1$ tree).
+  - merging the new inserted element into $H_1$ adds only a new $B_0$ tree to
+    the existing $B_1$ tree. Therefore no merges.
+- The fourth insertion involves exactly **two** merges.
+- the **fifth insertion** involves **zero** merges
+- $\vdots$
+
+When inserting $N$ elements, if the binary representation of number elements in
+$H_1$ before each insertion ends in:
+
+- `......0`, the effort takes only 1 unit of time.
+- `.....01`, the effort takes only 2 units of time.
+- `....011`, the effort takes only 3 units of time.
+- `...0111`, the effort takes only 4 units of time.
+- `..01111`, the effort takes only 5 units of time.
+
+##### Total time over $N$ insertions
+
+- $T = \frac{N}{2} \times 1 + \frac{N}{4} \times 3 \ldots \le 2N$
+- Such a series is called an **Arithmetico-Geometric series.**
+
+Thus total time is bounded by $O(N)$, implying that each `insert` into a
+binomial heap is $O(1)$ amortised.
+
+## Summary
+
+| Opertation            | Binary heap | Binomial heap |
+| --------------------- | ----------- | ------------- |
+| `make-new-heap`       | $O(1)$      | $O(1)$        |
+| `min`                 | $O(1)$      | $O(\log N)$   |
+| `extract-min`         | $O(\log N)$ | $O(\log N)$   |
+| `merge`               | $O(N)$      | $O(\log N)$   |
+| `decrease-key`        | $O(\log N)$ | $O(\log N)$   |
+| `delete`              | $O(\log N)$ | $O(\log N)$   |
+| `insert` - worst-case | $O(\log N)$ | $O(\log N)$   |
+| `insert` - amortised  | $O(1)$      | $O(1)$        |
