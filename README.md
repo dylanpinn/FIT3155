@@ -8,3 +8,4 @@
 - [Lecture 5](/lectures/lecture-05.md)
 - [Lecture 6](/lectures/lecture-06.md)
 - [Lecture 7](/lectures/lecture-07.md)
+- [Lecture 8](/lectures/lecture-08.md)
